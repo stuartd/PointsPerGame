@@ -1,0 +1,33 @@
+﻿@model dynamic
+
+<h3><a href="/">Home</a></h3>
+
+<h2>@ViewBag.Title</h2>
+
+@{
+    var grid = new WebGrid(
+        source: Model,
+        defaultSort: "PointsPerGame",
+        canPage: false,
+        canSort: true
+        )
+    {
+        SortDirection = SortDirection.Descending
+    };
+
+    @grid.GetHtml(
+        tableStyle: "teamtable",
+        rowStyle:"odd",
+        alternatingRowStyle:"even",
+    
+        columns: grid.Columns(
+                grid.Column("Team", "Team", style: "firstcol", format: (item) => @Html.Raw(string.Format("<a href='{0}'>{1}</a>", @item.URL.Value, @item.Team))),
+             grid.Column("Played", "Pld"),
+             grid.Column("Won", "W"),
+             grid.Column("Drawn", "D"),
+             grid.Column("Lost", "L"),
+             grid.Column("GoalDifference", "GD"),
+             grid.Column("Points", "Pts"),
+             grid.Column("PointsPerGame", "PPG", @<text>@item.PointsPerGame.ToString("0.00")</text>)))
+}
+
