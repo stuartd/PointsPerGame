@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,9 @@ namespace PointsPerGame.Core.Web
     {
         protected static Stream GetPageStream(string url)
         {
-            var uri = new Uri(url);
+	        ServicePointManager.Expect100Continue = true;
+	        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+			var uri = new Uri(url);
 
             var client = new HttpClient();
             Task<Stream> task = client.GetStreamAsync(uri);
