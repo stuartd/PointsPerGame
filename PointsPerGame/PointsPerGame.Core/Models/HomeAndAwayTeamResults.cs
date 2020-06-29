@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Security.Policy;
 using PointsPerGame.Core.Extensions;
 using PointsPerGame.Core.Utilities;
@@ -91,40 +92,23 @@ namespace PointsPerGame.Core.Models
         }
     }
 
-    public class TeamResultsComparer : IComparer<ITeamResults>
+    public static class TeamResultsExtensions
     {
-        public int Compare(ITeamResults x, ITeamResults y)
-        {
-            // Less than zero:    This instance is less than y. 
-            // Zero:              This instance is equal to y. 
-            // Greater than zero: This instance is greater than y. 
+	    public static IEnumerable<ITeamResults> SortTeams(this IEnumerable<ITeamResults> values)
+	    {
+            /*
 
-            // Order by: points per game (descending), then games played (ascending), 
-            // then goal difference (descending), then name (ascending)
+             Teams are sorted by points per game, then by the number of games played.
+			 This means if two teams have the same points per game, then the team which has played the fewer games is sorted higher.
+			 If both of those values are equal, teams are sorted by goal difference, and then by team name. 
 
-            // For descending, compare this to y, for ascending,
-            // compare y to this.
+             */
 
-            if (x.PointsPerGame.IsNotEqualTo(y.PointsPerGame))
-            {
-                // desc
-                return x.PointsPerGame.CompareTo(y.PointsPerGame);
-            }
+            return values.OrderByDescending(v => v.PointsPerGame)
+	            .ThenBy(v => v.Played)
+	            .ThenByDescending(v => v.GoalDifference)
+	            .ThenBy(v => v.Team);
 
-            if (x.Played != y.Played)
-            {
-                // asc
-                return y.Played.CompareTo(x.Played);
-            }
-
-            if (x.GoalDifference != y.GoalDifference)
-            {
-                // desc
-                return y.GoalDifference.CompareTo(x.GoalDifference);
-            }
-
-            // asc
-            return string.Compare(x.Team, y.Team, StringComparison.Ordinal);
-        }
+	    }
     }
 }

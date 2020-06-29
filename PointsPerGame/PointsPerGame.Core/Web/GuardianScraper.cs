@@ -117,9 +117,7 @@ namespace PointsPerGame.Core.Web
                 teams.Add(new CombinedTeamResult(team, link, results));
             }
 
-            teams.Sort(new TeamResultsComparer());
-
-            return teams;
+            return teams.SortTeams().ToList();
         }
     }
 }

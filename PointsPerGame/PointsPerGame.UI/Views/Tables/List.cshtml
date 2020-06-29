@@ -6,9 +6,10 @@
 
 @foreach (var link in Model)
 {
-    var href = "/Tables/" + link.Key;
+	var href = "/Tables/" + link.Key;
 
-    <a href="@href">@link.Value</a><br>
+	<a href="@href">@link.Value</a>
+	<br>
 }
 
 <h2>Sorting</h2>
@@ -17,4 +18,8 @@
      This means if two teams have the same points per game, then the team which has played the fewer games is sorted higher.
 <br>
      If both of those values are equal, teams are sorted by goal difference, and then by team name.
-<br>   
+<br>
+
+<br />
+
+<a href="https://github.com/stuartd/PointsPerGame">Site code (GitHub)</a>
