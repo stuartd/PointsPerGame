@@ -9,17 +9,11 @@ namespace PointsPerGame.Core.Web
 {
     public class Scraper
     {
-        protected static Stream GetPageStream(string url)
+        protected static async Task<Stream> GetPageStream(string url)
         {
-	        ServicePointManager.Expect100Continue = true;
-	        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-			var uri = new Uri(url);
+	        var uri = new Uri(url);
 
-            var client = new HttpClient();
-            Task<Stream> task = client.GetStreamAsync(uri);
-            task.Wait();
-
-            return task.Result;
+            return await new HttpClient().GetStreamAsync(uri);
         }
     }
 }

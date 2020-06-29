@@ -1,7 +1,6 @@
-using System;
 using System.Security.Policy;
 
-namespace PointsPerGame.Core.Classes
+namespace PointsPerGame.Core.Models
 {
     public interface ITeamResults
     {

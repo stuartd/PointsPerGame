@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using PointsPerGame.Core.Classes;
+using PointsPerGame.Core.Models;
 using Rhino.Mocks;
 
 namespace PointsPerGame.UnitTests.CoreClassesTests

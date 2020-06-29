@@ -1,4 +1,4 @@
-﻿namespace PointsPerGame.Core.Classes
+﻿namespace PointsPerGame.Core.Models
 {
     public enum ResultSetType 
     { 

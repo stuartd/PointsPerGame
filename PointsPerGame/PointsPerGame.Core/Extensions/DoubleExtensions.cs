@@ -10,12 +10,12 @@ namespace PointsPerGame.Core.Extensions
     {
         public static bool IsEqualTo(this double value, double other)
         {
-            return Math.Abs(value - other) < Double.Epsilon;
+            return Math.Abs(value - other) < double.Epsilon;
         }
 
         public static bool IsNotEqualTo(this double value, double other)
         {
-            return Math.Abs(value - other) > Double.Epsilon;
+            return Math.Abs(value - other) > double.Epsilon;
         }
     }
 }

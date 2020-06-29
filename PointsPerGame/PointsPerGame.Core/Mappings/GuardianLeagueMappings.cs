@@ -5,44 +5,44 @@ namespace PointsPerGame.Core.Mappings
 {
     public static class GuardianLeagueMappings
     {
-        public static string GetUriForLeague(Leagues league)
+        public static string GetUriForLeague(League league)
         {
             switch (league)
             {
-                case Leagues.EnglishPremierLeague:
+                case League.EnglishPremierLeague:
                     return "http://www.theguardian.com/football/premierleague/table";
 
-                case Leagues.EnglishChampionship:
+                case League.EnglishChampionship:
                     return "http://www.theguardian.com/football/championship/table";
 
-                case Leagues.EnglishLeagueOne:
+                case League.EnglishLeagueOne:
                     return "http://www.theguardian.com/football/leagueonefootball/table";
 
-                case Leagues.EnglishLeagueTwo:
+                case League.EnglishLeagueTwo:
                     return "http://www.theguardian.com/football/leaguetwofootball/table";
 
-                case Leagues.SPL:
-                    return "http://www.theguardian.com/football/scottishpremierleague/table";
+                case League.SPL:
+                    return "http://www.theguardian.com/football/scottish-premiership/table";
 
-                case Leagues.DivisionOne:
-                    return "http://www.theguardian.com/football/scottish-division-one/table";
+                case League.ScottishChampionship:
+                    return "http://www.theguardian.com/football/scottish-championship/table";
 
-                case Leagues.DivisionTwo:
-                    return "http://www.theguardian.com/football/scottish-division-two/table";
+                case League.ScottishLeagueOne:
+                    return "http://www.theguardian.com/football/scottish-league-one/table";
 
-                case Leagues.DivisionThree:
-                    return "http://www.theguardian.com/football/scottish-division-three/table";
+                case League.ScottishLeagueTwo:
+                    return "http://www.theguardian.com/football/scottish-league-two/table";
 
-                case Leagues.LaLiga:
+                case League.LaLiga:
                     return "http://www.theguardian.com/football/laligafootball/table";
 
-                case Leagues.Ligue1:
+                case League.Ligue1:
                     return "http://www.theguardian.com/football/ligue1football/table";
 
-                case Leagues.Bundesliga:
+                case League.Bundesliga:
                     return "http://www.theguardian.com/football/bundesligafootball/table";
 
-                case Leagues.SeriaA:
+                case League.SeriaA:
                     return "http://www.theguardian.com/football/serieafootball/table";
 
                 default:

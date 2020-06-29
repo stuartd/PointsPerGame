@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using PointsPerGame.Core.Classes;
+using PointsPerGame.Core.Models;
 
 namespace PointsPerGame.UnitTests.CoreClassesTests
 {

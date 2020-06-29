@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Security.Policy;
 using PointsPerGame.Core.Utilities;
 
-namespace PointsPerGame.Core.Classes
+namespace PointsPerGame.Core.Models
 {
     public class CombinedTeamResult : ITeamResults
     {
@@ -16,53 +16,28 @@ namespace PointsPerGame.Core.Classes
 
             Team = teamName;
             this.results = results;
-            this.Url = new Url(url);
+            Url = new Url(url);
         }
 
-        public Url Url { get; private set; }
+        public Url Url { get; }
 
-        public string Team { get; private set; }
+        public string Team { get; }
 
-        public int Won
-        {
-            get { return results.Won; }
-        }
+        public int Won => results.Won;
 
-        public int Drawn
-        {
-            get { return results.Drawn; }
-        }
+        public int Drawn => results.Drawn;
 
-        public int Lost
-        {
-            get { return results.Lost; }
-        }
+        public int Lost => results.Lost;
 
-        public int Played
-        {
-            get { return results.Played; }
-        }
+        public int Played => results.Played;
 
-        public int GoalsScored
-        {
-            get { return results.GoalsScored; }
-        }
+        public int GoalsScored => results.GoalsScored;
 
-        public int GoalsConceded
-        {
-            get { return results.GoalsConceded; }
-        }
+        public int GoalsConceded => results.GoalsConceded;
 
-        public int GoalDifference
-        {
-            get { return results.GoalDifference; }
-        }
+        public int GoalDifference => results.GoalDifference;
 
-
-        public int Points
-        {
-            get { return results.Points; }
-        }
+        public int Points => results.Points;
 
         public double GoalsPerGame
         {

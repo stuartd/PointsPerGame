@@ -5,7 +5,7 @@ using System.Security.Policy;
 using PointsPerGame.Core.Extensions;
 using PointsPerGame.Core.Utilities;
 
-namespace PointsPerGame.Core.Classes
+namespace PointsPerGame.Core.Models
 {
     public class HomeAndAwayTeamResults : ITeamResults
     {
@@ -21,47 +21,26 @@ namespace PointsPerGame.Core.Classes
             Team = teamName;
             this.home = home;
             this.away = away;
-            this.Url = new Url(url);
+            Url = new Url(url);
         }
 
-        public Url Url { get; private set; }
+        public Url Url { get; }
 
-        public string Team { get; private set; }
+        public string Team { get; }
 
-        public int Won
-        {
-            get { return home.Won + away.Won; }
-        }
+        public int Won => home.Won + away.Won;
 
-        public int Drawn
-        {
-            get { return home.Drawn + away.Drawn; }
-        }
+        public int Drawn => home.Drawn + away.Drawn;
 
-        public int Lost
-        {
-            get { return home.Lost + away.Lost; }
-        }
+        public int Lost => home.Lost + away.Lost;
 
-        public int Played
-        {
-            get { return home.Played + away.Played; }
-        }
+        public int Played => home.Played + away.Played;
 
-        public int GoalsScored
-        {
-            get { return home.GoalsScored + away.GoalsScored; }
-        }
+        public int GoalsScored => home.GoalsScored + away.GoalsScored;
 
-        public int GoalsConceded
-        {
-            get { return home.GoalsConceded + away.GoalsConceded; }
-        }
+        public int GoalsConceded => home.GoalsConceded + away.GoalsConceded;
 
-        public int Points
-        {
-            get { return home.Points + away.Points; }
-        }
+        public int Points => home.Points + away.Points;
 
         public double GoalsPerGame
         {
@@ -104,10 +83,7 @@ namespace PointsPerGame.Core.Classes
             }
         }
 
-        public int GoalDifference
-        {
-            get { return (home.GoalDifference + away.GoalDifference); }
-        }
+        public int GoalDifference => (home.GoalDifference + away.GoalDifference);
 
         public override string ToString()
         {
@@ -148,7 +124,7 @@ namespace PointsPerGame.Core.Classes
             }
 
             // asc
-            return String.Compare(x.Team, y.Team, StringComparison.Ordinal);
+            return string.Compare(x.Team, y.Team, StringComparison.Ordinal);
         }
     }
 }

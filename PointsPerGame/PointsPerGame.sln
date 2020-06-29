@@ -1,20 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointsPerGame.Core", "PointsPerGame.Core\PointsPerGame.Core.csproj", "{5FDE7556-E499-4CB4-A8CF-6AB0B14BE22B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointsPerGame.UI", "PointsPerGame.UI\PointsPerGame.UI.csproj", "{7642ECA5-DAA1-4BD6-BDED-7B13F309AFB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointsPerGame.UnitTests", "PointsPerGame.UnitTests\PointsPerGame.UnitTests.csproj", "{761E4A33-C9E6-4311-8C7C-DFF899190980}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{15DB1C72-DDE2-4797-AA8D-90C594792A4C}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D9732B58-1C8E-4374-B782-2EA7081B0260}
 	EndGlobalSection
 EndGlobal

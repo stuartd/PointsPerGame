@@ -1,4 +1,4 @@
-namespace PointsPerGame.Core.Classes
+namespace PointsPerGame.Core.Models
 {
     public class HomeResultSet : ResultSet
     {
@@ -38,28 +38,10 @@ namespace PointsPerGame.Core.Classes
         public int GoalsScored;
         public int GoalsConceded;
 
-        public int Played
-        {
-            get
-            {
-                return Won + Drawn + Lost;
-            }
-        }
+        public int Played => Won + Drawn + Lost;
 
-        public int GoalDifference
-        {
-            get
-            {
-                return GoalsScored - GoalsConceded;
-            }
-        }
+        public int GoalDifference => GoalsScored - GoalsConceded;
 
-        public int Points
-        {
-            get
-            {
-                return ((Won * 3) + Drawn);
-            }
-        }
+        public int Points => ((Won * 3) + Drawn);
     }
 }

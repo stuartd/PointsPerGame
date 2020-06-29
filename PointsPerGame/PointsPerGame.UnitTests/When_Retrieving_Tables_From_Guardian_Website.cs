@@ -1,4 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Collections;
+using System.Linq;
+using System.Threading.Tasks;
+using NUnit.Framework;
 using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Web;
 
@@ -15,12 +19,28 @@ namespace PointsPerGame.UnitTests
             scraper = new GuardianScraper();
         }
 
+        [TestCaseSource(typeof(TableTestCaseSource), nameof(TableTestCaseSource.Tables))]
         [Test]
-        public void The_Table_Should_Be_Retrieveable()
+        public async Task All_Tables_Should_Be_Retrievable(League league)
         {
-            var teams = scraper.GetResults(Leagues.EnglishPremierLeague);
+            var teams = await scraper.GetResults(league);
 
-            Assert.AreEqual(20, teams.Count);
+            // If the link is wrong, the table list page is returned, which then only returns 4 values
+            Assert.Greater(teams.Count, 4);
+        }
+
+        private class TableTestCaseSource
+        {
+	        public static IEnumerable Tables
+	        {
+		        get
+		        {
+			        foreach (var league in Enum.GetValues(typeof(League)).Cast<League>())
+			        {
+				        yield return league;
+			        }
+		        }
+	        }
         }
     }
 }

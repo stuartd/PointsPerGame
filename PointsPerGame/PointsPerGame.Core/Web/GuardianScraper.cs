@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using HtmlAgilityPack;
-using PointsPerGame.Core.Classes;
 using PointsPerGame.Core.Extensions;
 using PointsPerGame.Core.Mappings;
+using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
 
 namespace PointsPerGame.Core.Web
@@ -14,14 +15,13 @@ namespace PointsPerGame.Core.Web
     {
         private const string root = "http://www.theguardian.com";
 
-        public List<ITeamResults> GetResults(Leagues league)
+        public async Task<List<ITeamResults>> GetResults(League league)
         {
-            List<ITeamResults> teams = new List<ITeamResults>();
+            var teams = new List<ITeamResults>();
 
-            HtmlDocument doc = new HtmlDocument();
+            var doc = new HtmlDocument();
 
-            var stream =
-                GetPageStream(GuardianLeagueMappings.GetUriForLeague(league));
+            var stream = await GetPageStream(GuardianLeagueMappings.GetUriForLeague(league));
 
             doc.Load(stream, Encoding.UTF8);
 
@@ -48,16 +48,16 @@ namespace PointsPerGame.Core.Web
 
             foreach (var row in rows)
             {
-                CombinedResultSet results = new CombinedResultSet();
-                HtmlNodeCollection cells = row.SelectNodes(".//td");
+                var results = new CombinedResultSet();
+                var cells = row.SelectNodes(".//td");
 
                 if (cells == null)
                 {
                     throw new InvalidOperationException("Guardian have changed their site again - can't find cells.");
                 }
 
-                string team = cells[1].InnerText;
-                string link = "Link is broken";
+                var team = cells[1].InnerText;
+                var link = "Link is broken";
 
                 var spans = cells[1].SelectNodes(".//span");
                 var linkCells = spans?.First().SelectNodes(".//a");
@@ -66,7 +66,7 @@ namespace PointsPerGame.Core.Web
 
                 if (href != null)
                 {
-                    link = string.Concat(root, href.Value);
+                    link = string.Concat(root, href.Value, "/fixtures");
                 }
 
                 /*
@@ -104,8 +104,8 @@ namespace PointsPerGame.Core.Web
             */
                 // ReSharper disable UnusedVariable
                 var played = int.Parse(cells[2].InnerText);
-                int gd = int.Parse(cells[8].InnerText);
-                int points = int.Parse(cells[9].InnerText);
+                var gd = int.Parse(cells[8].InnerText);
+                var points = int.Parse(cells[9].InnerText);
                 // ReSharper restore UnusedVariable
 
                 results.Won = int.Parse(cells[3].InnerText);
