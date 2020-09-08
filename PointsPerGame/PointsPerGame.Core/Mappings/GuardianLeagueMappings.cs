@@ -21,6 +21,9 @@ namespace PointsPerGame.Core.Mappings
                 case League.EnglishLeagueTwo:
                     return "http://www.theguardian.com/football/leaguetwofootball/table";
 
+                case League.WSL:
+					return "https://www.theguardian.com/football/womens-super-league/table";
+
                 case League.SPL:
                     return "http://www.theguardian.com/football/scottish-premiership/table";
 

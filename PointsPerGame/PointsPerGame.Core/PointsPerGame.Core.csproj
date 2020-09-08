@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Models\CombinedTeamResult.cs" />
     <Compile Include="Models\ITeamResults.cs" />
+    <Compile Include="Models\MissingTable.cs" />
     <Compile Include="Models\ResultSet.cs" />
     <Compile Include="Models\ResultSetType.cs" />
     <Compile Include="Models\HomeAndAwayTeamResults.cs" />

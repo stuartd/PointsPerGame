@@ -7,26 +7,28 @@ namespace PointsPerGame.Core.Names
         [Description("Premier League")]
         EnglishPremierLeague = 1,
         [Description("Championship")]
-        EnglishChampionship = 2,
+        EnglishChampionship,
         [Description("League One")]
-        EnglishLeagueOne = 3,
+        EnglishLeagueOne,
         [Description("League Two")]
-        EnglishLeagueTwo = 4,
-        [Description("Scottish Premier League")]
-        SPL = 5,
-        [Description("Scottish Championship")]
-        ScottishChampionship = 6,
+        EnglishLeagueTwo,
+		[Description("Women's Super League")]
+		WSL,
+		[Description("Scottish Premier League")]
+		SPL,
+		[Description("Scottish Championship")]
+        ScottishChampionship,
         [Description("Scottish League One")]
-        ScottishLeagueOne = 7,
+        ScottishLeagueOne,
         [Description("Scottish League Two")]
-        ScottishLeagueTwo = 8,
+        ScottishLeagueTwo,
         [Description("La Liga")]
-        LaLiga = 9,
+        LaLiga,
         [Description("Ligue 1")]
-        Ligue1 = 10,
+        Ligue1,
         [Description("Bundesliga")]
-        Bundesliga = 11,
+        Bundesliga,
         [Description("Serie A")]
-        SeriaA = 12
+        SeriaA
     }
 }

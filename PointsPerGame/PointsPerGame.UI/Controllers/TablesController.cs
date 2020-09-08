@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Web;
 
@@ -27,8 +28,15 @@ namespace PointsPerGame.UI.Controllers
 
             var scraper = new GuardianScraper();
             var teams = await scraper.GetResults(league);
+
+			var leagueName = GetDescription(league);
+
+			if (teams.Count == 4) {
+                // return "league page not found"
+				return View("Missing", new MissingTable(leagueName));
+			}
             
-            ViewBag.Title = GetDescription(league);
+            ViewBag.Title = leagueName;
 
             return View(teams);
         }
