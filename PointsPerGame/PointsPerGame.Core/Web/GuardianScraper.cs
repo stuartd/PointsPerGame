@@ -13,7 +13,7 @@ namespace PointsPerGame.Core.Web
 {
     public class GuardianScraper : Scraper
     {
-        private const string root = "http://www.theguardian.com";
+        private const string root = "https://www.theguardian.com";
 
         public async Task<List<ITeamResults>> GetResults(League league)
         {
@@ -66,7 +66,7 @@ namespace PointsPerGame.Core.Web
 
                 if (href != null)
                 {
-                    link = string.Concat(root, href.Value, "/fixtures");
+                    link = string.Concat(href.Value, "/fixtures");
                 }
 
                 /*
