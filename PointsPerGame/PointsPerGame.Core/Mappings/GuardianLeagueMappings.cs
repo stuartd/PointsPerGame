@@ -48,6 +48,12 @@ namespace PointsPerGame.Core.Mappings
                 case League.SeriaA:
                     return "http://www.theguardian.com/football/serieafootball/table";
 
+                case League.AllTopDivisions:
+					return null;
+
+				case League.All:
+					return null;
+                    
                 default:
                     throw new NotImplementedException();
             }
