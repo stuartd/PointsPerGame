@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Policy;
-using PointsPerGame.Core.Extensions;
 using PointsPerGame.Core.Utilities;
 
 namespace PointsPerGame.Core.Models
 {
+    /// <summary>
+    /// No idea what this is/was for
+    /// </summary>
     public class HomeAndAwayTeamResults : ITeamResults
     {
         private readonly ResultSet away;
