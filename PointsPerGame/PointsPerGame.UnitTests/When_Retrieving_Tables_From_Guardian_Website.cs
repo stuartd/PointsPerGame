@@ -8,6 +8,7 @@ using PointsPerGame.Core.Web;
 
 namespace PointsPerGame.UnitTests
 {
+    [Explicit]
     [TestFixture]
     public class When_Retrieving_Tables_From_Guardian_Website
     {
@@ -37,6 +38,10 @@ namespace PointsPerGame.UnitTests
 		        {
 			        foreach (var league in Enum.GetValues(typeof(League)).Cast<League>())
 			        {
+						if (league == League.AllTopDivisions || league == League.All) {
+							continue;
+						}
+
 				        yield return league;
 			        }
 		        }

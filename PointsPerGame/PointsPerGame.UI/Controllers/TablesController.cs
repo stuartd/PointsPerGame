@@ -27,18 +27,28 @@ namespace PointsPerGame.UI.Controllers
             var league = (League)id;
 
             var scraper = new GuardianScraper();
-            var teams = await scraper.GetResults(league);
+            List<ITeamResults> results;
+
+			if (league == League.All) {
+				results = await scraper.GetMultipleLeagueResults(LeagueLists.AllMensLeagues);
+			}
+			else if (league == League.AllTopDivisions) {
+				results = await scraper.GetMultipleLeagueResults(LeagueLists.AllTopDivisions);
+			}
+			else {
+				results = await scraper.GetResults(league);
+			}
 
 			var leagueName = GetDescription(league);
 
-			if (teams.Count == 4) {
+			if (results.Count == 4) {
                 // return "league page not found"
 				return View("Missing", new MissingTable(leagueName));
 			}
             
             ViewBag.Title = leagueName;
 
-            return View(teams);
+            return View(results);
         }
 
         private string GetDescription(League league)

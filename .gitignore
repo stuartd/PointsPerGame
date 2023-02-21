@@ -231,6 +231,10 @@ $RECYCLE.BIN/
 *.lnk
 /PointsPerGame/.vs/PointsPerGame/config/applicationhost.config
 
+.vs
+
+/PointsPerGame/.vs/PointsPerGame/config/applicationhost.config
+
 read.lock
 .vsidx
 

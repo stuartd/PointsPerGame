@@ -1,22 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-using PointsPerGame.Core.Extensions;
 using PointsPerGame.Core.Mappings;
 using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
 
 namespace PointsPerGame.Core.Web
 {
-    public class GuardianScraper : Scraper
-    {
-        private const string root = "https://www.theguardian.com";
+    public class GuardianScraper : Scraper {
+		private static readonly MemoryCache cache = new MemoryCache(nameof(GuardianScraper));
+        
+		public async Task<List<ITeamResults>> GetMultipleLeagueResults(League[] leagues) {
+			List<ITeamResults> allResults = new List<ITeamResults>();
+			foreach (var league in leagues) {
+                allResults.AddRange(await GetResults(league));
+			}
 
-        public async Task<List<ITeamResults>> GetResults(League league)
+			return allResults.SortTeams().ToList();
+		}
+
+		public async Task<List<ITeamResults>> GetResults(League league)
         {
+			if (cache.Contains(league.ToString())) {
+				return cache[league.ToString()] as List<ITeamResults>;
+			}
+
             var teams = new List<ITeamResults>();
 
             var doc = new HtmlDocument();
@@ -117,8 +129,11 @@ namespace PointsPerGame.Core.Web
                 teams.Add(new CombinedTeamResult(team, link, results));
             }
 
-            return teams.SortTeams().ToList();
-        }
+            var result = teams.SortTeams().ToList();
+			cache.Add(league.ToString(), result, DateTimeOffset.Now.AddMinutes(5));
+
+			return result;
+		}
     }
 }
 
