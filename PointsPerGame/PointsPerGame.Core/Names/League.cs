@@ -45,7 +45,7 @@ namespace PointsPerGame.Core.Names
         [Description("Serie A")]
         SeriaA,
 
-		[Description("All men's leagues")]
+		[Description("All leagues")]
 		All,
 
 		[Description("All top divisions")]
@@ -53,7 +53,7 @@ namespace PointsPerGame.Core.Names
     }
 
 	public static class LeagueLists {
-		public static League[] AllMensLeagues = Enum.GetValues(typeof(League)).Cast<League>().Except(new [] { League.WSL, League.All, League.AllTopDivisions}).ToArray();
-		public static League[] AllTopDivisions = { League.EnglishPremierLeague, League.SPL, League.LaLiga, League.Ligue1, League.Bundesliga, League.SeriaA };
+		public static League[] AllLeagues = Enum.GetValues(typeof(League)).Cast<League>().Except(new [] { League.All, League.AllTopDivisions}).ToArray();
+		public static readonly League[] AllTopDivisions = { League.EnglishPremierLeague, League.SPL, League.LaLiga, League.Ligue1, League.Bundesliga, League.SeriaA };
 	}
 }

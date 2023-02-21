@@ -30,7 +30,7 @@ namespace PointsPerGame.UI.Controllers
             List<ITeamResults> results;
 
 			if (league == League.All) {
-				results = await scraper.GetMultipleLeagueResults(LeagueLists.AllMensLeagues);
+				results = await scraper.GetMultipleLeagueResults(LeagueLists.AllLeagues);
 			}
 			else if (league == League.AllTopDivisions) {
 				results = await scraper.GetMultipleLeagueResults(LeagueLists.AllTopDivisions);
