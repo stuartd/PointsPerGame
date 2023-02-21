@@ -230,3 +230,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /PointsPerGame/.vs/PointsPerGame/config/applicationhost.config
+
+read.lock
+.vsidx
+
+/PointsPerGame/.vs/PointsPerGame/FileContentIndex
+/PointsPerGame/.vs/PointsPerGame/config/applicationhost.config
