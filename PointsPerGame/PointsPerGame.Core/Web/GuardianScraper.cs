@@ -26,7 +26,7 @@ namespace PointsPerGame.Core.Web
 		public async Task<List<ITeamResults>> GetResults(League league)
         {
 			if (cache.Contains(league.ToString())) {
-				return cache[league.ToString()] as List<ITeamResults>;
+				// return cache[league.ToString()] as List<ITeamResults>;
 			}
 
             var teams = new List<ITeamResults>();
@@ -68,13 +68,17 @@ namespace PointsPerGame.Core.Web
                     throw new InvalidOperationException("Guardian have changed their site again - can't find cells.");
                 }
 
-                var team = cells[1].InnerText;
+                var team = cells[1].InnerText.Trim();
                 var link = "Link is broken";
 
                 var spans = cells[1].SelectNodes(".//span");
+				var imageCells = cells[1].SelectNodes(".//img");
+				var src = imageCells?.First().Attributes["src"];
+
                 var linkCells = spans?.First().SelectNodes(".//a");
 
                 var href = linkCells?.First().Attributes["href"];
+
 
                 if (href != null)
                 {
@@ -88,13 +92,16 @@ namespace PointsPerGame.Core.Web
 
                  <tr class="">
                   <td class="table-column--sub">3</td> <-- TD 0 -->
-                  <td class="table-column--main"> <-- TD 1 -->
-                    <span class="team-name" data-abbr="ARS">
-                      <a href="/football/arsenal" data-link-name="View team" class="team-name__long">
-                        Arsenal
-                      </a>
-                    </span>
-                  </td>
+                  <td class="table-column--main">
+                        <span class="team-name" data-abbr="ARS">
+                            <img class="team-crest" alt="" src="https://sport.guim.co.uk/football/crests/60/1006.png" />
+                            
+                                <a href="https://www.theguardian.com/football/arsenal" data-link-name="View team" class="team-name__long">
+                                    Arsenal
+                                </a>
+                            
+                        </span>
+                    </td>
                   <td>1</td>  <-- TD 2, played, which is calculated -->
                   <td class="table-column--importance-1">1</td> <-- TD 3 -->
                   <td class="table-column--importance-1">0</td> <-- TD 4 -->
