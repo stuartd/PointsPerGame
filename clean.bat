@@ -1,0 +1,1 @@
+for /d /r . %%d in (bin,obj,csx,App_Data,packages) do @if exist "%%d" rd /s/q "%%d"

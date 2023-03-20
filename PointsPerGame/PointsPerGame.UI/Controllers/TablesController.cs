@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using PointsPerGame.Core.Mappings;
 using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Web;
@@ -28,6 +29,7 @@ namespace PointsPerGame.UI.Controllers
 
             var scraper = new GuardianScraper();
             List<ITeamResults> results;
+			string source = null;
 
 			if (league == League.All) {
 				results = await scraper.GetMultipleLeagueResults(LeagueLists.AllLeagues);
@@ -37,6 +39,7 @@ namespace PointsPerGame.UI.Controllers
 			}
 			else {
 				results = await scraper.GetResults(league);
+				source = GuardianLeagueMappings.GetUriForLeague(league);
 			}
 
 			var leagueName = GetDescription(league);
@@ -47,8 +50,11 @@ namespace PointsPerGame.UI.Controllers
 			}
             
             ViewBag.Title = leagueName;
+			if (!string.IsNullOrEmpty(source)) {
+				ViewBag.Source = $"<a href= \"{source}\">Source data</a>";
+			}
 
-            return View(results);
+			return View(results);
         }
 
         private string GetDescription(League league)

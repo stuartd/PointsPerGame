@@ -30,7 +30,7 @@ namespace PointsPerGame.UnitTests.CoreClassesTests
             SetupTeam("team3", 2.567, 19, 60);
 
             // team 4 has the same PPG and games and goal difference but a team name earlier in alphabet, so is sorted higher
-            SetupTeam("steam4", 2.567, 19, 60);
+            SetupTeam("team4", 2.567, 19, 60);
 
             // team 5 has the highest PPG so gets sorted at the top.
             SetupTeam("team5", 2.789, 19, 60);
@@ -41,7 +41,7 @@ namespace PointsPerGame.UnitTests.CoreClassesTests
         {
 	        var sortedTeams = teams.SortTeams().ToList();
 	        sortedTeams[0].Team.Should().Be("team5");
-	        sortedTeams[1].Team.Should().Be("steam4");
+	        sortedTeams[1].Team.Should().Be("team4");
 	        sortedTeams[2].Team.Should().Be("team3");
 	        sortedTeams[3].Team.Should().Be("team2");
 	        sortedTeams[4].Team.Should().Be("team1");
