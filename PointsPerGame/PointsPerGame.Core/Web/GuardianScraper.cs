@@ -14,8 +14,9 @@ namespace PointsPerGame.Core.Web
     public class GuardianScraper : Scraper {
 		private static readonly MemoryCache cache = new MemoryCache(nameof(GuardianScraper));
         
-		public async Task<List<ITeamResults>> GetMultipleLeagueResults(League[] leagues) {
-			List<ITeamResults> allResults = new List<ITeamResults>();
+		public async Task<List<ITeamResults>> GetMultipleLeagueResults(IEnumerable<League> leagues) {
+			var allResults = new List<ITeamResults>();
+
 			foreach (var league in leagues) {
                 allResults.AddRange(await GetResults(league));
 			}
@@ -23,10 +24,10 @@ namespace PointsPerGame.Core.Web
 			return allResults.SortTeams().ToList();
 		}
 
-		public async Task<List<ITeamResults>> GetResults(League league)
+		public static async Task<List<ITeamResults>> GetResults(League league)
         {
 			if (cache.Contains(league.ToString())) {
-				// return cache[league.ToString()] as List<ITeamResults>;
+				return cache[league.ToString()] as List<ITeamResults>;
 			}
 
             var teams = new List<ITeamResults>();
@@ -60,7 +61,7 @@ namespace PointsPerGame.Core.Web
 
             foreach (var row in rows)
             {
-                var results = new CombinedResultSet();
+                var results = new ResultSet();
                 var cells = row.SelectNodes(".//td");
 
                 if (cells == null)
@@ -73,7 +74,7 @@ namespace PointsPerGame.Core.Web
 
                 var spans = cells[1].SelectNodes(".//span");
 				var imageCells = cells[1].SelectNodes(".//img");
-				var src = imageCells?.First().Attributes["src"];
+				var src = imageCells?.First().Attributes["src"].Value;
 
                 var linkCells = spans?.First().SelectNodes(".//a");
 
@@ -132,8 +133,10 @@ namespace PointsPerGame.Core.Web
                 results.Lost = int.Parse(cells[5].InnerText);
                 results.GoalsScored = int.Parse(cells[6].InnerText);
                 results.GoalsConceded = int.Parse(cells[7].InnerText);
+				results.TeamUrl = link;
+				results.Crest = src;
 
-                teams.Add(new CombinedTeamResult(team, link, results));
+                teams.Add(new CombinedTeamResult(team, results));
             }
 
             var result = teams.SortTeams().ToList();

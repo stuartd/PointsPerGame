@@ -9,17 +9,14 @@ namespace PointsPerGame.Core.Models
     {
         private readonly ResultSet results;
 
-        public CombinedTeamResult(string teamName, string url, CombinedResultSet results)
+        public CombinedTeamResult(string teamName, ResultSet results)
         {
-            CheckParameter.RequireNotNullOrEmpty(() => teamName);
+			CheckParameter.RequireNotNullOrEmpty(() => teamName);
             CheckParameter.RequireNotNull(() => results);
 
             Team = teamName;
             this.results = results;
-            Url = new Url(url);
-        }
-
-        public Url Url { get; }
+  }
 
         public string Team { get; }
 
@@ -37,7 +34,11 @@ namespace PointsPerGame.Core.Models
 
         public int GoalDifference => results.GoalDifference;
 
-        public int Points => results.Points;
+		public string Crest => results.Crest;
+
+		public string Url => results.TeamUrl;
+
+		public int Points => results.Points;
 
         public double GoalsPerGame
         {

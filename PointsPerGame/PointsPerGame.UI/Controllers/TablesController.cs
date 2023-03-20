@@ -40,7 +40,7 @@ namespace PointsPerGame.UI.Controllers
 				results = await scraper.GetMultipleLeagueResults(LeagueLists.AllTopDivisions);
 			}
 			else {
-				results = await scraper.GetResults(league);
+				results = await GuardianScraper.GetResults(league);
 				source = GuardianLeagueMappings.GetUriForLeague(league);
 			}
 

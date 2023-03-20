@@ -4,7 +4,7 @@ namespace PointsPerGame.Core.Models
 {
     public interface ITeamResults
     {
-        Url Url { get; }
+        string Url { get; }
         string Team { get; }
         int Won { get; }
         int Drawn { get; }
@@ -17,5 +17,6 @@ namespace PointsPerGame.Core.Models
         string GoalsPerGameDisplay { get; }
         double PointsPerGame { get; }
         int GoalDifference { get; }
+		string Crest { get; }
     }
 }

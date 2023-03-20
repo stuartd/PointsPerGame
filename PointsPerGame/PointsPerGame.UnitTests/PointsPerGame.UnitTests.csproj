@@ -62,7 +62,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoreClassesTests\TeamResults_Tests.cs" />
     <Compile Include="CoreClassesTests\TeamResults_Sorting_Tests.cs" />
     <Compile Include="When_Retrieving_Tables_From_Guardian_Website.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

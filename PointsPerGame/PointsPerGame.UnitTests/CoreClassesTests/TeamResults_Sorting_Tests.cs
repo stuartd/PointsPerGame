@@ -30,7 +30,7 @@ namespace PointsPerGame.UnitTests.CoreClassesTests
             SetupTeam("team3", 2.567, 19, 60);
 
             // team 4 has the same PPG and games and goal difference but a team name earlier in alphabet, so is sorted higher
-            SetupTeam("team4", 2.567, 19, 60);
+            SetupTeam("_team4", 2.567, 19, 60);
 
             // team 5 has the highest PPG so gets sorted at the top.
             SetupTeam("team5", 2.789, 19, 60);
@@ -41,14 +41,13 @@ namespace PointsPerGame.UnitTests.CoreClassesTests
         {
 	        var sortedTeams = teams.SortTeams().ToList();
 	        sortedTeams[0].Team.Should().Be("team5");
-	        sortedTeams[1].Team.Should().Be("team4");
+	        sortedTeams[1].Team.Should().Be("_team4");
 	        sortedTeams[2].Team.Should().Be("team3");
 	        sortedTeams[3].Team.Should().Be("team2");
 	        sortedTeams[4].Team.Should().Be("team1");
         }
 
-
-        private void SetupTeam(string name, double pointsPerGame, int played, int goalDifference)
+		private void SetupTeam(string name, double pointsPerGame, int played, int goalDifference)
         {
             teams.Add(new TestTeamResults(name, pointsPerGame, played, goalDifference));
         }
@@ -63,7 +62,7 @@ namespace PointsPerGame.UnitTests.CoreClassesTests
 		        GoalDifference = goalDifference;
 	        }
 
-	        public Url Url { get; }
+	        public string Url { get; }
 	        public string Team { get; }
 	        public int Won { get; }
 	        public int Drawn { get; }
@@ -76,8 +75,9 @@ namespace PointsPerGame.UnitTests.CoreClassesTests
 	        public string GoalsPerGameDisplay { get; }
 	        public double PointsPerGame { get; }
 	        public int GoalDifference { get; }
+			public string Crest { get; }
 
-	        public override string ToString()
+			public override string ToString()
 	        {
 		        return Team;
 	        }

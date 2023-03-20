@@ -1,47 +1,22 @@
+using System.Security.Policy;
+
 namespace PointsPerGame.Core.Models
 {
-    public class HomeResultSet : ResultSet
+   public class ResultSet
     {
-        public HomeResultSet()
-            : base(ResultSetType.Home)
-        {
-        }
-    }
+        public string TeamUrl { get; set; }
+        public string Crest { get; set; }
 
-    public class AwayResultSet : ResultSet
-    {
-        public AwayResultSet()
-            : base(ResultSetType.Away)
-        {
-        }
-    }
-
-    public class CombinedResultSet : ResultSet
-    {
-        public CombinedResultSet() : base(ResultSetType.Composite)
-        {
-        }
-    }
-
-    public abstract class ResultSet
-    {
-        protected ResultSet(ResultSetType resultType)
-        {
-            Type = resultType;
-        }
-
-        public ResultSetType Type;
-
-        public int Won;
-        public int Drawn;
-        public int Lost;
-        public int GoalsScored;
-        public int GoalsConceded;
+        public int Won { get; set; }
+        public int Drawn { get; set; }
+        public int Lost { get; set; }
+        public int GoalsScored { get; set; }
+        public int GoalsConceded { get; set; }
 
         public int Played => Won + Drawn + Lost;
 
         public int GoalDifference => GoalsScored - GoalsConceded;
 
         public int Points => ((Won * 3) + Drawn);
-    }
+	}
 }

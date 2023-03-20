@@ -64,12 +64,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\TeamResultsExtensions.cs" />
     <Compile Include="Models\CombinedTeamResult.cs" />
     <Compile Include="Models\ITeamResults.cs" />
     <Compile Include="Models\MissingTable.cs" />
     <Compile Include="Models\ResultSet.cs" />
     <Compile Include="Models\ResultSetType.cs" />
-    <Compile Include="Models\HomeAndAwayTeamResults.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Mappings\GuardianLeagueMappings.cs" />
     <Compile Include="Names\League.cs" />
