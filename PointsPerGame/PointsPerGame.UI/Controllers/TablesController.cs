@@ -22,6 +22,8 @@ namespace PointsPerGame.UI.Controllers
                                     .Cast<League>()
                                     .ToDictionary(l => (int)l, GetDescription);
 
+				ViewBag.Title = "Home";
+
                 return View("List", links);
             }
 
