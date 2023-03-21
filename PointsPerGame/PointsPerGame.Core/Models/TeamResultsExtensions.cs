@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PointsPerGame.Core.Models
-{
-	public static class TeamResultsExtensions
-	{
-		public static IEnumerable<ITeamResults> SortTeams(this IEnumerable<ITeamResults> values)
-		{
+namespace PointsPerGame.Core.Models {
+	public static class TeamResultsExtensions {
+		public static IEnumerable<ITeamResults> SortTeams(this IEnumerable<ITeamResults> values) {
 			/*
 
 			 Teams are sorted by points per game, then by the number of games played.
@@ -22,7 +19,6 @@ namespace PointsPerGame.Core.Models
 				.ThenBy(v => v.Played)
 				.ThenByDescending(v => v.GoalDifference)
 				.ThenBy(v => v.Team);
-
 		}
 	}
 }

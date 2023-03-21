@@ -10,27 +10,23 @@ using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Web;
 
-namespace PointsPerGame.UI.Controllers
-{
-    public class TablesController : Controller
-    {
-        public async Task<ActionResult> Index(int? id = 0)
-        {
-            if (id.HasValue == false || id == 0)
-            {
-                var links = Enum.GetValues(typeof(League))
-                                    .Cast<League>()
-                                    .ToDictionary(l => (int)l, GetDescription);
+namespace PointsPerGame.UI.Controllers {
+	public class TablesController : Controller {
+		public async Task<ActionResult> Index(int? id = 0) {
+			if (id.HasValue == false || id == 0) {
+				var links = Enum.GetValues(typeof(League))
+					.Cast<League>()
+					.ToDictionary(l => (int)l, GetDescription);
 
 				ViewBag.Title = "Home";
 
-                return View("List", links);
-            }
+				return View("List", links);
+			}
 
-            var league = (League)id;
+			var league = (League)id;
 
-            var scraper = new GuardianScraper();
-            List<ITeamResults> results;
+			var scraper = new GuardianScraper();
+			List<ITeamResults> results;
 			string source = null;
 
 			if (league == League.All) {
@@ -47,23 +43,22 @@ namespace PointsPerGame.UI.Controllers
 			var leagueName = GetDescription(league);
 
 			if (results.Count == 4) {
-                // return "league page not found"
+				// return "league page not found"
 				return View("Missing", new MissingTable(leagueName));
 			}
-            
-            ViewBag.Title = leagueName;
+
+			ViewBag.Title = leagueName;
 			if (!string.IsNullOrEmpty(source)) {
 				ViewBag.Source = $"<a href= \"{source}\">Source data</a>";
 			}
 
 			return View(results);
-        }
+		}
 
-        private string GetDescription(League league)
-        {
-            var val = league.GetType().GetMember(league.ToString()).Single();
+		private string GetDescription(League league) {
+			var val = league.GetType().GetMember(league.ToString()).Single();
 
-            return val.GetCustomAttribute<DescriptionAttribute>().Description;
-        }
-    }
+			return val.GetCustomAttribute<DescriptionAttribute>().Description;
+		}
+	}
 }

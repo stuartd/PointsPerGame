@@ -10,46 +10,33 @@
 	margin-left: 5%;
 }
 
-h1.ppgheader
-{
+h1.ppgheader {
 	margin: 0;
 	padding: 0 0 5px 0;
 	line-height: 1em;
 	font-size: 150%;
 }
 
-.teamtable thead
-{
+.teamtable thead {
 	font-size: 120%;
 	margin: 20px 0 10px 0;
 }
 
-.teamtable *
-{
+.teamtable * {
 	text-align: center;
 	width: 10%;
 }
 
-.teamtable *.firstcol
-{
+.teamtable *.firstcol {
 	text-align: left;
 	width: 34%;
 }
 
-.teamtable th
-{
-	background-color: #ae3;
-}
+.teamtable th { background-color: #ae3; }
 
-.teamtable tr.odd
-{
-	background-color: #ded;
-}
+.teamtable tr.odd { background-color: #ded; }
 
-.teamtable tr.even
-{
-	background-color: #dde;
-}
+.teamtable tr.even { background-color: #dde; }
 
 .team-crest {
 	height: 0.825rem;
@@ -57,5 +44,3 @@ h1.ppgheader
 	max-width: 0.9375rem;
 	vertical-align: middle;
 }
-
-
