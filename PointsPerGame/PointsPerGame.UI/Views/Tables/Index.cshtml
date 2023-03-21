@@ -22,7 +22,7 @@
         alternatingRowStyle:"even",
     
         columns: grid.Columns(
-            grid.Column("Team", "Team", style: "firstcol", format: (item) => @Html.Raw(string.Format("<a href='{0}'>{1}</a>", @item.URL, @item.Team))),
+            grid.Column("Team", "Team", style: "firstcol", format: (item) => @Html.Raw(string.Format("<img src='{0}' class='team-crest'></img>", @item.Crest) + string.Format("<a href='{0}'>{1}</a>", @item.URL, @item.Team))),
              grid.Column("Played", "Pld"),
              grid.Column("Won", "W"),
              grid.Column("Drawn", "D"),
