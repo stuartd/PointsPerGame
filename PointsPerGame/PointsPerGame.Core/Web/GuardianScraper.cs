@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
@@ -114,17 +115,16 @@ namespace PointsPerGame.Core.Web {
 				  </td>
 				</tr>
 			*/
-				// ReSharper disable UnusedVariable
-				var played = int.Parse(cells[2].InnerText);
-				var gd = int.Parse(cells[8].InnerText);
-				var points = int.Parse(cells[9].InnerText);
-				// ReSharper restore UnusedVariable
-
+				
+				results.Played = int.Parse(cells[2].InnerText);
 				results.Won = int.Parse(cells[3].InnerText);
 				results.Drawn = int.Parse(cells[4].InnerText);
 				results.Lost = int.Parse(cells[5].InnerText);
 				results.GoalsScored = int.Parse(cells[6].InnerText);
 				results.GoalsConceded = int.Parse(cells[7].InnerText);
+				results.GoalDifference = int.Parse(cells[8].InnerText);
+				results.Points = int.Parse(cells[9].InnerText);
+				
 				results.TeamUrl = link;
 				results.Crest = src;
 

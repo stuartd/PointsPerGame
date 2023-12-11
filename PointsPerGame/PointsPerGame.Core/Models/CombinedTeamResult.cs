@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using System.Security.Policy;
 using PointsPerGame.Core.Utilities;
 
 namespace PointsPerGame.Core.Models {
@@ -49,13 +48,14 @@ namespace PointsPerGame.Core.Models {
 
 		public string GoalsPerGameDisplay {
 			get {
-				if (Played != 0) {
-					// One DP for display.
-					var roundedValueInt = (int)(GoalsPerGame * 10);
-					return (Math.Round((decimal)roundedValueInt, 1) / 10).ToString(CultureInfo.InvariantCulture);
+				if (Played == 0) {
+					return "0";
 				}
 
-				return "0";
+				// One DP for display.
+				var roundedValueInt = (int)(GoalsPerGame * 10);
+				return (Math.Round((decimal)roundedValueInt, 1) / 10).ToString(CultureInfo.InvariantCulture);
+
 			}
 		}
 

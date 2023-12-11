@@ -2,9 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Security.Policy;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Http;
 
 namespace PointsPerGame.Core.Web {
 	public class Scraper {

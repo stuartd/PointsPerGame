@@ -1,5 +1,3 @@
-using System.Security.Policy;
-
 namespace PointsPerGame.Core.Models {
 	public class ResultSet {
 		public string TeamUrl { get; set; }
@@ -10,11 +8,8 @@ namespace PointsPerGame.Core.Models {
 		public int Lost { get; set; }
 		public int GoalsScored { get; set; }
 		public int GoalsConceded { get; set; }
-
-		public int Played => Won + Drawn + Lost;
-
-		public int GoalDifference => GoalsScored - GoalsConceded;
-
-		public int Points => ((Won * 3) + Drawn);
+		public int Played { get; set; }
+		public int GoalDifference  { get; set; }
+		public int Points { get; set; }
 	}
 }

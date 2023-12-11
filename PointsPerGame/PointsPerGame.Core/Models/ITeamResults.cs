@@ -1,5 +1,3 @@
-using System.Security.Policy;
-
 namespace PointsPerGame.Core.Models {
 	public interface ITeamResults {
 		string Url { get; }
