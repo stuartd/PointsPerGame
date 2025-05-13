@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -42,6 +43,7 @@ namespace PointsPerGame.UI.Controllers {
 				}
 			}
 			catch (Exception ex) {
+				Trace.TraceError(ex.ToString());
 				// Yes, I know 404 is wrong but not seeing a quick way of getting the error message back otherwise
 				// TODO
 				return new HttpNotFoundResult($"Error getting data using {nameof(GuardianScraper)}");
