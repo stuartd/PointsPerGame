@@ -11,7 +11,7 @@ namespace PointsPerGame.Core.Web {
 		static Scraper() {
 			httpClient = new HttpClient();
 			httpClient.DefaultRequestHeaders.Accept.Clear();
-			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html")); // Or another media type
+			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html"));
 			httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0");
 		}
 
@@ -27,6 +27,7 @@ namespace PointsPerGame.Core.Web {
 			return await response.Content.ReadAsStreamAsync();
 		}
 
+		// Yes, I know. Can use this still as not expecting DNS changes
 		private static readonly HttpClient httpClient;
 	}
 }

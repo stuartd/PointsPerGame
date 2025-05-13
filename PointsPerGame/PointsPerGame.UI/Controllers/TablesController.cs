@@ -29,15 +29,22 @@ namespace PointsPerGame.UI.Controllers {
 			List<ITeamResults> results;
 			string source = null;
 
-			if (league == League.All) {
-				results = await scraper.GetMultipleLeagueResults(LeagueLists.AllLeagues);
+			try {
+				if (league == League.All) {
+					results = await scraper.GetMultipleLeagueResults(LeagueLists.AllLeagues);
+				}
+				else if (league == League.AllTopDivisions) {
+					results = await scraper.GetMultipleLeagueResults(LeagueLists.AllTopDivisions);
+				}
+				else {
+					results = await GuardianScraper.GetResults(league);
+					source = GuardianLeagueMappings.GetUriForLeague(league);
+				}
 			}
-			else if (league == League.AllTopDivisions) {
-				results = await scraper.GetMultipleLeagueResults(LeagueLists.AllTopDivisions);
-			}
-			else {
-				results = await GuardianScraper.GetResults(league);
-				source = GuardianLeagueMappings.GetUriForLeague(league);
+			catch (Exception ex) {
+				// Yes, I know 404 is wrong but not seeing a quick way of getting the error message back otherwise
+				// TODO
+				return new HttpNotFoundResult($"Error getting data using {nameof(GuardianScraper)}");
 			}
 
 			var leagueName = GetDescription(league);

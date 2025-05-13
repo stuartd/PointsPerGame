@@ -55,7 +55,6 @@ namespace PointsPerGame.Core.Models {
 				// One DP for display.
 				var roundedValueInt = (int)(GoalsPerGame * 10);
 				return (Math.Round((decimal)roundedValueInt, 1) / 10).ToString(CultureInfo.InvariantCulture);
-
 			}
 		}
 
