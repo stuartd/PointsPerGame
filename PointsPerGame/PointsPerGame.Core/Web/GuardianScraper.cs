@@ -113,11 +113,19 @@ namespace PointsPerGame.Core.Web {
 				if (anchor == null) {
 					team ="Grauniad bug (reported 13/5/2025)";
 				}
-				else {
+				else
+				{
 					team = anchor?.InnerText.Trim(); // "Arsenal"
 					url = anchor.GetAttributeValue("href", null);
-					if (string.IsNullOrEmpty(url) == false) {
-						url = $"https://www.theguardian.com/{url}/fixtures";
+					if (string.IsNullOrEmpty(url) == false)
+					{
+						// double slashes - // - in URL causing 404 now
+						// the format of url the returned anchor has changed over the years
+						// safer to make sure there is a slash and remove doubles rather than 
+						// assume it's there and have to add one.
+
+						// would be better to just spin up a URL but .net framework lacking in tools
+						url = FixUrl($"https://www.theguardian.com/{url}/fixtures");
 					}
 				}
 
@@ -155,5 +163,23 @@ namespace PointsPerGame.Core.Web {
 
 			return result;
 		}
+		public static string FixUrl(string url)
+		{
+			var uri = new Uri(url);
+
+			var normalizedPath = string.Join("/",
+				uri.AbsolutePath
+					.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
+			);
+
+			var builder = new UriBuilder(uri)
+			{
+				Path = normalizedPath
+			};
+
+			return builder.Uri.ToString();
+		}
+
+
 	}
 }
