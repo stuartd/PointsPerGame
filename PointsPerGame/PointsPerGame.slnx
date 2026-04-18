@@ -1,0 +1,9 @@
+{
+  "solution": "PointsPerGame.sln",
+  "projects": [
+    "PointsPerGame.Core/PointsPerGame.Core.csproj",
+    "PointsPerGame.UI/PointsPerGame.UI.csproj",
+    "PointsPerGame.UnitTests/PointsPerGame.UnitTests.csproj"
+  ],
+  "notes": "Generated slnx manifest for modernization tooling. This is a simple manifest (not a replacement for full solution exports)."
+}
