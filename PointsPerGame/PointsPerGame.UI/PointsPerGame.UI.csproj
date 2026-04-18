@@ -8,6 +8,7 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <OutputPath>bin\</OutputPath>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
