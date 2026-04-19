@@ -1,0 +1,12 @@
+@namespace PointsPerGame.UI.Blazor.Pages
+@using Microsoft.AspNetCore.Components
+
+<div class="alert alert-warning">
+    <strong>Missing:</strong>
+    <div>@Message</div>
+</div>
+
+@code {
+    [Parameter]
+    public string Message { get; set; } = string.Empty;
+}

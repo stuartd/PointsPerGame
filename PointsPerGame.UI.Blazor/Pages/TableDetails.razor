@@ -7,6 +7,10 @@
 {
     <p>Loading...</p>
 }
+else if (rows.Count == 4)
+{
+    <Missing Message="League page not found or data unavailable." />
+}
 else if (!rows.Any())
 {
     <p>No data available for this league.</p>
