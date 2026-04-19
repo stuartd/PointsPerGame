@@ -16,3 +16,4 @@
 ## Decisions
 - PR created by user for branch `upgrade-dotnet-10`. PR URL: https://github.com/stuartd/PointsPerGame/compare/upgrade-dotnet-10?expand=1 (2026-04-19)
 - UI scaffold target: Scaffold PointsPerGame.UI.Blazor targeting net7.0 now (host SDK unavailable for net10.0). Will retarget to net10.0 when .NET 10 SDK is installed. (User choice: 1)
+- Pause requested by user: pause all modernization work until the user resumes (user is going to bed; working on a laptop). No further automated changes will be made. (2026-04-19)
