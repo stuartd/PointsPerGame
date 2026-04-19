@@ -15,7 +15,7 @@ Recent actions:
 - Added Pages/Tables.razor to list leagues and enhanced with sorting documentation and GitHub links.
 - Added Pages/TableDetails.razor to render full league tables and integrated Missing component handling.
 - Added Pages/Missing.razor component for friendly missing-page messaging.
-- Built PointsPerGame.UI.Blazor successfully (net7.0 temporary target); build emitted TFM/NU1702 warnings due to mixed TFMs.
+- Built PointsPerGame.UI.Blazor successfully (initially net7.0 target); retargeted to net10.0 and rebuilt — build succeeded without the earlier TFM/NU1702 warnings.
 
 Validation:
 - Targeted and solution builds succeeded; unit tests build succeeded. Remaining warnings are documented and tracked in the task notes.
