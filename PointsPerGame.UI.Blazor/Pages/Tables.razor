@@ -1,7 +1,9 @@
 @page "/tables"
 @inject PointsPerGame.UI.Blazor.Services.TablesService TablesService
 
-<h3>Tables</h3>
+<h1>Points Per Game</h1>
+
+<h2>Available Tables</h2>
 
 @if (links == null)
 {
@@ -15,6 +17,16 @@ else
             <li><a href="/tables/@kv.Key">@kv.Value</a></li>
         }
     </ul>
+
+    <h2>Sorting</h2>
+    <p>Teams are sorted by points per game, then by the number of games played.</p>
+    <p>If two teams have the same points per game, the team which has played fewer games is sorted higher. If both values are equal, teams are sorted by goal difference, and then by team name.</p>
+
+    <p>
+        <a href="https://github.com/stuartd/PointsPerGame">Site code (GitHub)</a>
+        <br />
+        <a href="https://github.com/stuartd/PointsPerGame/issues">Having a problem or idea? Report it on GitHub</a>
+    </p>
 }
 
 @code {
