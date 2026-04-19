@@ -3,13 +3,14 @@
   "operationId": "c32a773b-6f7a-4818-a063-3423bf93aa6e",
   "description": "Upgrade .NET projects to newer .NET versions",
   "startTime": "2026-04-18T22:35:06.263836Z",
-  "lastUpdateTime": "2026-04-19T17:32:05.902751Z",
+  "lastUpdateTime": "2026-04-19T18:45:16.804839Z",
   "properties": {
     "UpgradeTargetFramework": "net10.0",
     "taskStates": {
       "01-update-nuget-packages": "InProgress",
       "02-migrate-ui-to-blazor": "InProgress",
-      "02.01-tables-controller": "InProgress"
+      "02.01-tables-controller": "InProgress",
+      "02.02-retarget-core-to-net10": "InProgress"
     }
   },
   "folderPath": ""
