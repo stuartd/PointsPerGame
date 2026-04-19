@@ -9,3 +9,10 @@ Next steps:
 1. Build and fix any compile issues.
 2. If build succeeds, implement additional components to render full tables based on GuardianScraper results.
 3. Document further progress and run manual smoke test for the Tables page.
+
+Actions taken:
+- Implemented TablesService.GetLeagueTableAsync that delegates to PointsPerGame.Core.Web.GuardianScraper.GetResults and maps ITeamResults to UI DTOs.
+- Added Pages/TableDetails.razor to render league tables at route `/tables/{leagueId}`.
+
+Validation:
+- Will run targeted build and unit tests next; if successful will update progress and call complete_task.

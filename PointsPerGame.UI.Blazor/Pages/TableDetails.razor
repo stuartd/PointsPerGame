@@ -1,0 +1,62 @@
+@page "/tables/{leagueId:int}"
+@inject PointsPerGame.UI.Blazor.Services.TablesService TablesService
+
+<h3>League Table</h3>
+
+@if (rows == null)
+{
+    <p>Loading...</p>
+}
+else if (!rows.Any())
+{
+    <p>No data available for this league.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Pos</th>
+                <th>Team</th>
+                <th>P</th>
+                <th>W</th>
+                <th>D</th>
+                <th>L</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>GD</th>
+                <th>Pts</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < rows.Count; i++)
+            {
+                var r = rows[i];
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td><a href="@r.TeamUrl" target="_blank">@r.Team</a></td>
+                    <td>@r.Played</td>
+                    <td>@r.Won</td>
+                    <td>@r.Drawn</td>
+                    <td>@r.Lost</td>
+                    <td>@r.GoalsScored</td>
+                    <td>@r.GoalsConceded</td>
+                    <td>@r.GoalDifference</td>
+                    <td>@r.Points</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public int leagueId { get; set; }
+
+    private List<PointsPerGame.UI.Blazor.Services.TablesService.TableRowDto>? rows;
+
+    protected override async Task OnInitializedAsync()
+    {
+        rows = await TablesService.GetLeagueTableAsync(leagueId);
+    }
+}
