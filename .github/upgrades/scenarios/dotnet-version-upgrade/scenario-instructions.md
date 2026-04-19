@@ -6,6 +6,7 @@
 
 ### Execution Style
 - If complete_task fails due to external service errors, continue execution and record the failure locally; do not halt the Automatic workflow. (User preference: continue on complete_task failure) (Recorded: 2026-04-19T14:37:54+01:00)
+- Confirmation: User reiterated preference to ignore complete_task failures and proceed; agent will record failures locally and continue. (Confirmed: 2026-04-19T18:17:08+01:00)
 
 ## Source Control
 - **Source Branch**: main
