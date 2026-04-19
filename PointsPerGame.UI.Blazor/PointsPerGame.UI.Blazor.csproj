@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PointsPerGame.Core\PointsPerGame.Core.csproj" />
+  </ItemGroup>
+
 </Project>

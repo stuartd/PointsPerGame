@@ -1,0 +1,27 @@
+@page "/tables"
+@inject PointsPerGame.UI.Blazor.Services.TablesService TablesService
+
+<h3>Tables</h3>
+
+@if (links == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ul>
+        @foreach (var kv in links)
+        {
+            <li><a href="/tables/@kv.Key">@kv.Value</a></li>
+        }
+    </ul>
+}
+
+@code {
+    private Dictionary<int, string>? links;
+
+    protected override async Task OnInitializedAsync()
+    {
+        links = await TablesService.GetLeagueLinksAsync();
+    }
+}
