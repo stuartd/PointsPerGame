@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PointsPerGame.Core\PointsPerGame.Core.csproj" />
+    <ProjectReference Include="../PointsPerGame/PointsPerGame.Core/PointsPerGame.Core.csproj" />
   </ItemGroup>
 
 </Project>
