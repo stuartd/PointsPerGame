@@ -1,12 +1,14 @@
-using PointsPerGame.UI.Blazor.Data;
+using PointsPerGame.Core.Web;
+using PointsPerGame.UI.Blazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddScoped<PointsPerGame.UI.Blazor.Services.TablesService>();
+builder.Services.AddScoped<TablesService>();
+builder.Services.AddScoped<IDataSource, GuardianScraper>();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

@@ -130,6 +130,7 @@ namespace PointsPerGame.Core.Web {
 						// assume it's there and have to add one.
 
 						// would be better to just spin up a URL but .net framework lacking in tools
+						// todo (!!)
 						url = FixUrl($"https://www.theguardian.com/{url}/fixtures");
 					}
 				}
