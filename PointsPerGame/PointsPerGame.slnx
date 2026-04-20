@@ -1,9 +1,4 @@
-{
-  "solution": "PointsPerGame.sln",
-  "projects": [
-    "PointsPerGame.Core/PointsPerGame.Core.csproj",
-    "PointsPerGame.UI/PointsPerGame.UI.csproj",
-    "PointsPerGame.UnitTests/PointsPerGame.UnitTests.csproj"
-  ],
-  "notes": "Generated slnx manifest for modernization tooling. This is a simple manifest (not a replacement for full solution exports)."
-}
+<Solution>
+  <Project Path="PointsPerGame.Core/PointsPerGame.Core.csproj" />
+  <Project Path="PointsPerGame.UI.Blazor/PointsPerGame.UI.Blazor.csproj" />
+</Solution>

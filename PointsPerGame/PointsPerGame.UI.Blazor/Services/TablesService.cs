@@ -5,14 +5,7 @@ using PointsPerGame.Core.Web;
 
 namespace PointsPerGame.UI.Blazor.Services
 {
-    public class TablesService
-    {
-		private readonly IDataSource dataSource;
-
-		public TablesService(IDataSource dataSource) {
-			this.dataSource = dataSource;
-		}
-
+    public class TablesService(IDataSource dataSource) {
         public Task<Dictionary<int, string>> GetLeagueLinksAsync()
         {
             var values = Enum.GetValues(typeof(League)).Cast<League>();
