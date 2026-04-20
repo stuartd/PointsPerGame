@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,20 +12,24 @@ using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
 
 namespace PointsPerGame.Core.Web {
-	public class GuardianScraper : Scraper {
-		private static readonly MemoryCache cache = new MemoryCache(nameof(GuardianScraper));
+	public class GuardianScraper : BaseScraper {
+		private static readonly MemoryCache cache = new(nameof(GuardianScraper));
+
+		public GuardianScraper(IHttpClientFactory httpClientFactory) : base(httpClientFactory) {
+		}
 
 		public async Task<List<ITeamResults>> GetMultipleLeagueResults(IEnumerable<League> leagues) {
 			var allResults = new List<ITeamResults>();
 
 			foreach (var league in leagues) {
-				allResults.AddRange(await GetResults(league));
+				allResults.AddRange(await GetResultsAsync(league));
 			}
 
 			return allResults.SortTeams().ToList();
 		}
 
-		public static async Task<List<ITeamResults>> GetResults(League league) {
+		public override async Task<List<ITeamResults>> GetResultsAsync(League league) {
+
 #if RELEASE
 			if (cache.Contains(league.ToString())) {
 				return cache[league.ToString()] as List<ITeamResults>;
@@ -135,7 +140,7 @@ namespace PointsPerGame.Core.Web {
 						continue;
 					}
 
-					throw new Exception("Failed to find team names, has The Guardian changed it's site again?");
+					throw new("Failed to find team names, has The Guardian changed it's site again?");
 				}
 
 				var crestSource = row.SelectNodes(".//img")[0];

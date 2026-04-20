@@ -1,20 +1,22 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Web;
-using PointsPerGame.Core.Models;
 
 namespace PointsPerGame.UI.Blazor.Services
 {
     public class TablesService
     {
+		private readonly IDataSource dataSource;
+
+		public TablesService(IDataSource dataSource) {
+			this.dataSource = dataSource;
+		}
+
         public Task<Dictionary<int, string>> GetLeagueLinksAsync()
         {
             var values = Enum.GetValues(typeof(League)).Cast<League>();
+
             var dict = values.ToDictionary(l => (int)l, l =>
             {
                 var member = l.GetType().GetMember(l.ToString()).Single();
@@ -45,7 +47,7 @@ namespace PointsPerGame.UI.Blazor.Services
         {
             var league = (League)leagueId;
             // GuardianScraper is implemented in PointsPerGame.Core and exposes GetResults
-            var results = await GuardianScraper.GetResults(league);
+            var results = await dataSource.GetResultsAsync(league);
 
             return results.Select(r => new TableRowDto(
                 r.Team,

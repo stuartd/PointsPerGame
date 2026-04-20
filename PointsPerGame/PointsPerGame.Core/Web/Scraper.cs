@@ -1,25 +1,37 @@
-﻿using System;
+﻿using PointsPerGame.Core.Models;
+using PointsPerGame.Core.Names;
+using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace PointsPerGame.Core.Web {
-	public class Scraper {
 
-		static Scraper() {
-			httpClient = new HttpClient();
-			httpClient.DefaultRequestHeaders.Accept.Clear();
-			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html"));
-			httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0");
+	public interface IDataSource {
+		// data source gets leagues, tables etc
+		// base scraper is a *type* of data source which grabs the data from a web page
+		// and guardian scraper is an implementation of that
+
+		public Task<List<ITeamResults>> GetResultsAsync(League league);
+	}
+
+	public abstract class BaseScraper : IDataSource {
+		private readonly IHttpClientFactory httpClientFactory;
+
+		protected BaseScraper(IHttpClientFactory httpClientFactory) {
+			this.httpClientFactory = httpClientFactory;
 		}
 
-		protected static async Task<Stream> GetPageStreamAsync(string url) {
+		protected async Task<Stream> GetPageStreamAsync(string url) {
+
+			var httpClient = httpClientFactory.CreateClient();
+			httpClient.DefaultRequestHeaders.Accept.Clear();
+			httpClient.DefaultRequestHeaders.Accept.Add(new("text/html"));
+			httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0");
 
 			var uri = new Uri(url);
-			ServicePointManager.FindServicePoint(uri);
-
+	
 			var response = await httpClient.GetAsync(uri);
 
 			response.EnsureSuccessStatusCode();
@@ -27,7 +39,6 @@ namespace PointsPerGame.Core.Web {
 			return await response.Content.ReadAsStreamAsync();
 		}
 
-		// Yes, I know. Can use this still as not expecting DNS changes
-		private static readonly HttpClient httpClient;
+		public abstract Task<List<ITeamResults>> GetResultsAsync(League league);
 	}
 }
