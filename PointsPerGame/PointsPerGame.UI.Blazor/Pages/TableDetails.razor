@@ -17,7 +17,7 @@ else if (!rows.Any())
 }
 else
 {
-    <table class="table">
+    <table class="teamTable">
         <thead>
             <tr>
                 <th>Pos</th>
@@ -30,6 +30,7 @@ else
                 <th>GA</th>
                 <th>GD</th>
                 <th>Pts</th>
+                <th>PPG</th>
             </tr>
         </thead>
         <tbody>
@@ -47,6 +48,7 @@ else
                     <td>@r.GoalsConceded</td>
                     <td>@r.GoalDifference</td>
                     <td>@r.Points</td>
+                    <td>@r.PointsPerGame</td>
                 </tr>
             }
         </tbody>
@@ -55,12 +57,12 @@ else
 
 @code {
     [Parameter]
-    public int leagueId { get; set; }
+    public int LeagueId { get; set; }
 
     private List<PointsPerGame.UI.Blazor.Services.TablesService.TableRowDto>? rows;
 
     protected override async Task OnInitializedAsync()
     {
-        rows = await TablesService.GetLeagueTableAsync(leagueId);
+        rows = await TablesService.GetLeagueTableAsync(LeagueId);
     }
 }

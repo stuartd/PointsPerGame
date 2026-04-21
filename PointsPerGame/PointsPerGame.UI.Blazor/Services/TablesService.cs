@@ -31,16 +31,15 @@ namespace PointsPerGame.UI.Blazor.Services
             int GoalsConceded,
             int GoalDifference,
             int Points,
+            double PointsPerGame,
             string TeamUrl,
             string Crest
         );
 
-        // Fetches table rows for the requested league by delegating to the Core GuardianScraper
         public async Task<List<TableRowDto>> GetLeagueTableAsync(int leagueId)
         {
             var league = (League)leagueId;
-            // GuardianScraper is implemented in PointsPerGame.Core and exposes GetResults
-            var results = await dataSource.GetResultsAsync(league);
+			var results = await dataSource.GetResultsAsync(league);
 
             return results.Select(r => new TableRowDto(
                 r.Team,
@@ -52,6 +51,7 @@ namespace PointsPerGame.UI.Blazor.Services
                 r.GoalsConceded,
                 r.GoalDifference,
                 r.Points,
+                r.PointsPerGame,
                 r.Url ?? string.Empty,
                 r.Crest ?? string.Empty
             )).ToList();

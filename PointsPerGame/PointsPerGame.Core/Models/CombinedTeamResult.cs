@@ -1,17 +1,18 @@
 using System;
 using System.Globalization;
-using PointsPerGame.Core.Utilities;
+using PointsPerGame.Core.Extensions;
 
 namespace PointsPerGame.Core.Models {
 	public class CombinedTeamResult : ITeamResults {
 		private readonly ResultSet results;
 
 		public CombinedTeamResult(string teamName, ResultSet results) {
-			CheckParameter.RequireNotNullOrEmpty(() => teamName);
-			CheckParameter.RequireNotNull(() => results);
+			if (teamName.IsNullOrEmpty()) {
+				throw new ($"{nameof(teamName)} cannot be null or empty");
+			}
 
 			Team = teamName;
-			this.results = results;
+			this.results = results ?? throw new($"{nameof (results)} must not be null");
 		}
 
 		public string Team { get; }

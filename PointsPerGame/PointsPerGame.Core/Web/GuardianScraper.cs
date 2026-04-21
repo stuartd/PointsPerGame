@@ -39,7 +39,31 @@ namespace PointsPerGame.Core.Web {
 
 			var doc = new HtmlDocument();
 
-			var stream = await GetPageStreamAsync(GuardianLeagueMappings.GetUriForLeague(league));
+			// ok this is all mixed up
+			// (thanks, dotnet/modernizer)
+
+			// For a 'league' (on or many tables)
+			// construct a data set of:
+			// Team / pld / won / pts etc
+
+
+			if (league == League.All) {
+				results = await GetMultipleLeagueResults(LeagueLists.AllLeagues);
+			}
+			else if (league == League.AllTopDivisions)
+			{
+				results = await GetMultipleLeagueResults(LeagueLists.AllTopDivisions);
+			}
+			else
+			{
+				results = await GetResults(league);
+				source = GuardianLeagueMappings.GetUriForLeague(league);
+			}
+
+			var leagueUri = GuardianLeagueMappings.GetUriForLeague(league);
+
+			
+			var stream = await GetPageStreamAsync(leagueUri);
 
 			doc.Load(stream, Encoding.UTF8);
 
