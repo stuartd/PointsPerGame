@@ -1,9 +1,11 @@
-﻿namespace PointsPerGame.Core.Models {
-	public class MissingTable {
-		public MissingTable(string league) {
-			League = league;
-		}
+﻿namespace PointsPerGame.Core.Models;
 
-		public string League { get; set; }
+public class MissingTable
+{
+	public MissingTable(string league)
+	{
+		League = league;
 	}
+
+	public string League { get; set; }
 }

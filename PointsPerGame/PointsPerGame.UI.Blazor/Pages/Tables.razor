@@ -15,7 +15,9 @@ else
     <ul>
         @foreach (var kv in links)
         {
-            <li><a href="/tables/@kv.Key">@kv.Value</a></li>
+            <li>
+                <a href="/tables/@kv.Key">@kv.Value</a>
+            </li>
         }
     </ul>
 
@@ -25,7 +27,7 @@ else
 
     <p>
         <a href="https://github.com/stuartd/PointsPerGame">Site code (GitHub)</a>
-        <br />
+        <br/>
         <a href="https://github.com/stuartd/PointsPerGame/issues">Having a problem or idea? Report it on GitHub</a>
     </p>
 }
@@ -37,4 +39,5 @@ else
     {
         links = await TablesService.GetLeagueLinksAsync();
     }
+
 }

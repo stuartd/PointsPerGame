@@ -2,66 +2,69 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace PointsPerGame.Core.Names {
-	public enum League {
-		[Description("Premier League")]
-		EnglishPremierLeague = 1,
+namespace PointsPerGame.Core.Names;
 
-		[Description("Championship")]
-		EnglishChampionship,
+public enum League
+{
+	[Description("Premier League")]
+	EnglishPremierLeague = 1,
 
-		[Description("League One")]
-		EnglishLeagueOne,
+	[Description("Championship")]
+	EnglishChampionship,
 
-		[Description("League Two")]
-		EnglishLeagueTwo,
+	[Description("League One")]
+	EnglishLeagueOne,
 
-		[Description("Women's Super League")]
-		WSL,
+	[Description("League Two")]
+	EnglishLeagueTwo,
 
-		[Description("Scottish Premier League")]
-		SPL,
+	[Description("Women's Super League")]
+	WSL,
 
-		[Description("Scottish Championship")]
-		ScottishChampionship,
+	[Description("Scottish Premier League")]
+	SPL,
 
-		[Description("Scottish League One")]
-		ScottishLeagueOne,
+	[Description("Scottish Championship")]
+	ScottishChampionship,
 
-		[Description("Scottish League Two")]
-		ScottishLeagueTwo,
+	[Description("Scottish League One")]
+	ScottishLeagueOne,
 
-		[Description("La Liga")]
-		LaLiga,
+	[Description("Scottish League Two")]
+	ScottishLeagueTwo,
 
-		[Description("Ligue 1")]
-		Ligue1,
+	[Description("La Liga")]
+	LaLiga,
 
-		[Description("Bundesliga")]
-		Bundesliga,
+	[Description("Ligue 1")]
+	Ligue1,
 
-		[Description("Serie A")]
-		SeriaA,
+	[Description("Bundesliga")]
+	Bundesliga,
 
-		[Description("All leagues")]
-		All,
+	[Description("Serie A")]
+	SeriaA,
 
-		[Description("All top divisions")]
-		AllTopDivisions,
-	}
+	[Description("All leagues")]
+	All,
 
-	public static class LeagueLists {
-		public static League[] AllLeagues => Enum.GetValues(typeof(League))
-			.Cast<League>()
-			.Except([League.All, League.AllTopDivisions]).ToArray();
+	[Description("All top divisions")]
+	AllTopDivisions,
+}
 
-		public static readonly League[] AllTopDivisions = [
-			League.EnglishPremierLeague, 
-			League.SPL, 
-			League.LaLiga, 
-			League.Ligue1, 
-			League.Bundesliga, 
-			League.SeriaA,
-		];
-	}
+public static class LeagueLists
+{
+	public static League[] AllLeagues => Enum.GetValues(typeof(League))
+		.Cast<League>()
+		.Except([League.All, League.AllTopDivisions]).ToArray();
+
+	public static readonly League[] AllTopDivisions =
+	[
+		League.EnglishPremierLeague,
+		League.SPL,
+		League.LaLiga,
+		League.Ligue1,
+		League.Bundesliga,
+		League.SeriaA,
+	];
 }

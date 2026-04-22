@@ -1,30 +1,29 @@
-﻿namespace PointsPerGame.Tests {
-	//[Explicit]
-	//[TestFixture]
-	//public class When_Retrieving_Tables_From_Guardian_Website {
-	//	private readonly IDataSource dataSource = new GuardianScraper(TestHttpClientFactory.Instance);
+﻿namespace PointsPerGame.Tests;
+//[Explicit]
+//[TestFixture]
+//public class When_Retrieving_Tables_From_Guardian_Website {
+//	private readonly IDataSource dataSource = new GuardianScraper(TestHttpClientFactory.Instance);
 
-	//	[TestCaseSource(typeof(TableTestCaseSource), nameof(TableTestCaseSource.Tables))]
-	//	[Test]
-	//	public async Task All_Tables_Should_Be_Retrievable(League league) {
-	//		var teams = await dataSource.GetResultsAsync(league);
+//	[TestCaseSource(typeof(TableTestCaseSource), nameof(TableTestCaseSource.Tables))]
+//	[Test]
+//	public async Task All_Tables_Should_Be_Retrievable(League league) {
+//		var teams = await dataSource.GetResultsAsync(league);
 
-	//		// If the link is wrong, the table list page is returned, which then only returns 4 values
-	//		Assert.Greater(teams.Count, 4);
-	//	}
+//		// If the link is wrong, the table list page is returned, which then only returns 4 values
+//		Assert.Greater(teams.Count, 4);
+//	}
 
-	//	private class TableTestCaseSource {
-	//		public static IEnumerable Tables {
-	//			get {
-	//				foreach (var league in Enum.GetValues(typeof(League)).Cast<League>()) {
-	//					if (league == League.AllTopDivisions || league == League.All) {
-	//						continue;
-	//					}
+//	private class TableTestCaseSource {
+//		public static IEnumerable Tables {
+//			get {
+//				foreach (var league in Enum.GetValues(typeof(League)).Cast<League>()) {
+//					if (league == League.AllTopDivisions || league == League.All) {
+//						continue;
+//					}
 
-	//					yield return league;
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-}
+//					yield return league;
+//				}
+//			}
+//		}
+//	}
+//}

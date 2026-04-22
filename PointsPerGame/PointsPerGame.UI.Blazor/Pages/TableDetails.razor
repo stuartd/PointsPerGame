@@ -11,7 +11,7 @@
 else if (rows.Count < 10)
 {
     // TODO - this indicates an issue with the league page, as there are at least 10 teams in all the leagues
-    <Missing Message="League page not found or data unavailable." />
+    <Missing Message="League page not found or data unavailable."/>
 }
 else if (!rows.Any())
 {
@@ -21,43 +21,46 @@ else
 {
     <table class="teamTable">
         <thead>
-            <tr>
-                <th>Pos</th>
-                <th>Team</th>
-                <th>P</th>
-                <th>W</th>
-                <th>D</th>
-                <th>L</th>
-                <th>GF</th>
-                <th>GA</th>
-                <th>GD</th>
-                <th>Pts</th>
-                <th>PPG</th>
-            </tr>
+        <tr>
+            <th>Pos</th>
+            <th>Team</th>
+            <th>P</th>
+            <th>W</th>
+            <th>D</th>
+            <th>L</th>
+            <th>GF</th>
+            <th>GA</th>
+            <th>GD</th>
+            <th>Pts</th>
+            <th>PPG</th>
+        </tr>
         </thead>
         <tbody>
-            @for (int i = 1; i < rows.Count; i++)
-            {
-                var r = rows[i];
-                <tr>
-                    <td>@(i)</td>
-                    <td><a href="@r.TeamUrl" target="_blank">URL</a></td>
-                    <td>@r.Played</td>
-                    <td>@r.Won</td>
-                    <td>@r.Drawn</td>
-                    <td>@r.Lost</td>
-                    <td>@r.GoalsScored</td>
-                    <td>@r.GoalsConceded</td>
-                    <td>@r.GoalDifference</td>
-                    <td>@r.Points</td>
-                    <td>@r.PointsPerGame</td>
-                </tr>
-            }
+        @for (var i = 1; i < rows.Count; i++)
+        {
+            var r = rows[i];
+            <tr>
+                <td>@(i)</td>
+                <td>
+                    <a href="@r.TeamUrl" target="_blank">URL</a>
+                </td>
+                <td>@r.Played</td>
+                <td>@r.Won</td>
+                <td>@r.Drawn</td>
+                <td>@r.Lost</td>
+                <td>@r.GoalsScored</td>
+                <td>@r.GoalsConceded</td>
+                <td>@r.GoalDifference</td>
+                <td>@r.Points</td>
+                <td>@r.PointsPerGame</td>
+            </tr>
+        }
         </tbody>
     </table>
 }
 
 @code {
+
     [Parameter]
     public int LeagueId { get; set; }
 
@@ -67,4 +70,5 @@ else
     {
         rows = await TablesService.GetLeagueTableAsync(LeagueId);
     }
+
 }

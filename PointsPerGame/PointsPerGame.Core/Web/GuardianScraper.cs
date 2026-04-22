@@ -11,212 +11,225 @@ using PointsPerGame.Core.Mappings;
 using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
 
-namespace PointsPerGame.Core.Web {
-	public class GuardianScraper : BaseScraper {
-		private static readonly MemoryCache cache = new(nameof(GuardianScraper));
+namespace PointsPerGame.Core.Web;
 
-		public GuardianScraper(IHttpClientFactory httpClientFactory) : base(httpClientFactory) {
+public class GuardianScraper : BaseScraper
+{
+	private static readonly MemoryCache cache = new(nameof(GuardianScraper));
+
+	public GuardianScraper(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+	{
+	}
+
+	public async Task<List<TeamResultDisplaySet>> GetMultipleLeagueResults(IEnumerable<League> leagues)
+	{
+		var allResults = new List<ITeamResults>();
+
+		foreach (var league in leagues)
+		{
+			var results = await GetResultsAsync(league);
+
+			// ok closing in now
+			// we get the raw results below
+			allResults.AddRange(results);
 		}
 
-		public async Task<List<TeamResultDisplaySet>> GetMultipleLeagueResults(IEnumerable<League> leagues) {
-			var allResults = new List<ITeamResults>();
+		return allResults.Select(a => new TeamResultDisplaySet(a)).SortTeams().ToList();
+	}
 
-			foreach (var league in leagues) {
-				var results = await GetResultsAsync(league);
-
-				// ok closing in now
-				// we get the raw results below
-				allResults.AddRange(results);
-			}
-
-			return allResults.Select(a => new TeamResultDisplaySet(a)).SortTeams().ToList();
-		}
-
-		public override async Task<List<TeamResultDisplaySet>> GetResultsAsync(League league) {
-
-
+	public override async Task<List<TeamResultDisplaySet>> GetResultsAsync(League league)
+	{
 // #if RELEASE
 #if DEBUG
-			if (cache.Contains(league.ToString())) {
-				return cache[league.ToString()] as List<TeamResultDisplaySet>;
-			}
+		if (cache.Contains(league.ToString()))
+		{
+			return cache[league.ToString()] as List<TeamResultDisplaySet>;
+		}
 #endif
-			List<TeamResultDisplaySet> teamData = [];
+		List<TeamResultDisplaySet> teamData = [];
 
-			var doc = new HtmlDocument();
+		var doc = new HtmlDocument();
 
-			// ok this is all mixed up
-			// (thanks, dotnet/modernizer)
+		// ok this is all mixed up
+		// (thanks, dotnet/modernizer)
 
-			// For a 'league' (on or many tables)
-			// construct a data set of:
-			// Team / pld / won / pts etc
+		// For a 'league' (on or many tables)
+		// construct a data set of:
+		// Team / pld / won / pts etc
 
 
-			//if (league == League.All) {
-			//	teams = await GetMultipleLeagueResults(LeagueLists.AllLeagues);
-			//}
-			//else if (league == League.AllTopDivisions)
-			//{
-			//	teams = await GetMultipleLeagueResults(LeagueLists.AllTopDivisions);
-			//}
-			//else
-			//{
-			//	teams = await GetResults(league);
-			//	leagueUri = GuardianLeagueMappings.GetUriForLeague(league);
-			//}
+		//if (league == League.All) {
+		//	teams = await GetMultipleLeagueResults(LeagueLists.AllLeagues);
+		//}
+		//else if (league == League.AllTopDivisions)
+		//{
+		//	teams = await GetMultipleLeagueResults(LeagueLists.AllTopDivisions);
+		//}
+		//else
+		//{
+		//	teams = await GetResults(league);
+		//	leagueUri = GuardianLeagueMappings.GetUriForLeague(league);
+		//}
 
-			var leagueUri = GuardianLeagueMappings.GetUriForLeague(league);
+		string leagueUri = GuardianLeagueMappings.GetUriForLeague(league);
 
-			var stream = await GetPageStreamAsync(leagueUri);
+		var stream = await GetPageStreamAsync(leagueUri);
 
-			doc.Load(stream, Encoding.UTF8);
+		doc.Load(stream, Encoding.UTF8);
 
-			var table = doc.DocumentNode.SelectNodes("//table").FirstOrDefault();
+		var table = doc.DocumentNode.SelectNodes("//table").FirstOrDefault();
 
-			if (table == null) {
-				throw new InvalidOperationException("Guardian have changed their site again - can't find table.");
+		if (table == null)
+		{
+			throw new InvalidOperationException("Guardian have changed their site again - can't find table.");
+		}
+
+		var body = table.SelectNodes(".//tbody").FirstOrDefault();
+
+		if (body == null)
+		{
+			throw new InvalidOperationException("Guardian have changed their site again - can't find table body.");
+		}
+
+		var rows = body.SelectNodes(".//tr");
+
+		if (rows == null)
+		{
+			throw new InvalidOperationException("Guardian have changed their site again - can't find rows.");
+		}
+
+		var foundAnyTeams = false;
+
+		/*
+
+			Row format squashed (May 2025)
+
+<p>1</p>
+		   <div>
+		   <div><img src="https://sport.guim.co.uk/football/crests/60/9.png" alt="" /></div>
+		   <a href="/football/liverpool">Liverpool</a></div>
+		   <p>362583833746<strong>83</strong></p>
+		   <div><span title="Won 2-1 against West Ham">Won 2-1 against West Ham</span><span title="Won 1-0 against Leicester">Won 1-0 against Leicester</span><span title="Won 5-1 against Spurs">Won 5-1 against Spurs</span><span title="Lost 1-3 to Chelsea">Lost 1-3 to Chelsea</span><span title="Drew 2-2 with Arsenal">Drew 2-2 with Arsenal</span></div>
+
+
+		 */
+
+		foreach (var row in rows)
+		{
+			var results = new TeamResults();
+			var cells = row.SelectNodes(".//td");
+
+			if (cells == null)
+			{
+				throw new InvalidOperationException("Guardian have changed their site again - can't find cells.");
 			}
-
-			var body = table.SelectNodes(".//tbody").FirstOrDefault();
-
-			if (body == null) {
-				throw new InvalidOperationException("Guardian have changed their site again - can't find table body.");
-			}
-
-			var rows = body.SelectNodes(".//tr");
-
-			if (rows == null) {
-				throw new InvalidOperationException("Guardian have changed their site again - can't find rows.");
-			}
-
-			var foundAnyTeams = false;
 
 			/*
 
-				Row format squashed (May 2025)
+			Team name: dcr-aq6qi6
 
-<p>1</p>
-			   <div>
-			   <div><img src="https://sport.guim.co.uk/football/crests/60/9.png" alt="" /></div>
-			   <a href="/football/liverpool">Liverpool</a></div>
-			   <p>362583833746<strong>83</strong></p>
-			   <div><span title="Won 2-1 against West Ham">Won 2-1 against West Ham</span><span title="Won 1-0 against Leicester">Won 1-0 against Leicester</span><span title="Won 5-1 against Spurs">Won 5-1 against Spurs</span><span title="Lost 1-3 to Chelsea">Lost 1-3 to Chelsea</span><span title="Drew 2-2 with Arsenal">Drew 2-2 with Arsenal</span></div>
+			<a href="/football/liverpool" class= "dcr-aq6qi6">Liverpool</a>
 
-
-			 */
-
-			foreach (var row in rows) {
-				var results = new TeamResults();
-				var cells = row.SelectNodes(".//td");
-
-				if (cells == null) {
-					throw new InvalidOperationException("Guardian have changed their site again - can't find cells.");
-				}
-
-				/*
-
-				Team name: dcr-aq6qi6
-
-				<a href="/football/liverpool" class= "dcr-aq6qi6">Liverpool</a>
-
-				<td class=\ "dcr-sz4gcj\">1</td>
-				   <th scope=\ "row\">
-					   <div class=\ "dcr-1bx3yx1\">
-						   <div class=\ "dcr-1rdax43\"><img src=\ "https://sport.guim.co.uk/football/crests/60/9.png\" alt=\ "\" class=\ "dcr-swmlxg\"></div><a href=\ "/football/liverpool\" class=\ "dcr-aq6qi6\">Liverpool</a></div>
-				   </th>
-				   <td>36</td>
-				   <td class=\ "dcr-sicfl9\">25</td>
-				   <td class=\ "dcr-sicfl9\">8</td>
-				   <td class=\ "dcr-sicfl9\">3</td>
-				   <td class=\ "dcr-sicfl9\">83</td>
-				   <td class=\ "dcr-sicfl9\">37</td>
-				   <td>46</td>
-				   <td><b class=\ "dcr-or6g55\">83</b></td>
-				   <td>
-					   <div class=\ "dcr-q129gn\"><span title=\ "Won 2-1 against West Ham\" class=\ "dcr-1x3aqs8\"><span class=\"dcr-kh6f2l\">Won 2-1 against West Ham</span></span><span title=\ "Won 1-0 against Leicester\" class=\ "dcr-1x3aqs8\"><span class=\"dcr-kh6f2l\">Won 1-0 against Leicester</span></span><span title=\ "Won 5-1 against Spurs\" class=\ "dcr-1x3aqs8\"><span class=\"dcr-kh6f2l\">Won 5-1 against Spurs</span></span><span title=\ "Lost 1-3 to Chelsea\" class=\ "dcr-1pmhvnj\"><span class=\"dcr-kh6f2l\">Lost 1-3 to Chelsea</span></spa n><span title=\ "Drew 2-2 with Arsenal\" class=\ "dcr-1utiqk7\"><span class=\"dcr-kh6f2l\">Drew 2-2 with Arsenal</span></span>
-					   </div>
-				   </td>
+			<td class=\ "dcr-sz4gcj\">1</td>
+			   <th scope=\ "row\">
+				   <div class=\ "dcr-1bx3yx1\">
+					   <div class=\ "dcr-1rdax43\"><img src=\ "https://sport.guim.co.uk/football/crests/60/9.png\" alt=\ "\" class=\ "dcr-swmlxg\"></div><a href=\ "/football/liverpool\" class=\ "dcr-aq6qi6\">Liverpool</a></div>
+			   </th>
+			   <td>36</td>
+			   <td class=\ "dcr-sicfl9\">25</td>
+			   <td class=\ "dcr-sicfl9\">8</td>
+			   <td class=\ "dcr-sicfl9\">3</td>
+			   <td class=\ "dcr-sicfl9\">83</td>
+			   <td class=\ "dcr-sicfl9\">37</td>
+			   <td>46</td>
+			   <td><b class=\ "dcr-or6g55\">83</b></td>
+			   <td>
+				   <div class=\ "dcr-q129gn\"><span title=\ "Won 2-1 against West Ham\" class=\ "dcr-1x3aqs8\"><span class=\"dcr-kh6f2l\">Won 2-1 against West Ham</span></span><span title=\ "Won 1-0 against Leicester\" class=\ "dcr-1x3aqs8\"><span class=\"dcr-kh6f2l\">Won 1-0 against Leicester</span></span><span title=\ "Won 5-1 against Spurs\" class=\ "dcr-1x3aqs8\"><span class=\"dcr-kh6f2l\">Won 5-1 against Spurs</span></span><span title=\ "Lost 1-3 to Chelsea\" class=\ "dcr-1pmhvnj\"><span class=\"dcr-kh6f2l\">Lost 1-3 to Chelsea</span></spa n><span title=\ "Drew 2-2 with Arsenal\" class=\ "dcr-1utiqk7\"><span class=\"dcr-kh6f2l\">Drew 2-2 with Arsenal</span></span>
+				   </div>
+			   </td>
 
 
-			*/
+		*/
 
-				string teamName;
-				Uri teamUri = null;
-				var anchor = row.SelectSingleNode(".//a[contains(@class, 'dcr-aq6qi6')]");
+			string teamName;
+			Uri teamUri = null;
+			var anchor = row.SelectSingleNode(".//a[contains(@class, 'dcr-aq6qi6')]");
 
-				if (anchor == null) {
-					teamName ="Grauniad bug (reported 13/5/2025)";
+			if (anchor == null)
+			{
+				teamName = "Grauniad bug (reported 13/5/2025)";
+			}
+			else
+			{
+				teamName = anchor?.InnerText.Trim(); // "Arsenal"
+				string teamUrl = anchor.GetAttributeValue("href", null);
+				if (!string.IsNullOrEmpty(teamUrl))
+				{
+					// double slashes - // - in URL causing 404 now
+					// the format of url the returned anchor has changed over the years
+					// safer to make sure there is a slash and remove doubles rather than 
+					// assume it's there and have to add one.
+
+					// TODO - make url nicely
+					teamUri = CreateUri($"https://www.theguardian.com/{teamUrl}/fixtures");
 				}
 				else
 				{
-					teamName = anchor?.InnerText.Trim(); // "Arsenal"
-					var teamUrl = anchor.GetAttributeValue("href", null);
-					if (!string.IsNullOrEmpty(teamUrl))
-					{
-						// double slashes - // - in URL causing 404 now
-						// the format of url the returned anchor has changed over the years
-						// safer to make sure there is a slash and remove doubles rather than 
-						// assume it's there and have to add one.
-
-						// TODO - make url nicely
-						teamUri = CreateUri($"https://www.theguardian.com/{teamUrl}/fixtures");
-					}
-					else {
-						// oh, the team URI is missing?
-						// TODO - handle
-					}
+					// oh, the team URI is missing?
+					// TODO - handle
 				}
-
-				if (string.IsNullOrEmpty(teamName)) {
-					if (foundAnyTeams) {
-						Trace.TraceInformation($"Didn't find team name in {row.InnerHtml}");
-						continue;
-					}
-
-					throw new("Failed to find team names, has The Guardian changed it's site again?");
-				}
-
-				var crestSource = row.SelectNodes(".//img")[0];
-				string crest = crestSource.GetAttributeValue("src", null);
-
-				results.TeamName = teamName;
-				results.Played = int.Parse(cells[1].InnerText);
-				results.Won = int.Parse(cells[2].InnerText);
-				results.Drawn = int.Parse(cells[3].InnerText);
-				results.Lost = int.Parse(cells[4].InnerText);
-				results.GoalsScored = int.Parse(cells[5].InnerText);
-				results.GoalsConceded = int.Parse(cells[6].InnerText);
-				results.Points = int.Parse(cells[8].InnerText);
-
-				results.TeamUrl = teamUri.ToString();
-				results.TeamCrest = crest;
-
-				teamData.Add(new TeamResultDisplaySet(results));
-
-				foundAnyTeams = true;
 			}
 
-			cache.Add(league.ToString(), teamData, DateTimeOffset.Now.AddMinutes(5));
-
-			return teamData;
-		}
-
-		private static Uri CreateUri(string url)
-		{
-			var uri = new Uri(url);
-
-			// convert // to /
-			var normalizedPath = string.Join("/",
-				uri.AbsolutePath.Split(['/'], StringSplitOptions.RemoveEmptyEntries)
-			);
-
-			var builder = new UriBuilder(uri)
+			if (string.IsNullOrEmpty(teamName))
 			{
-				Path = normalizedPath,
-			};
+				if (foundAnyTeams)
+				{
+					Trace.TraceInformation($"Didn't find team name in {row.InnerHtml}");
+					continue;
+				}
 
-			return builder.Uri;
+				throw new("Failed to find team names, has The Guardian changed it's site again?");
+			}
+
+			var crestSource = row.SelectNodes(".//img")[0];
+			string crest = crestSource.GetAttributeValue("src", null);
+
+			results.TeamName = teamName;
+			results.Played = int.Parse(cells[1].InnerText);
+			results.Won = int.Parse(cells[2].InnerText);
+			results.Drawn = int.Parse(cells[3].InnerText);
+			results.Lost = int.Parse(cells[4].InnerText);
+			results.GoalsScored = int.Parse(cells[5].InnerText);
+			results.GoalsConceded = int.Parse(cells[6].InnerText);
+			results.Points = int.Parse(cells[8].InnerText);
+
+			results.TeamUrl = teamUri.ToString();
+			results.TeamCrest = crest;
+
+			teamData.Add(new(results));
+
+			foundAnyTeams = true;
 		}
+
+		cache.Add(league.ToString(), teamData, DateTimeOffset.Now.AddMinutes(5));
+
+		return teamData;
+	}
+
+	private static Uri CreateUri(string url)
+	{
+		var uri = new Uri(url);
+
+		// convert // to /
+		string normalizedPath = string.Join("/",
+			uri.AbsolutePath.Split(['/'], StringSplitOptions.RemoveEmptyEntries)
+		);
+
+		var builder = new UriBuilder(uri)
+		{
+			Path = normalizedPath,
+		};
+
+		return builder.Uri;
 	}
 }

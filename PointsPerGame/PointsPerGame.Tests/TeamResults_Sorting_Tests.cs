@@ -5,9 +5,11 @@ using PointsPerGame.Core.Models;
 namespace PointsPerGame.Tests;
 
 [TestFixture]
-public class TeamResults_Sorting_Tests {
+public class TeamResults_Sorting_Tests
+{
 	[SetUp]
-	public void Setup() {
+	public void Setup()
+	{
 		teams = [];
 
 		// So, setup 5 teams: 
@@ -30,13 +32,15 @@ public class TeamResults_Sorting_Tests {
 
 	private List<TeamResultDisplaySet> teams = null!;
 
-	private void SetupTeam(string name, double pointsPerGame, int played, int goalDifference) {
+	private void SetupTeam(string name, double pointsPerGame, int played, int goalDifference)
+	{
 		const int baseGoals = 200;
 
 		// Calculate:
 		// GoalDifference (GD) = > total - conceded
 		// PointsPerGame (PPG) = > points / played
-		var teamResultSet = new TeamResults {
+		var teamResultSet = new TeamResults
+		{
 			TeamName = name,
 			GoalsScored = baseGoals,
 			GoalsConceded = baseGoals - goalDifference,
@@ -44,11 +48,12 @@ public class TeamResults_Sorting_Tests {
 			Played = played,
 		};
 
-		teams.Add(new (teamResultSet));
+		teams.Add(new(teamResultSet));
 	}
 
 	[Test]
-	public void Teams_Are_Setup_Correctly() {
+	public void Teams_Are_Setup_Correctly()
+	{
 		var team1 = teams.First();
 		team1.TeamName.Should().Be("team1");
 		team1.PointsPerGame.Should().BeApproximately(2.567, 0.001);
@@ -57,7 +62,8 @@ public class TeamResults_Sorting_Tests {
 	}
 
 	[Test]
-	public void TeamsResults_Sort_Correctly() {
+	public void TeamsResults_Sort_Correctly()
+	{
 		var sortedTeams = teams.SortTeams().ToList();
 		sortedTeams[0].TeamName.Should().Be("team5");
 		sortedTeams[1].TeamName.Should().Be("_team4");
