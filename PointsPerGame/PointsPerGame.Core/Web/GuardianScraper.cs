@@ -1,15 +1,16 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using PointsPerGame.Core.Mappings;
+using PointsPerGame.Core.Models;
+using PointsPerGame.Core.Names;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
-using HtmlAgilityPack;
-using PointsPerGame.Core.Mappings;
-using PointsPerGame.Core.Models;
-using PointsPerGame.Core.Names;
 
 namespace PointsPerGame.Core.Web;
 
@@ -204,7 +205,11 @@ public class GuardianScraper : BaseScraper
 			results.Points = int.Parse(cells[8].InnerText);
 
 			results.TeamUrl = teamUri.ToString();
-			results.TeamCrest = crest;
+
+			// crest url needs to be decoded getting - the &amp; links here break it
+			// https://i.guim.co.uk/img/sport/football/crests/11.png?width=20&amp;dpr=1&amp;s=none&amp;crop=none
+
+			results.TeamCrest = WebUtility.HtmlDecode(crest);
 
 			teamData.Add(new(results));
 
