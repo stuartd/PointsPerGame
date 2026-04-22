@@ -13,16 +13,12 @@ else if (rows.Count < 10)
     // TODO - this indicates an issue with the league page, as there are at least 10 teams in all the leagues
     <Missing Message="League page not found or data unavailable."/>
 }
-else if (!rows.Any())
-{
-    <p>No data available for this league.</p>
-}
 else
 {
     <table class="teamTable">
         <thead>
         <tr>
-            <th>Pos</th>
+            <th></th>
             <th>Team</th>
             <th>P</th>
             <th>W</th>
@@ -40,10 +36,8 @@ else
         {
             var r = rows[i];
             <tr>
-                <td>@(i)</td>
-                <td>
-                    <a href="@r.TeamUrl" target="_blank">URL</a>
-                </td>
+                <td><img src="@r.TeamCrest" alt="Not found" /></td>
+                <td><a href="@r.TeamUrl" target="_blank">@r.TeamName</a></td>
                 <td>@r.Played</td>
                 <td>@r.Won</td>
                 <td>@r.Drawn</td>

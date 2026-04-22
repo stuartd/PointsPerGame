@@ -21,18 +21,18 @@ public record TableRowDto(
 	public static TableRowDto FromResultSet(TeamResultDisplaySet teamResults)
 	{
 		return new(
-			teamResults.TeamName,
-			teamResults.Played,
-			teamResults.Won,
-			teamResults.Drawn,
-			teamResults.Lost,
-			teamResults.GoalsScored,
-			teamResults.GoalsConceded,
-			teamResults.GoalDifference,
-			teamResults.Points,
-			teamResults.PointsPerGame.ToString("F2"),
-			teamResults.TeamUrl ?? string.Empty,
-			teamResults.TeamCrest ?? string.Empty
+			TeamName : teamResults.TeamName,
+			Played : teamResults.Played,
+			Won : teamResults.Won,
+			Drawn : teamResults.Drawn,
+			Lost : teamResults.Lost,
+			GoalsScored : teamResults.GoalsScored,
+			GoalsConceded : teamResults.GoalsConceded,
+			GoalDifference : teamResults.GoalDifference,
+			Points : teamResults.Points,
+			PointsPerGame : teamResults.PointsPerGame.ToString("F2"),
+			TeamUrl : teamResults.TeamUrl ?? string.Empty,
+			TeamCrest : teamResults.TeamCrest ?? string.Empty
 		);
 	}
 }

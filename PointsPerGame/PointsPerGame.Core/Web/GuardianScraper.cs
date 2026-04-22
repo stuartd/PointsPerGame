@@ -213,7 +213,7 @@ public class GuardianScraper : BaseScraper
 
 		cache.Add(league.ToString(), teamData, DateTimeOffset.Now.AddMinutes(5));
 
-		return teamData;
+		return teamData.SortTeams().ToList();
 	}
 
 	private static Uri CreateUri(string url)
