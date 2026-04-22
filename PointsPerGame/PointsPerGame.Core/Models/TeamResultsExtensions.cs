@@ -3,19 +3,22 @@ using System.Linq;
 
 namespace PointsPerGame.Core.Models {
 	public static class TeamResultsExtensions {
-		public static IEnumerable<ITeamResults> SortTeams(this IEnumerable<ITeamResults> values) {
-			/*
 
-			 Teams are sorted by points per game, then by the number of games played.
-			 This means if two teams have the same points per game, then the team which has played the fewer games is sorted higher.
-			 If both of those values are equal, teams are sorted by goal difference, and then by team name. 
+		// TODO this should run on the raw data 
 
-			 */
-
+		public static IEnumerable<TeamResultDisplaySet> SortTeams(this IEnumerable<TeamResultDisplaySet> values) {
+			
+			// Teams are sorted by points per game descending (highest is best) 
 			return values.OrderByDescending(v => v.PointsPerGame)
+
+				// then by the number of games played, so if two teams have the same points per game
+				// the team which has played the fewer games is sorted higher.
 				.ThenBy(v => v.Played)
+
+				// If both of those values are equal, teams are sorted by goal difference (descending, so highest first)
+				// and then by team name. 
 				.ThenByDescending(v => v.GoalDifference)
-				.ThenBy(v => v.Team);
+				.ThenBy(v => v.TeamName);
 		}
 	}
 }

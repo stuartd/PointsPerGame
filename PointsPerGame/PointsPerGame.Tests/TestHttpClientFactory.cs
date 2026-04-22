@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
-using PointsPerGame.Core.Web;
-
-namespace PointsPerGame.Tests;
+﻿namespace PointsPerGame.Tests;
 
 public class IntegrationTests
 {

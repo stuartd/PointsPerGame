@@ -13,7 +13,11 @@ namespace PointsPerGame.Core.Web {
 		// base scraper is a *type* of data source which grabs the data from a web page
 		// and guardian scraper is an implementation of that
 
-		public Task<List<ITeamResults>> GetResultsAsync(League league);
+		public Task<List<TeamResultDisplaySet>> GetResultsAsync(League league);
+
+		// The other part is the URL that the team links to. 
+		// Currently just the guardian
+		// public abstract Uri GetTeamUri(string teamName);
 	}
 
 	public abstract class BaseScraper : IDataSource {
@@ -39,6 +43,6 @@ namespace PointsPerGame.Core.Web {
 			return await response.Content.ReadAsStreamAsync();
 		}
 
-		public abstract Task<List<ITeamResults>> GetResultsAsync(League league);
+		public abstract Task<List<TeamResultDisplaySet>> GetResultsAsync(League league);
 	}
 }

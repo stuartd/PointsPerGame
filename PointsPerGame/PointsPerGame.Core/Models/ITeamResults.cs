@@ -1,7 +1,10 @@
 namespace PointsPerGame.Core.Models {
+	/// <summary>
+	/// Represents a team's results, as derived from the data source.
+	/// </summary>
 	public interface ITeamResults {
-		string Url { get; }
-		string Team { get; }
+		string TeamUrl { get; }
+		string TeamName { get; }
 		int Won { get; }
 		int Drawn { get; }
 		int Lost { get; }
@@ -9,10 +12,6 @@ namespace PointsPerGame.Core.Models {
 		int GoalsScored { get; }
 		int GoalsConceded { get; }
 		int Points { get; }
-		double GoalsPerGame { get; } // never got implemented / used?
-		string GoalsPerGameDisplay { get; } // never got implemented / used?
-		double PointsPerGame { get; }
-		int GoalDifference { get; }
-		string Crest { get; }
+		string TeamCrest { get; }
 	}
 }

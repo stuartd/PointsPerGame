@@ -18,24 +18,30 @@ namespace PointsPerGame.Core.Web {
 		public GuardianScraper(IHttpClientFactory httpClientFactory) : base(httpClientFactory) {
 		}
 
-		public async Task<List<ITeamResults>> GetMultipleLeagueResults(IEnumerable<League> leagues) {
+		public async Task<List<TeamResultDisplaySet>> GetMultipleLeagueResults(IEnumerable<League> leagues) {
 			var allResults = new List<ITeamResults>();
 
 			foreach (var league in leagues) {
-				allResults.AddRange(await GetResultsAsync(league));
+				var results = await GetResultsAsync(league);
+
+				// ok closing in now
+				// we get the raw results below
+				allResults.AddRange(results);
 			}
 
-			return allResults.SortTeams().ToList();
+			return allResults.Select(a => new TeamResultDisplaySet(a)).SortTeams().ToList();
 		}
 
-		public override async Task<List<ITeamResults>> GetResultsAsync(League league) {
+		public override async Task<List<TeamResultDisplaySet>> GetResultsAsync(League league) {
 
-#if RELEASE
+
+// #if RELEASE
+#if DEBUG
 			if (cache.Contains(league.ToString())) {
-				return cache[league.ToString()] as List<ITeamResults>;
+				return cache[league.ToString()] as List<TeamResultDisplaySet>;
 			}
 #endif
-			var teams = new List<ITeamResults>();
+			List<TeamResultDisplaySet> teamData = [];
 
 			var doc = new HtmlDocument();
 
@@ -47,22 +53,21 @@ namespace PointsPerGame.Core.Web {
 			// Team / pld / won / pts etc
 
 
-			if (league == League.All) {
-				results = await GetMultipleLeagueResults(LeagueLists.AllLeagues);
-			}
-			else if (league == League.AllTopDivisions)
-			{
-				results = await GetMultipleLeagueResults(LeagueLists.AllTopDivisions);
-			}
-			else
-			{
-				results = await GetResults(league);
-				source = GuardianLeagueMappings.GetUriForLeague(league);
-			}
+			//if (league == League.All) {
+			//	teams = await GetMultipleLeagueResults(LeagueLists.AllLeagues);
+			//}
+			//else if (league == League.AllTopDivisions)
+			//{
+			//	teams = await GetMultipleLeagueResults(LeagueLists.AllTopDivisions);
+			//}
+			//else
+			//{
+			//	teams = await GetResults(league);
+			//	leagueUri = GuardianLeagueMappings.GetUriForLeague(league);
+			//}
 
 			var leagueUri = GuardianLeagueMappings.GetUriForLeague(league);
 
-			
 			var stream = await GetPageStreamAsync(leagueUri);
 
 			doc.Load(stream, Encoding.UTF8);
@@ -102,7 +107,7 @@ namespace PointsPerGame.Core.Web {
 			 */
 
 			foreach (var row in rows) {
-				var results = new ResultSet();
+				var results = new TeamResults();
 				var cells = row.SelectNodes(".//td");
 
 				if (cells == null) {
@@ -136,30 +141,34 @@ namespace PointsPerGame.Core.Web {
 
 			*/
 
-				string team, url = null;
+				string teamName;
+				Uri teamUri = null;
 				var anchor = row.SelectSingleNode(".//a[contains(@class, 'dcr-aq6qi6')]");
 
 				if (anchor == null) {
-					team ="Grauniad bug (reported 13/5/2025)";
+					teamName ="Grauniad bug (reported 13/5/2025)";
 				}
 				else
 				{
-					team = anchor?.InnerText.Trim(); // "Arsenal"
-					url = anchor.GetAttributeValue("href", null);
-					if (string.IsNullOrEmpty(url) == false)
+					teamName = anchor?.InnerText.Trim(); // "Arsenal"
+					var teamUrl = anchor.GetAttributeValue("href", null);
+					if (!string.IsNullOrEmpty(teamUrl))
 					{
 						// double slashes - // - in URL causing 404 now
 						// the format of url the returned anchor has changed over the years
 						// safer to make sure there is a slash and remove doubles rather than 
 						// assume it's there and have to add one.
 
-						// would be better to just spin up a URL but .net framework lacking in tools
-						// todo (!!)
-						url = FixUrl($"https://www.theguardian.com/{url}/fixtures");
+						// TODO - make url nicely
+						teamUri = CreateUri($"https://www.theguardian.com/{teamUrl}/fixtures");
+					}
+					else {
+						// oh, the team URI is missing?
+						// TODO - handle
 					}
 				}
 
-				if (string.IsNullOrEmpty(team)) {
+				if (string.IsNullOrEmpty(teamName)) {
 					if (foundAnyTeams) {
 						Trace.TraceInformation($"Didn't find team name in {row.InnerHtml}");
 						continue;
@@ -171,45 +180,43 @@ namespace PointsPerGame.Core.Web {
 				var crestSource = row.SelectNodes(".//img")[0];
 				string crest = crestSource.GetAttributeValue("src", null);
 
+				results.TeamName = teamName;
 				results.Played = int.Parse(cells[1].InnerText);
 				results.Won = int.Parse(cells[2].InnerText);
 				results.Drawn = int.Parse(cells[3].InnerText);
 				results.Lost = int.Parse(cells[4].InnerText);
 				results.GoalsScored = int.Parse(cells[5].InnerText);
 				results.GoalsConceded = int.Parse(cells[6].InnerText);
-				results.GoalDifference = int.Parse(cells[7].InnerText);
 				results.Points = int.Parse(cells[8].InnerText);
 
-				results.TeamUrl = url;
-				results.Crest = crest;
+				results.TeamUrl = teamUri.ToString();
+				results.TeamCrest = crest;
 
-				teams.Add(new CombinedTeamResult(team, results));
+				teamData.Add(new TeamResultDisplaySet(results));
 
 				foundAnyTeams = true;
 			}
 
-			var result = teams.SortTeams().ToList();
-			cache.Add(league.ToString(), result, DateTimeOffset.Now.AddMinutes(5));
+			cache.Add(league.ToString(), teamData, DateTimeOffset.Now.AddMinutes(5));
 
-			return result;
+			return teamData;
 		}
-		public static string FixUrl(string url)
+
+		private static Uri CreateUri(string url)
 		{
 			var uri = new Uri(url);
 
+			// convert // to /
 			var normalizedPath = string.Join("/",
-				uri.AbsolutePath
-					.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
+				uri.AbsolutePath.Split(['/'], StringSplitOptions.RemoveEmptyEntries)
 			);
 
 			var builder = new UriBuilder(uri)
 			{
-				Path = normalizedPath
+				Path = normalizedPath,
 			};
 
-			return builder.Uri.ToString();
+			return builder.Uri;
 		}
-
-
 	}
 }

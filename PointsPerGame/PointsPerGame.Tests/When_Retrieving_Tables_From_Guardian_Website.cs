@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using NUnit.Framework;
-using PointsPerGame.Core.Names;
-using PointsPerGame.Core.Web;
-
-namespace PointsPerGame.Tests {
+﻿namespace PointsPerGame.Tests {
 	//[Explicit]
 	//[TestFixture]
 	//public class When_Retrieving_Tables_From_Guardian_Website {

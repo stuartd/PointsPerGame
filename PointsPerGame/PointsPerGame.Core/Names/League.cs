@@ -55,14 +55,13 @@ namespace PointsPerGame.Core.Names {
 			.Cast<League>()
 			.Except([League.All, League.AllTopDivisions]).ToArray();
 
-		public static readonly League[] AllTopDivisions =
-		{
+		public static readonly League[] AllTopDivisions = [
 			League.EnglishPremierLeague, 
 			League.SPL, 
 			League.LaLiga, 
 			League.Ligue1, 
 			League.Bundesliga, 
 			League.SeriaA,
-		};
+		];
 	}
 }

@@ -1,5 +1,6 @@
 @page "/tables/{leagueId:int}"
-@inject PointsPerGame.UI.Blazor.Services.TablesService TablesService
+@using PointsPerGame.Core.DTOs
+@inject Services.TablesService TablesService
 
 <h3>League Table</h3>
 
@@ -7,8 +8,9 @@
 {
     <p>Loading...</p>
 }
-else if (rows.Count == 4)
+else if (rows.Count < 10)
 {
+    // TODO - this indicates an issue with the league page, as there are at least 10 teams in all the leagues
     <Missing Message="League page not found or data unavailable." />
 }
 else if (!rows.Any())
@@ -34,12 +36,12 @@ else
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < rows.Count; i++)
+            @for (int i = 1; i < rows.Count; i++)
             {
                 var r = rows[i];
                 <tr>
-                    <td>@(i + 1)</td>
-                    <td><a href="@r.TeamUrl" target="_blank">@r.Team</a></td>
+                    <td>@(i)</td>
+                    <td><a href="@r.TeamUrl" target="_blank">URL</a></td>
                     <td>@r.Played</td>
                     <td>@r.Won</td>
                     <td>@r.Drawn</td>
@@ -59,7 +61,7 @@ else
     [Parameter]
     public int LeagueId { get; set; }
 
-    private List<PointsPerGame.UI.Blazor.Services.TablesService.TableRowDto>? rows;
+    private IReadOnlyList<TableRowDto>? rows;
 
     protected override async Task OnInitializedAsync()
     {
