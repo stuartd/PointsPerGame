@@ -32,9 +32,8 @@ else
         </tr>
         </thead>
         <tbody>
-        @for (var i = 1; i < rows.Count; i++)
+        @foreach (var r in rows)
         {
-            var r = rows[i];
             <tr>
                 <td><img src="@r.TeamCrest" alt="Not found" /></td>
                 <td><a href="@r.TeamUrl" target="_blank">@r.TeamName</a></td>
@@ -60,7 +59,7 @@ else
 
     private IReadOnlyList<TableRowDto>? rows;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         rows = await TablesService.GetLeagueTableAsync(LeagueId);
     }
