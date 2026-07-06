@@ -1,8 +1,20 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
+# Git metadata
+.gitattributes text eol=lf
+.gitignore     text eol=lf
+
 # Custom for Visual Studio
-*.cs     diff=csharp
+*.cs     text eol=lf diff=csharp
+*.csproj text eol=lf
+*.sln    text eol=lf
+*.slnx   text eol=lf
+*.razor  text eol=lf
+*.cshtml text eol=lf
+*.json   text eol=lf
+*.css    text eol=lf
+*.md     text eol=lf
 
 # Standard to msysgit
 *.doc	 diff=astextplain

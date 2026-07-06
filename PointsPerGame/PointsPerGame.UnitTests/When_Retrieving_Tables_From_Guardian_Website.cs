@@ -1,34 +1,51 @@
-﻿using System;
 using System.Collections;
-using System.Linq;
-using System.Threading.Tasks;
-using NUnit.Framework;
 using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Web;
+using NUnit.Framework;
 
-namespace PointsPerGame.UnitTests {
-	[Explicit]
-	[TestFixture]
-	public class When_Retrieving_Tables_From_Guardian_Website {
-		[TestCaseSource(typeof(TableTestCaseSource), nameof(TableTestCaseSource.Tables))]
-		[Test]
-		public async Task All_Tables_Should_Be_Retrievable(League league) {
-			var teams = await GuardianScraper.GetResults(league);
+namespace PointsPerGame.UnitTests;
 
-			// If the link is wrong, the table list page is returned, which then only returns 4 values
-			Assert.Greater(teams.Count, 4);
+[Explicit]
+[TestFixture]
+public class When_Retrieving_Tables_From_Guardian_Website
+{
+	private readonly IDataSource dataSource = new GuardianScraper(TestHttpClientFactory.Instance);
+
+	[TestCaseSource(typeof(TableTestCaseSource), nameof(TableTestCaseSource.Tables))]
+	[Test]
+	public async Task All_Tables_Should_Be_Retrievable(League league)
+	{
+		var teams = await dataSource.GetResultsAsync(league);
+
+		// If the link is wrong, the table list page is returned, which then only returns 4 values.
+		Assert.That(teams.Count, Is.GreaterThan(4));
+	}
+
+	private sealed class TestHttpClientFactory : IHttpClientFactory
+	{
+		public static readonly IHttpClientFactory Instance = new TestHttpClientFactory();
+
+		private TestHttpClientFactory()
+		{
 		}
 
-		private class TableTestCaseSource {
-			public static IEnumerable Tables {
-				get {
-					foreach (var league in Enum.GetValues(typeof(League)).Cast<League>()) {
-						if (league == League.AllTopDivisions || league == League.All) {
-							continue;
-						}
+		public HttpClient CreateClient(string name) => new();
+	}
 
-						yield return league;
+	private class TableTestCaseSource
+	{
+		public static IEnumerable Tables
+		{
+			get
+			{
+				foreach (var league in Enum.GetValues<League>())
+				{
+					if (league is League.AllTopDivisions or League.All)
+					{
+						continue;
 					}
+
+					yield return league;
 				}
 			}
 		}
