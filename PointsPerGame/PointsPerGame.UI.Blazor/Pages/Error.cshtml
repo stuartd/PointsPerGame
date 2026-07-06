@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model PointsPerGame.UI.Blazor.Pages.ErrorModel
 
 <!DOCTYPE html>
@@ -8,15 +8,14 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Error</title>
-    <link href="~/css/bootstrap/bootstrap.min.css" rel="stylesheet"/>
     <link href="~/css/site.css" rel="stylesheet" asp-append-version="true"/>
 </head>
 
 <body>
 <div class="main">
-    <div class="content px-4">
-        <h1 class="text-danger">Error.</h1>
-        <h2 class="text-danger">An error occurred while processing your request.</h2>
+    <div class="content error-content">
+        <h1 class="error-heading">Error.</h1>
+        <h2 class="error-heading">An error occurred while processing your request.</h2>
 
         @if (Model.ShowRequestId)
         {

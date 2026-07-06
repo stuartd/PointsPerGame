@@ -1,40 +1,33 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">PointsPerGame.UI.Blazor</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
+<div class="nav-header">
+    <a class="app-title" href="">Points Per Game</a>
+    <button title="Navigation menu" class="nav-toggle" @onclick="ToggleNavMenu">
+        <span class="nav-toggle-icon"></span>
+    </button>
 </div>
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
+    <nav class="nav-list">
+        <div class="nav-item">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                Home
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Trash this?
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Or show on desktop as league list?
+        <div class="nav-item">
+            <NavLink class="nav-link" href="tables">
+                Tables
             </NavLink>
         </div>
     </nav>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool isNavMenuHidden = true;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string? NavMenuCssClass => isNavMenuHidden ? "nav-hidden" : null;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        isNavMenuHidden = !isNavMenuHidden;
     }
 
 }

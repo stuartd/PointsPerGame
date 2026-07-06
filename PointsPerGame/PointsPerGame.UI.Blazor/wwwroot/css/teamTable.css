@@ -1,49 +1,39 @@
-﻿body {
-	font-family: Helvetica, Calibri, Verdana, Tahoma, sans-serif;
-	background-color: #FEFEFE;
-	font-size: 87%;
-	font-weight: normal;
-	font-style: normal;
-	font-variant: normal;
-	text-transform: none;
-	color: #000000;
-	margin-left: 5%;
+.teamTable {
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    width: 100%;
 }
 
-.teamtable {
-	border: 0.5px solid black;
+.teamTable th,
+.teamTable td {
+    border-bottom: 1px solid #d7dde5;
+    padding: 0.45rem 0.55rem;
+    text-align: right;
+    white-space: nowrap;
 }
 
-.teamtable thead {
-	font-size: 100%;
-	margin: 20px 0 10px 0;
+.teamTable th:nth-child(2),
+.teamTable td:nth-child(2) {
+    text-align: left;
+    width: 34%;
 }
 
-.teamtable * {
-	text-align: center;
-	width: 10%;
+.teamTable th {
+    background-color: #e8f4d0;
+    color: #1f2933;
+    font-weight: 700;
 }
 
-	.teamtable *.firstcol {
-		text-align: left;
-		width: 34%;
-	}
-
-.teamtable th {
-	background-color: #ae3;
+.teamTable tbody tr:nth-child(odd) {
+    background-color: #f7fbf1;
 }
 
-.teamtable tr.odd {
-	background-color: #ded;
+.teamTable tbody tr:nth-child(even) {
+    background-color: #f5f8fc;
 }
 
-.teamtable tr.even {
-	background-color: #dde;
-}
-
-.team-crest {
-	height: 0.9rem;
-	margin-right: 0.3125rem;
-	max-width: 0.9375rem;
-	vertical-align: middle;
+.teamTable img {
+    height: 0.9rem;
+    max-width: 0.9375rem;
+    vertical-align: middle;
 }
