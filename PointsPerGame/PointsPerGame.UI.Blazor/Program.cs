@@ -1,3 +1,4 @@
+using PointsPerGame.Core.Services;
 using PointsPerGame.Core.Web;
 using PointsPerGame.UI.Blazor.Services;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<TablesService>();
+builder.Services.AddScoped<ILeagueTableService, LeagueTableService>();
 builder.Services.AddScoped<IDataSource, GuardianScraper>();
 builder.Services.AddHttpClient();
 

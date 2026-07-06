@@ -1,12 +1,12 @@
 using PointsPerGame.Core.Names;
-using PointsPerGame.Core.Web;
+using PointsPerGame.Core.Services;
 using System.ComponentModel;
 using System.Reflection;
 using PointsPerGame.Core.DTOs;
 
 namespace PointsPerGame.UI.Blazor.Services;
 
-public class TablesService(IDataSource dataSource)
+public class TablesService(ILeagueTableService leagueTableService)
 {
 	public static Task<Dictionary<int, string>> GetLeagueLinksAsync()
 	{
@@ -25,7 +25,7 @@ public class TablesService(IDataSource dataSource)
 	public async Task<IReadOnlyList<TableRowDto>> GetLeagueTableAsync(int leagueId)
 	{
 		var league = (League)leagueId;
-		var resultData = await dataSource.GetResultsAsync(league);
+		var resultData = await leagueTableService.GetResultsAsync(league);
 
 		return [..resultData.Select(TableRowDto.FromResultSet)];
 	}
