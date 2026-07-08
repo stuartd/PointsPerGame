@@ -1,4 +1,3 @@
-﻿using System;
 using System.Diagnostics;
 
 namespace PointsPerGame.Core.Extensions;
@@ -6,39 +5,37 @@ namespace PointsPerGame.Core.Extensions;
 [DebuggerStepThrough]
 public static class StringExtensions
 {
-	extension(string s)
-	{
-		public bool HasValue()
-		{
-			return !s.IsNullOrEmpty();
-		}
+    public static bool HasValue(this string? value)
+    {
+        return !string.IsNullOrEmpty(value);
+    }
 
-		public bool IsNullOrEmpty()
-		{
-			return string.IsNullOrEmpty(s);
-		}
+    public static bool IsNullOrEmpty(this string? value)
+    {
+        return string.IsNullOrEmpty(value);
+    }
 
-		public bool IsNullOrWhiteSpace()
-		{
-			return string.IsNullOrWhiteSpace(s);
-		}
+    public static bool IsNullOrWhiteSpace(this string? value)
+    {
+        return string.IsNullOrWhiteSpace(value);
+    }
 
-		/// <summary>
-		/// If the string is longer than the allowed length, trim it and add an ellipsis  as the last character
-		/// </summary>
-		public string Truncate(int length)
-		{
-			if (s.IsNullOrEmpty() || s.Length < length)
-			{
-				return s;
-			}
+    /// <summary>
+    /// If the string is longer than the allowed length, trim it and add an ellipsis as the last character.
+    /// </summary>
+    public static string? Truncate(this string? value, int length)
+    {
+        if (string.IsNullOrEmpty(value) || value.Length < length)
+        {
+            return value;
+        }
 
-			if (length < 1)
-			{
-				throw new ArgumentException("Length cannot be less than one", nameof(length));
-			}
+        if (length < 1)
+        {
+            throw new ArgumentException("Length cannot be less than one", nameof(length));
+        }
 
-			return s[..(length - 1)] + "…";
-		}
-	}
+        return value[..(length - 1)] + "...";
+    }
 }
+

@@ -1,13 +1,11 @@
 @namespace PointsPerGame.UI.Blazor.Pages
 
-<div class="alert alert-warning">
+<div class="notice" role="status">
     <strong>Missing:</strong>
     <div>@Message</div>
 </div>
 
 @code {
-
     [Parameter]
     public string Message { get; set; } = string.Empty;
-
 }

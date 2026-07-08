@@ -1,9 +1,11 @@
+@page "/"
 @page "/tables"
 @using PointsPerGame.UI.Blazor.Services
 
-<h1>Points Per Game</h1>
+<PageTitle>Points Per Game</PageTitle>
 
-<h2>Available Tables</h2>
+<h1>Points Per Game</h1>
+<p class="lede">Football tables sorted by points per game, then games played, goal difference, and team name.</p>
 
 @if (links == null)
 {
@@ -11,32 +13,29 @@
 }
 else
 {
-    <ul>
-        @foreach (var kv in links)
-        {
-            <li>
-                <a href="/tables/@kv.Key">@kv.Value</a>
-            </li>
-        }
-    </ul>
+    <section aria-labelledby="tables-heading">
+        <h2 id="tables-heading">Available Tables</h2>
+        <ul class="league-links">
+            @foreach (var kv in links)
+            {
+                <li>
+                    <a href="/tables/@kv.Key">@kv.Value</a>
+                </li>
+            }
+        </ul>
+    </section>
 
-    <h2>Sorting</h2>
-    <p>Teams are sorted by points per game, then by the number of games played.</p>
-    <p>If two teams have the same points per game, the team which has played fewer games is sorted higher. If both values are equal, teams are sorted by goal difference, and then by team name.</p>
-
-    <p>
-        <a href="https://github.com/stuartd/PointsPerGame">Site code (GitHub)</a>
-        <br/>
-        <a href="https://github.com/stuartd/PointsPerGame/issues">Having a problem or idea? Report it on GitHub</a>
-    </p>
+    <section aria-labelledby="sorting-heading">
+        <h2 id="sorting-heading">Sorting</h2>
+        <p>Teams are sorted by points per game, then by the number of games played. If both values are equal, teams are sorted by goal difference, then by team name.</p>
+    </section>
 }
 
 @code {
-    private Dictionary<int, string>? links;
+    private IReadOnlyDictionary<int, string>? links;
 
     protected override async Task OnInitializedAsync()
     {
         links = await TablesService.GetLeagueLinksAsync();
     }
-
 }

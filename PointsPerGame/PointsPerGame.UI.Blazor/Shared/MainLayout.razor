@@ -3,17 +3,17 @@
 <PageTitle>Points Per Game</PageTitle>
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
-
-    <main>
-        <div class="top-row">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand" href="">Points Per Game</a>
+            <nav class="site-nav" aria-label="Primary">
+                <a href="">Tables</a>
+                <a href="https://github.com/stuartd/PointsPerGame" target="_blank" rel="noopener noreferrer">Code</a>
+            </nav>
         </div>
+    </header>
 
-        <article class="content">
-            @Body
-        </article>
+    <main class="content">
+        @Body
     </main>
 </div>

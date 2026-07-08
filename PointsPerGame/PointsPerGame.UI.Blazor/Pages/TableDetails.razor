@@ -2,66 +2,100 @@
 @using PointsPerGame.Core.DTOs
 @inject Services.TablesService TablesService
 
-<h3>League Table</h3>
+<PageTitle>@PageTitle</PageTitle>
+
+<h1>@PageTitle</h1>
 
 @if (rows == null)
 {
     <p>Loading...</p>
 }
-else if (rows.Count < 10)
+else if (errorMessage != null)
 {
-    // TODO - this indicates an issue with the league page, as there are at least 10 teams in all the leagues
-    <Missing Message="League page not found or data unavailable."/>
+    <Missing Message="@errorMessage"/>
 }
 else
 {
-    <table class="teamTable">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Team</th>
-            <th>P</th>
-            <th>W</th>
-            <th>D</th>
-            <th>L</th>
-            <th>GF</th>
-            <th>GA</th>
-            <th>GD</th>
-            <th>Pts</th>
-            <th>PPG</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var r in rows)
-        {
+    <div class="table-scroll">
+        <table class="teamTable">
+            <thead>
             <tr>
-                <td><img src="@r.TeamCrest" alt="Not found" /></td>
-                <td><a href="@r.TeamUrl" target="_blank">@r.TeamName</a></td>
-                <td>@r.Played</td>
-                <td>@r.Won</td>
-                <td>@r.Drawn</td>
-                <td>@r.Lost</td>
-                <td>@r.GoalsScored</td>
-                <td>@r.GoalsConceded</td>
-                <td>@r.GoalDifference</td>
-                <td>@r.Points</td>
-                <td>@r.PointsPerGame</td>
+                <th></th>
+                <th>Team</th>
+                <th>P</th>
+                <th>W</th>
+                <th>D</th>
+                <th>L</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>GD</th>
+                <th>Pts</th>
+                <th>PPG</th>
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @foreach (var r in rows)
+            {
+                <tr>
+                    <td><img src="@r.TeamCrest" alt="" /></td>
+                    <td><a href="@r.TeamUrl" target="_blank" rel="noopener noreferrer">@r.TeamName</a></td>
+                    <td>@r.Played</td>
+                    <td>@r.Won</td>
+                    <td>@r.Drawn</td>
+                    <td>@r.Lost</td>
+                    <td>@r.GoalsScored</td>
+                    <td>@r.GoalsConceded</td>
+                    <td>@r.GoalDifference</td>
+                    <td>@r.Points</td>
+                    <td>@r.PointsPerGame</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 }
 
 @code {
-
     [Parameter]
     public int LeagueId { get; set; }
 
     private IReadOnlyList<TableRowDto>? rows;
+    private string? leagueName;
+    private string? errorMessage;
+
+    private string PageTitle => leagueName == null ? "League Table" : $"{leagueName} Table";
 
     protected override async Task OnParametersSetAsync()
     {
-        rows = await TablesService.GetLeagueTableAsync(LeagueId);
-    }
+        rows = null;
+        errorMessage = null;
+        leagueName = TablesService.GetLeagueName(LeagueId);
 
+        if (leagueName == null)
+        {
+            errorMessage = "Table not found.";
+            rows = [];
+            return;
+        }
+
+        try
+        {
+            rows = await TablesService.GetLeagueTableAsync(LeagueId);
+
+            if (rows.Count < 10)
+            {
+                errorMessage = "League page not found or data unavailable.";
+            }
+        }
+        catch (HttpRequestException)
+        {
+            errorMessage = "The table could not be loaded right now.";
+            rows = [];
+        }
+        catch (InvalidOperationException)
+        {
+            errorMessage = "League page not found or data unavailable.";
+            rows = [];
+        }
+    }
 }

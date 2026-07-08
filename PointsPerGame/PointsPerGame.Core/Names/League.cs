@@ -1,51 +1,51 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace PointsPerGame.Core.Names;
 
 public enum League
 {
-	[Description("Premier League")]
-	EnglishPremierLeague = 1,
+    [Description("Premier League")]
+    EnglishPremierLeague = 1,
 
-	[Description("Championship")]
-	EnglishChampionship,
+    [Description("Championship")]
+    EnglishChampionship,
 
-	[Description("League One")]
-	EnglishLeagueOne,
+    [Description("League One")]
+    EnglishLeagueOne,
 
-	[Description("League Two")]
-	EnglishLeagueTwo,
+    [Description("League Two")]
+    EnglishLeagueTwo,
 
-	[Description("Women's Super League")]
-	WSL,
+    [Description("Women's Super League")]
+    WSL,
 
-	[Description("Scottish Premier League")]
-	SPL,
+    [Description("Scottish Premier League")]
+    SPL,
 
-	[Description("Scottish Championship")]
-	ScottishChampionship,
+    [Description("Scottish Championship")]
+    ScottishChampionship,
 
-	[Description("Scottish League One")]
-	ScottishLeagueOne,
+    [Description("Scottish League One")]
+    ScottishLeagueOne,
 
-	[Description("Scottish League Two")]
-	ScottishLeagueTwo,
+    [Description("Scottish League Two")]
+    ScottishLeagueTwo,
 
-	[Description("La Liga")]
-	LaLiga,
+    [Description("La Liga")]
+    LaLiga,
 
-	[Description("Ligue 1")]
-	Ligue1,
+    [Description("Ligue 1")]
+    Ligue1,
 
-	[Description("Bundesliga")]
-	Bundesliga,
+    [Description("Bundesliga")]
+    Bundesliga,
 
-	[Description("Serie A")]
-	SeriaA,
+    [Description("Serie A")]
+    SerieA,
 
-	[Description("All leagues")]
-	All,
+    [Description("All leagues")]
+    All,
 
-	[Description("All top divisions")]
-	AllTopDivisions,
+    [Description("All top divisions")]
+    AllTopDivisions,
 }

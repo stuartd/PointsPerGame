@@ -5,6 +5,26 @@ body {
     margin: 0;
 }
 
+body {
+    line-height: 1.45;
+}
+
+h1,
+h2,
+h3 {
+    color: #102033;
+}
+
+h1 {
+    font-size: 1.75rem;
+    margin: 0 0 1rem;
+}
+
+h2 {
+    font-size: 1.15rem;
+    margin: 0 0 0.8rem;
+}
+
 h1:focus {
     outline: none;
 }
@@ -13,24 +33,18 @@ a {
     color: #0071c1;
 }
 
-a:focus,
-.nav-toggle:focus,
-.form-control:focus,
-.form-check-input:focus {
+a:focus {
     box-shadow: 0 0 0 0.1rem #fff, 0 0 0 0.25rem #258cfb;
     outline: none;
 }
 
-.valid.modified:not([type="checkbox"]) {
-    outline: 1px solid #26b050;
-}
-
-.invalid {
-    outline: 1px solid red;
-}
-
-.validation-message {
-    color: red;
+.notice {
+    background: #fff8db;
+    border: 1px solid #ead78b;
+    border-radius: 6px;
+    color: #4f3f00;
+    max-width: 42rem;
+    padding: 0.85rem 1rem;
 }
 
 .error-content {

@@ -3,6 +3,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <OutputType>Library</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,9 +16,5 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.6" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="10.0.6" />
     <PackageReference Include="System.Runtime.Caching" Version="10.0.6" />
-  </ItemGroup>
-  <ItemGroup Label="Compile items now included by globbing that were not in the original project file">
-    <Compile Remove="Names\Leagues.cs" />
-    <Compile Remove="Models\TeamRow.cs" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,0 @@
-{
-  "marketplace_plugins": [
-    "dotnet/modernize-dotnet"
-  ],
-  "notes": "Install in a Copilot/MCP session with: /plugin marketplace add dotnet/modernize-dotnet"
-}

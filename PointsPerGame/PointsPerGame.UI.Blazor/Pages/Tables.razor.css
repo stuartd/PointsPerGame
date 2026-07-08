@@ -1,0 +1,36 @@
+.lede {
+    color: #50647a;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: -0.35rem 0 1.75rem;
+    max-width: 44rem;
+}
+
+section + section {
+    margin-top: 2rem;
+}
+
+.league-links {
+    display: grid;
+    gap: 0.45rem 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.league-links a {
+    background: #ffffff;
+    border: 1px solid #d9e1ea;
+    border-radius: 6px;
+    color: #075fae;
+    display: block;
+    font-weight: 600;
+    padding: 0.7rem 0.85rem;
+    text-decoration: none;
+}
+
+.league-links a:hover {
+    border-color: #9dbbd7;
+    text-decoration: underline;
+}
