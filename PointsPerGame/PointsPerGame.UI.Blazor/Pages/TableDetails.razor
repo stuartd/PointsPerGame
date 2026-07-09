@@ -1,10 +1,20 @@
 @page "/tables/{leagueId:int}"
 @using PointsPerGame.Core.DTOs
+@using PointsPerGame.UI.Blazor.Services
 @inject Services.TablesService TablesService
 
 <PageTitle>@PageTitle</PageTitle>
 
-<h1>@PageTitle</h1>
+<h1>
+    @if (sourceUrl == null)
+    {
+        @PageTitle
+    }
+    else
+    {
+        <a href="@sourceUrl" target="_blank" rel="noopener noreferrer">@PageTitle</a>
+    }
+</h1>
 
 @if (rows == null)
 {
@@ -22,15 +32,42 @@ else
             <tr>
                 <th></th>
                 <th>Team</th>
-                <th>P</th>
-                <th>W</th>
-                <th>D</th>
-                <th>L</th>
-                <th>GF</th>
-                <th>GA</th>
-                <th>GD</th>
-                <th>Pts</th>
-                <th>PPG</th>
+                <th>
+                    <abbr class="stat-label-short" title="Played">P</abbr>
+                    <span class="stat-label-long">Played</span>
+                </th>
+                <th>
+                    <abbr class="stat-label-short" title="Won">W</abbr>
+                    <span class="stat-label-long">Won</span>
+                </th>
+                <th>
+                    <abbr class="stat-label-short" title="Drawn">D</abbr>
+                    <span class="stat-label-long">Drawn</span>
+                </th>
+                <th>
+                    <abbr class="stat-label-short" title="Lost">L</abbr>
+                    <span class="stat-label-long">Lost</span>
+                </th>
+                <th>
+                    <abbr class="stat-label-short" title="Goals For">GF</abbr>
+                    <span class="stat-label-long">Goals For</span>
+                </th>
+                <th>
+                    <abbr class="stat-label-short" title="Goals Against">GA</abbr>
+                    <span class="stat-label-long">Goals Against</span>
+                </th>
+                <th>
+                    <abbr class="stat-label-short" title="Goal Difference">GD</abbr>
+                    <span class="stat-label-long">Goal Diff</span>
+                </th>
+                <th>
+                    <abbr class="stat-label-short" title="Points">Pts</abbr>
+                    <span class="stat-label-long">Points</span>
+                </th>
+                <th>
+                    <abbr class="stat-label-short" title="Points Per Game">PPG</abbr>
+                    <span class="stat-label-long">Points/Game</span>
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -62,6 +99,7 @@ else
     private IReadOnlyList<TableRowDto>? rows;
     private string? leagueName;
     private string? errorMessage;
+    private string? sourceUrl;
 
     private string PageTitle => leagueName == null ? "League Table" : $"{leagueName} Table";
 
@@ -70,6 +108,7 @@ else
         rows = null;
         errorMessage = null;
         leagueName = TablesService.GetLeagueName(LeagueId);
+        sourceUrl = TablesService.GetLeagueSourceUrl(LeagueId);
 
         if (leagueName == null)
         {

@@ -10,27 +10,47 @@ section + section {
     margin-top: 2rem;
 }
 
-.league-links {
-    display: grid;
-    gap: 0.45rem 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.available-tables {
+    background: #ffffff;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    max-width: 38rem;
+    width: 100%;
 }
 
-.league-links a {
-    background: #ffffff;
-    border: 1px solid #d9e1ea;
-    border-radius: 6px;
+.available-tables th,
+.available-tables td {
+    border-bottom: 1px solid #d9e1ea;
+    padding: 0.55rem 0.7rem;
+    text-align: left;
+}
+
+.available-tables th {
+    background-color: #e8f4d0;
+    color: #1f2933;
+    font-weight: 700;
+}
+
+.available-tables th:last-child,
+.available-tables td:last-child {
+    text-align: right;
+    width: 5rem;
+}
+
+.available-tables tbody tr:nth-child(odd) {
+    background-color: #f7fbf1;
+}
+
+.available-tables tbody tr:nth-child(even) {
+    background-color: #f5f8fc;
+}
+
+.available-tables a {
     color: #075fae;
-    display: block;
     font-weight: 600;
-    padding: 0.7rem 0.85rem;
     text-decoration: none;
 }
 
-.league-links a:hover {
-    border-color: #9dbbd7;
+.available-tables a:hover {
     text-decoration: underline;
 }

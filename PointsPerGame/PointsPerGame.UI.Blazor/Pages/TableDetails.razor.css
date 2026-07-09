@@ -4,7 +4,17 @@ h1 {
     margin: 0 0 1rem;
 }
 
+h1 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+h1 a:hover {
+    text-decoration: underline;
+}
+
 .table-scroll {
+    container-type: inline-size;
     overflow-x: auto;
 }
 
@@ -46,4 +56,22 @@ h1 {
     height: 0.9rem;
     max-width: 0.9375rem;
     vertical-align: middle;
+}
+
+.stat-label-short {
+    text-decoration: none;
+}
+
+.stat-label-long {
+    display: none;
+}
+
+@container (min-width: 62rem) {
+    .stat-label-short {
+        display: none;
+    }
+
+    .stat-label-long {
+        display: inline;
+    }
 }

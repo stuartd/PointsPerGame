@@ -1,4 +1,7 @@
 using System.ComponentModel;
+// League names can be abbreviations or multilingual
+// ReSharper disable IdentifierTypo
+// ReSharper disable InconsistentNaming
 
 namespace PointsPerGame.Core.Names;
 

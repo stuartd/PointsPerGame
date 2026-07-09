@@ -15,14 +15,23 @@ else
 {
     <section aria-labelledby="tables-heading">
         <h2 id="tables-heading">Available Tables</h2>
-        <ul class="league-links">
+        <table class="available-tables">
+            <thead>
+            <tr>
+                <th>Table</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
             @foreach (var kv in links)
             {
-                <li>
-                    <a href="/tables/@kv.Key">@kv.Value</a>
-                </li>
+                <tr>
+                    <td>@kv.Value</td>
+                    <td><a href="/tables/@kv.Key">View</a></td>
+                </tr>
             }
-        </ul>
+            </tbody>
+        </table>
     </section>
 
     <section aria-labelledby="sorting-heading">
