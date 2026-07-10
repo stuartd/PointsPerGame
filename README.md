@@ -5,7 +5,7 @@ A small Blazor Server site for viewing football tables sorted by points per game
 ## Run locally
 
 ```powershell
-cd .\PointsPerGame
+cd .\src
 dotnet run --project .\PointsPerGame.UI.Blazor\PointsPerGame.UI.Blazor.csproj --launch-profile https
 ```
 

@@ -68,30 +68,24 @@ public class LeagueTableServiceTests
 		results.Select(r => r.TeamName).Should().Equal("higher", "lower");
 	}
 
-	private static TeamResultDisplaySet Team(string name, int points, int played)
-	{
-		return new(new TeamResults
-		{
-			TeamName = name,
-			TeamUrl = string.Empty,
-			TeamCrest = string.Empty,
-			Played = played,
-			Points = points,
-		});
-	}
+    private static TeamResultDisplaySet Team(string name, int points, int played) => new(new TeamResults
+    {
+        TeamName = name,
+        TeamUrl = string.Empty,
+        TeamCrest = string.Empty,
+        Played = played,
+        Points = points,
+    });
 
-	private sealed class StubDataSource : IDataSource
+    private sealed class StubDataSource : IDataSource
 	{
 		private readonly Dictionary<League, List<TeamResultDisplaySet>> resultsByLeague = [];
 
 		public List<League> RequestedLeagues { get; } = [];
 
-		public void SetResults(League league, params TeamResultDisplaySet[] results)
-		{
-			resultsByLeague[league] = [..results];
-		}
+        public void SetResults(League league, params TeamResultDisplaySet[] results) => resultsByLeague[league] = [.. results];
 
-		public Task<List<TeamResultDisplaySet>> GetResultsAsync(League league)
+        public Task<List<TeamResultDisplaySet>> GetResultsAsync(League league)
 		{
 			RequestedLeagues.Add(league);
 

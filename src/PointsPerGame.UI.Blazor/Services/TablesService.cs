@@ -19,10 +19,7 @@ public class TablesService(ILeagueTableService leagueTableService)
         return ValueTask.FromResult(links);
     }
 
-    public static string? GetLeagueName(int leagueId)
-    {
-        return IsKnownLeague(leagueId) ? GetLeagueDescription((League)leagueId) : null;
-    }
+    public static string? GetLeagueName(int leagueId) => IsKnownLeague(leagueId) ? GetLeagueDescription((League)leagueId) : null;
 
     public static string? GetLeagueSourceUrl(int leagueId)
     {
@@ -51,10 +48,7 @@ public class TablesService(ILeagueTableService leagueTableService)
         return [.. resultData.Select(TableRowDto.FromResultSet)];
     }
 
-    private static bool IsKnownLeague(int leagueId)
-    {
-        return Enum.IsDefined(typeof(League), leagueId);
-    }
+    private static bool IsKnownLeague(int leagueId) => Enum.IsDefined(typeof(League), leagueId);
 
     private static string GetLeagueDescription(League league)
     {

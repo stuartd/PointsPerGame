@@ -61,8 +61,5 @@ public class GuardianTableParserTests
 		results.Single().TeamCrest.Should().NotContain("&amp;");
 	}
 
-	private static string TableHtml(string rowHtml)
-	{
-		return $"<html><body><table><tbody><tr>{rowHtml}</tr></tbody></table></body></html>";
-	}
+    private static string TableHtml(string rowHtml) => $"<html><body><table><tbody><tr>{rowHtml}</tr></tbody></table></body></html>";
 }

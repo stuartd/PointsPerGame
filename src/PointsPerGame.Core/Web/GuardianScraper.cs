@@ -19,7 +19,7 @@ public class GuardianScraper : BaseScraper
         this.tableParser = tableParser ?? throw new ArgumentNullException(nameof(tableParser));
     }
 
-    public override async Task<List<TeamResultDisplaySet>> GetResultsAsync(League league)
+    public override async Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
     {
         if (TryGetCachedResults(league, out var cachedResults))
         {
@@ -31,8 +31,7 @@ public class GuardianScraper : BaseScraper
 
         var teamData = tableParser.Parse(html)
             .Select(results => new TeamResultDisplaySet(results))
-            .SortTeams()
-            .ToList();
+            .SortTeams();
 
         CacheResults(league, teamData);
 
@@ -51,13 +50,7 @@ public class GuardianScraper : BaseScraper
         return false;
     }
 
-    private static void CacheResults(League league, List<TeamResultDisplaySet> results)
-    {
-        cache.Set(GetCacheKey(league), results, DateTimeOffset.Now.AddMinutes(5));
-    }
+    private static void CacheResults(League league, IReadOnlyList<TeamResultDisplaySet> results) => cache.Set(GetCacheKey(league), results, DateTimeOffset.Now.AddMinutes(5));
 
-    private static string GetCacheKey(League league)
-    {
-        return league.ToString();
-    }
+    private static string GetCacheKey(League league) => league.ToString();
 }

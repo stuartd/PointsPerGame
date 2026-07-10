@@ -35,31 +35,6 @@ public class TeamResultDisplaySet : ITeamResults
 
 	public int Points => teamResults.Points;
 
-	// Don't know about this. Might be fun?
-	// Give it a try
-
-	//public double GoalsPerGame {
-	//	get {
-	//		if (Played != 0) {
-	//			return GoalsScored / (double)Played;
-	//		}
-
-	//		return 0;
-	//	}
-	//}
-
-	//public string GoalsPerGameDisplay {
-	//	get {
-	//		if (Played == 0) {
-	//			return "0";
-	//		}
-
-	//		// One DP for display.
-	//		var roundedValueInt = (int)(GoalsPerGame * 10);
-	//		return (Math.Round((decimal)roundedValueInt, 1) / 10).ToString(CultureInfo.InvariantCulture);
-	//	}
-	//}
-
 	public double PointsPerGame
 	{
 		get
@@ -73,8 +48,5 @@ public class TeamResultDisplaySet : ITeamResults
 		}
 	}
 
-	public override string ToString()
-	{
-		return TeamName;
-	}
+    public override string ToString() => TeamName;
 }

@@ -5,20 +5,11 @@ namespace PointsPerGame.Core.Extensions;
 [DebuggerStepThrough]
 public static class StringExtensions
 {
-    public static bool HasValue(this string? value)
-    {
-        return !string.IsNullOrEmpty(value);
-    }
+    public static bool HasValue(this string? value) => !string.IsNullOrEmpty(value);
 
-    public static bool IsNullOrEmpty(this string? value)
-    {
-        return string.IsNullOrEmpty(value);
-    }
+    public static bool IsNullOrEmpty(this string? value) => string.IsNullOrEmpty(value);
 
-    public static bool IsNullOrWhiteSpace(this string? value)
-    {
-        return string.IsNullOrWhiteSpace(value);
-    }
+    public static bool IsNullOrWhiteSpace(this string? value) => string.IsNullOrWhiteSpace(value);
 
     /// <summary>
     /// If the string is longer than the allowed length, trim it and add an ellipsis as the last character.

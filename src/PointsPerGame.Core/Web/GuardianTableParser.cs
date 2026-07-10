@@ -41,7 +41,7 @@ public sealed class GuardianTableParser
 			throw new InvalidOperationException("Guardian have changed their site again - can't find rows.");
 		}
 
-		return rows.Select(ParseTeamResults).ToList();
+		return [.. rows.Select(ParseTeamResults)];
 	}
 
 	private static TeamResults ParseTeamResults(HtmlNode row)

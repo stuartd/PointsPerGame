@@ -21,16 +21,13 @@ public sealed class LeagueTableService(IDataSource dataSource) : ILeagueTableSer
 			results.AddRange(await dataSource.GetResultsAsync(sourceLeague));
 		}
 
-		return results.SortTeams().ToList();
+		return [.. results.SortTeams()];
 	}
 
-	private static IEnumerable<League> GetSourceLeagues(League league)
-	{
-		return league switch
-		{
-			League.All => LeagueLists.AllLeagues,
-			League.AllTopDivisions => LeagueLists.AllTopDivisions,
-			_ => [league],
-		};
-	}
+    private static League[] GetSourceLeagues(League league) => league switch
+    {
+        League.All => LeagueLists.AllLeagues,
+        League.AllTopDivisions => LeagueLists.AllTopDivisions,
+        _ => [league],
+    };
 }

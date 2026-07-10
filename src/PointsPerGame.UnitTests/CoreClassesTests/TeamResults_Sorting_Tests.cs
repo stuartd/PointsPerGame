@@ -16,18 +16,19 @@ public class TeamResults_Sorting_Tests
 
 		SetupTeam("team1", points: 50, played: 20, goalDifference: 50);
 		SetupTeam("team2", points: 40, played: 16, goalDifference: 50);
-		SetupTeam("team3", points: 40, played: 16, goalDifference: 60);
-		SetupTeam("_team4", points: 40, played: 16, goalDifference: 60);
+		// Insert the alphabetically later name first to prove the final name tie-break is applied.
+		SetupTeam("Zulu", points: 40, played: 16, goalDifference: 60);
+		SetupTeam("Alpha", points: 40, played: 16, goalDifference: 60);
 		SetupTeam("team5", points: 42, played: 16, goalDifference: 60);
 	}
 
 	[Test]
 	public void TeamsResults_Sort_Correctly()
 	{
-		var sortedTeams = teams.SortTeams().ToList();
+		var sortedTeams = teams.SortTeams();
 		sortedTeams[0].TeamName.Should().Be("team5");
-		sortedTeams[1].TeamName.Should().Be("_team4");
-		sortedTeams[2].TeamName.Should().Be("team3");
+		sortedTeams[1].TeamName.Should().Be("Alpha");
+		sortedTeams[2].TeamName.Should().Be("Zulu");
 		sortedTeams[3].TeamName.Should().Be("team2");
 		sortedTeams[4].TeamName.Should().Be("team1");
 	}

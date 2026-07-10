@@ -5,7 +5,7 @@ namespace PointsPerGame.Core.Web;
 
 public interface IDataSource
 {
-    Task<List<TeamResultDisplaySet>> GetResultsAsync(League league);
+    Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league);
 }
 
 public abstract class BaseScraper : IDataSource
@@ -30,5 +30,5 @@ public abstract class BaseScraper : IDataSource
         return await response.Content.ReadAsStringAsync();
     }
 
-    public abstract Task<List<TeamResultDisplaySet>> GetResultsAsync(League league);
+    public abstract Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league);
 }

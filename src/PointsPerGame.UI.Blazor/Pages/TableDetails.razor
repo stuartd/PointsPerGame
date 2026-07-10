@@ -28,6 +28,11 @@ else
 {
     <div class="table-scroll">
         <table class="teamTable">
+            <colgroup>
+                <col class="stat-column" />
+                <col class="team-column" />
+                <col class="stat-column" span="7" />
+            </colgroup>
             <thead>
             <tr>
                 <th></th>
@@ -49,16 +54,8 @@ else
                     <span class="stat-label-long">Lost</span>
                 </th>
                 <th>
-                    <abbr class="stat-label-short" title="Goals For">GF</abbr>
-                    <span class="stat-label-long">Goals For</span>
-                </th>
-                <th>
-                    <abbr class="stat-label-short" title="Goals Against">GA</abbr>
-                    <span class="stat-label-long">Goals Against</span>
-                </th>
-                <th>
-                    <abbr class="stat-label-short" title="Goal Difference">GD</abbr>
-                    <span class="stat-label-long">Goal Diff</span>
+                    <abbr class="stat-label-short" title="Difference">GD</abbr>
+                    <span class="stat-label-long">Difference</span>
                 </th>
                 <th>
                     <abbr class="stat-label-short" title="Points">Pts</abbr>
@@ -66,7 +63,7 @@ else
                 </th>
                 <th>
                     <abbr class="stat-label-short" title="Points Per Game">PPG</abbr>
-                    <span class="stat-label-long">Points/Game</span>
+                    <span class="stat-label-long">Points/<wbr />Game</span>
                 </th>
             </tr>
             </thead>
@@ -80,8 +77,6 @@ else
                     <td>@r.Won</td>
                     <td>@r.Drawn</td>
                     <td>@r.Lost</td>
-                    <td>@r.GoalsScored</td>
-                    <td>@r.GoalsConceded</td>
                     <td>@r.GoalDifference</td>
                     <td>@r.Points</td>
                     <td>@r.PointsPerGame</td>

@@ -5,12 +5,10 @@ namespace PointsPerGame.Core.Models;
 
 public static class TeamResultsExtensions
 {
-	// TODO this should run on the raw data 
-
-	public static IEnumerable<TeamResultDisplaySet> SortTeams(this IEnumerable<TeamResultDisplaySet> values)
+	public static IReadOnlyList<TeamResultDisplaySet> SortTeams(this IEnumerable<TeamResultDisplaySet> values)
 	{
 		// Teams are sorted by points per game descending (highest is best) 
-		return values.OrderByDescending(v => v.PointsPerGame)
+		var sortedValues = values.OrderByDescending(v => v.PointsPerGame)
 
 			// then by the number of games played, so if two teams have the same points per game
 			// the team which has played the fewer games is sorted higher.
@@ -20,5 +18,7 @@ public static class TeamResultsExtensions
 			// and then by team name. 
 			.ThenByDescending(v => v.GoalDifference)
 			.ThenBy(v => v.TeamName);
+
+			return [.. sortedValues];
 	}
 }
