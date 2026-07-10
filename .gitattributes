@@ -2,8 +2,8 @@
 * text=auto
 
 # Git metadata
-.gitattributes text eol=crlf
-.gitignore     text eol=crlf
+.gitattributes text eol=lf
+.gitignore     text eol=lf
 
 # Custom for Visual Studio
 *.cs     text eol=crlf diff=csharp
@@ -14,7 +14,7 @@
 *.cshtml text eol=crlf
 *.json   text eol=crlf
 *.css    text eol=crlf
-*.md     text eol=crlf
+*.md     text eol=lf
 
 # Standard to msysgit
 *.doc	 diff=astextplain
