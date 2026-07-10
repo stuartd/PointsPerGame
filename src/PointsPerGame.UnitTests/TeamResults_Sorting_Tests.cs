@@ -1,6 +1,6 @@
-using FluentAssertions;
 using NUnit.Framework;
 using PointsPerGame.Core.Models;
+using Shouldly;
 
 namespace PointsPerGame.UnitTests;
 
@@ -26,21 +26,21 @@ public class TeamResults_Sorting_Tests
 	public void Teams_Are_Setup_Correctly()
 	{
 		var Whisky = teams.First();
-		Whisky.TeamName.Should().Be("Whisky");
-		Whisky.PointsPerGame.Should().Be(2.5);
-		Whisky.Played.Should().Be(20);
-		Whisky.GoalDifference.Should().Be(50);
+		Whisky.TeamName.ShouldBe("Whisky");
+		Whisky.PointsPerGame.ShouldBe(2.5);
+		Whisky.Played.ShouldBe(20);
+		Whisky.GoalDifference.ShouldBe(50);
 	}
 
 	[Test]
 	public void TeamsResults_Sort_Correctly()
 	{
 		var sortedTeams = teams.SortTeams();
-		sortedTeams[0].TeamName.Should().Be("Charlie");
-		sortedTeams[1].TeamName.Should().Be("Alpha");
-		sortedTeams[2].TeamName.Should().Be("Zulu");
-		sortedTeams[3].TeamName.Should().Be("Bravo");
-		sortedTeams[4].TeamName.Should().Be("Whisky");
+		sortedTeams[0].TeamName.ShouldBe("Charlie");
+		sortedTeams[1].TeamName.ShouldBe("Alpha");
+		sortedTeams[2].TeamName.ShouldBe("Zulu");
+		sortedTeams[3].TeamName.ShouldBe("Bravo");
+		sortedTeams[4].TeamName.ShouldBe("Whisky");
 	}
 
 	private void SetupTeam(string name, int points, int played, int goalDifference)

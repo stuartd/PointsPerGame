@@ -1,9 +1,9 @@
-using FluentAssertions;
 using NUnit.Framework;
 using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Services;
 using PointsPerGame.Core.Web;
+using Shouldly;
 
 namespace PointsPerGame.UnitTests;
 
@@ -18,8 +18,8 @@ public class LeagueTableServiceTests
 
 		var results = await service.GetResultsAsync(League.EnglishChampionship);
 
-		dataSource.RequestedLeagues.Should().Equal(League.EnglishChampionship);
-		results.Should().ContainSingle(r => r.TeamName == "Championship");
+		dataSource.RequestedLeagues.ShouldBe([League.EnglishChampionship]);
+		results.Count(r => r.TeamName == "Championship").ShouldBe(1);
 	}
 
 	[Test]
@@ -34,8 +34,8 @@ public class LeagueTableServiceTests
 
 		var results = await service.GetResultsAsync(League.All);
 
-		dataSource.RequestedLeagues.Should().Equal(LeagueLists.AllLeagues);
-		results.Should().HaveCount(LeagueLists.AllLeagues.Length);
+		dataSource.RequestedLeagues.ShouldBe(LeagueLists.AllLeagues);
+		results.Count.ShouldBe(LeagueLists.AllLeagues.Length);
 	}
 
 	[Test]
@@ -50,8 +50,8 @@ public class LeagueTableServiceTests
 
 		var results = await service.GetResultsAsync(League.AllTopDivisions);
 
-		dataSource.RequestedLeagues.Should().Equal(LeagueLists.AllTopDivisions);
-		results.Should().HaveCount(LeagueLists.AllTopDivisions.Length);
+		dataSource.RequestedLeagues.ShouldBe(LeagueLists.AllTopDivisions);
+		results.Count.ShouldBe(LeagueLists.AllTopDivisions.Length);
 	}
 
 	[Test]
@@ -65,7 +65,7 @@ public class LeagueTableServiceTests
 
 		var results = await service.GetResultsAsync(League.EnglishPremierLeague);
 
-		results.Select(r => r.TeamName).Should().Equal("higher", "lower");
+		results.Select(r => r.TeamName).ShouldBe(["higher", "lower"]);
 	}
 
     private static TeamResultDisplaySet Team(string name, int points, int played) => new(new TeamResults

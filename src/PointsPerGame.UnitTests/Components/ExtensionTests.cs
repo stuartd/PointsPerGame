@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using NUnit.Framework;
 using PointsPerGame.Core.Extensions;
 
@@ -14,24 +14,24 @@ internal class ExtensionTests
 	[Test]
 	public void HasValue_Tests()
 	{
-		nullString.HasValue().Should().BeFalse();
-		emptyString.HasValue().Should().BeFalse();
-		stringWithValue.HasValue().Should().BeTrue();
+		nullString.HasValue().ShouldBeFalse();
+		emptyString.HasValue().ShouldBeFalse();
+		stringWithValue.HasValue().ShouldBeTrue();
 	}
 
 	[Test]
 	public void IsNullOrEmptyOrWhiteSpace_Tests()
 	{
-		nullString.IsNullOrEmpty().Should().BeTrue();
-		nullString.HasValue().Should().BeFalse();
-		nullString.IsNullOrWhiteSpace().Should().BeTrue();
+		nullString.IsNullOrEmpty().ShouldBeTrue();
+		nullString.HasValue().ShouldBeFalse();
+		nullString.IsNullOrWhiteSpace().ShouldBeTrue();
 
-		emptyString.IsNullOrEmpty().Should().BeTrue();
-		emptyString.HasValue().Should().BeFalse();
-		emptyString.IsNullOrWhiteSpace().Should().BeTrue();
+		emptyString.IsNullOrEmpty().ShouldBeTrue();
+		emptyString.HasValue().ShouldBeFalse();
+		emptyString.IsNullOrWhiteSpace().ShouldBeTrue();
 
-		"       ".IsNullOrWhiteSpace().Should().BeTrue();
-		emptyString.IsNullOrWhiteSpace().Should().BeTrue();
-		emptyString.HasValue().Should().BeFalse();
+		"       ".IsNullOrWhiteSpace().ShouldBeTrue();
+		emptyString.IsNullOrWhiteSpace().ShouldBeTrue();
+		emptyString.HasValue().ShouldBeFalse();
 	}
 }
