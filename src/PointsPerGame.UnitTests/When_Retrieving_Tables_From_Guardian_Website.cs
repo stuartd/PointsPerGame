@@ -40,7 +40,7 @@ public class When_Retrieving_Tables_From_Guardian_Website
             {
                 foreach (var league in Enum.GetValues<League>())
                 {
-                    if (league is League.AllTopDivisions or League.All)
+                    if (league is League.AllTopDivisions or League.AllLeagues)
                     {
                         continue;
                     }

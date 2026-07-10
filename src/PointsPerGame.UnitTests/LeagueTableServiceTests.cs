@@ -32,7 +32,7 @@ public class LeagueTableServiceTests
 		}
 		var service = new LeagueTableService(dataSource);
 
-		var results = await service.GetResultsAsync(League.All);
+		var results = await service.GetResultsAsync(League.AllLeagues);
 
 		dataSource.RequestedLeagues.ShouldBe(LeagueLists.AllLeagues);
 		results.Count.ShouldBe(LeagueLists.AllLeagues.Length);

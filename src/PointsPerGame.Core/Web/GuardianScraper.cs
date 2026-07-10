@@ -5,18 +5,14 @@ using System.Runtime.Caching;
 
 namespace PointsPerGame.Core.Web;
 
-public class GuardianScraper : BaseScraper
-{
+public class GuardianScraper(IHttpClientFactory httpClientFactory, GuardianTableParser tableParser)
+    : BaseScraper(httpClientFactory) {
+    
     private static readonly MemoryCache cache = new(nameof(GuardianScraper));
-    private readonly GuardianTableParser tableParser;
+    private readonly GuardianTableParser tableParser = tableParser ?? throw new ArgumentNullException(nameof(tableParser));
 
     public GuardianScraper(IHttpClientFactory httpClientFactory) : this(httpClientFactory, new GuardianTableParser())
     {
-    }
-
-    public GuardianScraper(IHttpClientFactory httpClientFactory, GuardianTableParser tableParser) : base(httpClientFactory)
-    {
-        this.tableParser = tableParser ?? throw new ArgumentNullException(nameof(tableParser));
     }
 
     public override async Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
@@ -38,9 +34,9 @@ public class GuardianScraper : BaseScraper
         return teamData;
     }
 
-    private static bool TryGetCachedResults(League league, out List<TeamResultDisplaySet> results)
+    private static bool TryGetCachedResults(League league, out IReadOnlyList<TeamResultDisplaySet> results)
     {
-        if (cache.Get(GetCacheKey(league)) is List<TeamResultDisplaySet> cachedResults)
+        if (cache.Get(GetCacheKey(league)) is IReadOnlyList<TeamResultDisplaySet> cachedResults)
         {
             results = cachedResults;
             return true;

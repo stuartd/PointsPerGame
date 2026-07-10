@@ -45,10 +45,13 @@ public enum League
 
     [Description("Serie A")]
     SerieA,
-
+    
     [Description("All leagues")]
-    All,
-
+    AllLeagues,
+    
     [Description("All top divisions")]
     AllTopDivisions,
+    
+    [Description("All English divisions")]
+    AllEnglishDivisions,
 }

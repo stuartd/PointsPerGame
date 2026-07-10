@@ -30,7 +30,7 @@ public class TablesService(ILeagueTableService leagueTableService)
 
         var league = (League)leagueId;
 
-        return league is League.All or League.AllTopDivisions
+        return league is League.AllLeagues or League.AllTopDivisions
             ? null
             : GuardianLeagueMappings.GetUriForLeague(league);
     }

@@ -26,8 +26,9 @@ public sealed class LeagueTableService(IDataSource dataSource) : ILeagueTableSer
 
     private static League[] GetSourceLeagues(League league) => league switch
     {
-        League.All => LeagueLists.AllLeagues,
+        League.AllLeagues => LeagueLists.AllLeagues,
         League.AllTopDivisions => LeagueLists.AllTopDivisions,
+        League.AllEnglishDivisions => LeagueLists.AllEnglishDivisions,
         _ => [league],
     };
 }

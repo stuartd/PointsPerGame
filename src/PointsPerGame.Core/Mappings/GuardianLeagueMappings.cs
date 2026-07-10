@@ -1,4 +1,5 @@
 using PointsPerGame.Core.Names;
+using PointsPerGame.Core.Extensions;
 
 namespace PointsPerGame.Core.Mappings;
 
@@ -19,7 +20,8 @@ public static class GuardianLeagueMappings
         League.Ligue1 => "https://www.theguardian.com/football/ligue1football/table",
         League.Bundesliga => "https://www.theguardian.com/football/bundesligafootball/table",
         League.SerieA => "https://www.theguardian.com/football/serieafootball/table",
-        League.All or League.AllTopDivisions => throw new ArgumentException($"{league} is an aggregate league and does not have a Guardian table URL.", nameof(league)),
+        _ when league.IsMultiLeague() =>
+            throw new ArgumentException($"{league} is an aggregate league and does not have a Guardian table URL.", nameof(league)),
         _ => throw new ArgumentOutOfRangeException(nameof(league), league, "No Guardian table URL is configured for this league."),
     };
 }
