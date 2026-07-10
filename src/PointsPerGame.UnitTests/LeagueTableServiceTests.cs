@@ -5,7 +5,7 @@ using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Services;
 using PointsPerGame.Core.Web;
 
-namespace PointsPerGame.Tests;
+namespace PointsPerGame.UnitTests;
 
 public class LeagueTableServiceTests
 {

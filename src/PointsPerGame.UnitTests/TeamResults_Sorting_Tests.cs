@@ -2,7 +2,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using PointsPerGame.Core.Models;
 
-namespace PointsPerGame.Tests;
+namespace PointsPerGame.UnitTests;
 
 [TestFixture]
 public class TeamResults_Sorting_Tests

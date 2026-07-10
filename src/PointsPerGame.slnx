@@ -1,6 +1,5 @@
 <Solution>
   <Project Path="PointsPerGame.Core/PointsPerGame.Core.csproj" />
-  <Project Path="PointsPerGame.Tests/PointsPerGame.Tests.csproj" />
   <Project Path="PointsPerGame.UnitTests/PointsPerGame.UnitTests.csproj" />
   <Project Path="PointsPerGame.UI.Blazor/PointsPerGame.UI.Blazor.csproj" />
 </Solution>
