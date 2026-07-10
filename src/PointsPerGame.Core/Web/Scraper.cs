@@ -8,14 +8,9 @@ public interface IDataSource
     Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league);
 }
 
-public abstract class BaseScraper : IDataSource
+public abstract class BaseScraper(IHttpClientFactory httpClientFactory) : IDataSource
 {
-    private readonly IHttpClientFactory httpClientFactory;
-
-    protected BaseScraper(IHttpClientFactory httpClientFactory)
-    {
-        this.httpClientFactory = httpClientFactory;
-    }
+    private readonly IHttpClientFactory httpClientFactory = httpClientFactory;
 
     protected async Task<string> GetPageHtmlAsync(string url)
     {

@@ -79,19 +79,22 @@ public class LeagueTableServiceTests
 
     private sealed class StubDataSource : IDataSource
 	{
-		private readonly Dictionary<League, List<TeamResultDisplaySet>> resultsByLeague = [];
+		private readonly Dictionary<League, IReadOnlyList<TeamResultDisplaySet>> resultsByLeague = [];
 
 		public List<League> RequestedLeagues { get; } = [];
 
         public void SetResults(League league, params TeamResultDisplaySet[] results) => resultsByLeague[league] = [.. results];
 
-        public Task<List<TeamResultDisplaySet>> GetResultsAsync(League league)
+        public Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
 		{
 			RequestedLeagues.Add(league);
 
-			return Task.FromResult(resultsByLeague.TryGetValue(league, out var results)
-				? results
-				: []);
+			if (resultsByLeague.TryGetValue(league, out var leagueResults))
+			{
+				return Task.FromResult<IReadOnlyList<TeamResultDisplaySet>>([.. leagueResults]);
+			}
+
+			return Task.FromResult<IReadOnlyList<TeamResultDisplaySet>>([]);
 		}
-	}
+    }
 }
