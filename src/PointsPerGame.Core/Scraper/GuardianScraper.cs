@@ -15,7 +15,7 @@ public class GuardianScraper(IHttpClientFactory httpClientFactory, GuardianTable
     {
     }
 
-    public override async Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
+    public override async ValueTask<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
     {
         if (TryGetCachedResults(league, out var cachedResults))
         {
@@ -46,7 +46,8 @@ public class GuardianScraper(IHttpClientFactory httpClientFactory, GuardianTable
         return false;
     }
 
-    private static void CacheResults(League league, IReadOnlyList<TeamResultDisplaySet> results) => cache.Set(GetCacheKey(league), results, DateTimeOffset.Now.AddMinutes(5));
+    private static void CacheResults(League league, IReadOnlyList<TeamResultDisplaySet> results) 
+        => cache.Set(GetCacheKey(league), results, DateTimeOffset.Now.AddMinutes(5));
 
     private static string GetCacheKey(League league) => league.ToString();
 }

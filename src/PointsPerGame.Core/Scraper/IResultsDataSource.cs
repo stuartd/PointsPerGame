@@ -3,5 +3,5 @@ using PointsPerGame.Core.Names;
 
 public interface IResultsDataSource
 {
-    Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league);
+    ValueTask<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league);
 }

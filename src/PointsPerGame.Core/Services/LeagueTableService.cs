@@ -6,12 +6,12 @@ namespace PointsPerGame.Core.Services;
 
 public interface ILeagueTableService
 {
-	Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league);
+	ValueTask<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league);
 }
 
 public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueTableService
 {
-	public async Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
+	public async ValueTask<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
 	{
 		var leagues = GetSourceLeagues(league);
 		var results = new List<TeamResultDisplaySet>();
@@ -24,6 +24,10 @@ public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueT
 		return [.. results.SortTeams()];
 	}
 
+/// <summary>
+/// A 'league' here can be a single league or a grouping of leagues (e.g. AllLeagues)
+/// so return the underlying league(s) for the league value.
+/// </summary>
     private static League[] GetSourceLeagues(League league) => league switch
     {
         League.AllLeagues => LeagueLists.AllLeagues,

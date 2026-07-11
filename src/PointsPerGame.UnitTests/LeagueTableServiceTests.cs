@@ -85,16 +85,16 @@ public class LeagueTableServiceTests
 
         public void SetResults(League league, params TeamResultDisplaySet[] results) => resultsByLeague[league] = [.. results];
 
-        public Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
+        public ValueTask<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
 		{
 			RequestedLeagues.Add(league);
 
 			if (resultsByLeague.TryGetValue(league, out var leagueResults))
 			{
-				return Task.FromResult<IReadOnlyList<TeamResultDisplaySet>>([.. leagueResults]);
+				return ValueTask.FromResult<IReadOnlyList<TeamResultDisplaySet>>([.. leagueResults]);
 			}
 
-			return Task.FromResult<IReadOnlyList<TeamResultDisplaySet>>([]);
+			return ValueTask.FromResult<IReadOnlyList<TeamResultDisplaySet>>([]);
 		}
     }
 }
