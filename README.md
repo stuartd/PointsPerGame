@@ -37,10 +37,10 @@ dotnet test ./PointsPerGame.UnitTests/PointsPerGame.UnitTests.csproj
 - `PointsPerGame.UI.Blazor`: The website.
 - `PointsPerGame.UnitTests`: Parser and service tests.
 
-## Deployment
+## Deployment
 
 https://github.com/stuartd/PointsPerGame/issues/30
 
-## Internals
+## Internals
 
 A Blazor server site
