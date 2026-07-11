@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using PointsPerGame.Core.Services;
 using PointsPerGame.Core.Web;
 using PointsPerGame.UI.Blazor.Services;
@@ -11,8 +12,14 @@ builder.Services.AddScoped<TablesService>();
 builder.Services.AddScoped<ILeagueTableService, LeagueTableService>();
 builder.Services.AddScoped<IResultsDataSource, GuardianScraper>();
 builder.Services.AddHttpClient();
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+	options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
 
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
