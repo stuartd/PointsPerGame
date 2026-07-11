@@ -38,7 +38,7 @@ h1 a:hover {
 .teamTable td {
     border-bottom: 1px solid #d7dde5;
     padding: 0.45rem 0.55rem;
-    text-align: right;
+    text-align: center;
     white-space: nowrap;
 }
 
@@ -51,6 +51,7 @@ h1 a:hover {
     background-color: #e8f4d0;
     color: #1f2933;
     font-weight: 700;
+    text-align: center;
 }
 
 .teamTable tbody tr:nth-child(odd) {

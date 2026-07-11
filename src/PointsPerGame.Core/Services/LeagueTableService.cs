@@ -9,7 +9,7 @@ public interface ILeagueTableService
 	Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league);
 }
 
-public sealed class LeagueTableService(IDataSource dataSource) : ILeagueTableService
+public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueTableService
 {
 	public async Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
 	{

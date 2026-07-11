@@ -113,13 +113,23 @@ public sealed class GuardianTableParser
 		}
 
 		var baseUri = new Uri("https://www.theguardian.com/");
-		var uri = Uri.TryCreate(teamUrl, UriKind.Absolute, out var absoluteUri)
-			? absoluteUri
-			: new Uri(baseUri, teamUrl.TrimStart('/'));
+		var decodedTeamUrl = WebUtility.HtmlDecode(teamUrl).Trim();
+
+		if (!Uri.TryCreate(baseUri, decodedTeamUrl, out var uri) ||
+			(!uri.Scheme.Equals(Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) &&
+			 !uri.Scheme.Equals(Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase)))
+		{
+			throw new InvalidOperationException("Guardian have changed their site again - found an invalid team URL.");
+		}
 
 		if (!uri.AbsolutePath.EndsWith("/fixtures", StringComparison.OrdinalIgnoreCase))
 		{
-			uri = new Uri(uri, $"{uri.AbsolutePath.TrimEnd('/')}/fixtures");
+			var builder = new UriBuilder(uri)
+			{
+				Path = $"{uri.AbsolutePath.TrimEnd('/')}/fixtures",
+			};
+
+			uri = builder.Uri;
 		}
 
 		return NormalizeUri(uri.ToString());

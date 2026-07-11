@@ -9,7 +9,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<TablesService>();
 builder.Services.AddScoped<ILeagueTableService, LeagueTableService>();
-builder.Services.AddScoped<IDataSource, GuardianScraper>();
+builder.Services.AddScoped<IResultsDataSource, GuardianScraper>();
 builder.Services.AddHttpClient();
 
 var app = builder.Build();

@@ -9,7 +9,7 @@ namespace PointsPerGame.UnitTests;
 [TestFixture]
 public class When_Retrieving_Tables_From_Guardian_Website
 {
-    private readonly IDataSource dataSource = new GuardianScraper(TestHttpClientFactory.Instance);
+    private readonly IResultsDataSource dataSource = new GuardianScraper(TestHttpClientFactory.Instance);
 
     [TestCaseSource(typeof(TableTestCaseSource), nameof(TableTestCaseSource.Tables))]
     [Test]

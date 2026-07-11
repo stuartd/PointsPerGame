@@ -3,12 +3,7 @@ using PointsPerGame.Core.Names;
 
 namespace PointsPerGame.Core.Web;
 
-public interface IDataSource
-{
-    Task<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league);
-}
-
-public abstract class BaseScraper(IHttpClientFactory httpClientFactory) : IDataSource
+public abstract class BaseScraper(IHttpClientFactory httpClientFactory) : IResultsDataSource
 {
     private readonly IHttpClientFactory httpClientFactory = httpClientFactory;
 

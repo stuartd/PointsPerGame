@@ -77,7 +77,7 @@ public class LeagueTableServiceTests
         Points = points,
     });
 
-    private sealed class StubDataSource : IDataSource
+    private sealed class StubDataSource : IResultsDataSource
 	{
 		private readonly Dictionary<League, IReadOnlyList<TeamResultDisplaySet>> resultsByLeague = [];
 
