@@ -1,8 +1,10 @@
 # PointsPerGame
 
-Blazor Server site for viewing football tables sorted by points per game.
+View league tables order by points per game. Includes all UK leagues (including WSL) and European top divisions.
 
-
+Teams are sorted by points per game, then by the number of games played.
+This means if two teams have the same points per game, then the team which has played the fewer games is sorted higher.
+If both of those values are equal, teams are sorted by goal difference, and then by team name. 
 
 ## Run locally
 
@@ -17,7 +19,7 @@ dotnet run --project ./PointsPerGame.UI.Blazor/PointsPerGame.UI.Blazor.csproj --
 ```
 Then open `https://localhost:7097`.
 
-## Test
+## Test locally
 
 ```powershell
 dotnet test .\PointsPerGame.Tests\PointsPerGame.Tests.csproj
@@ -33,5 +35,12 @@ dotnet test ./PointsPerGame.UnitTests/PointsPerGame.UnitTests.csproj
 
 - `PointsPerGame.Core`: League names, Guardian scraping/parsing, and sorting.
 - `PointsPerGame.UI.Blazor`: The website.
-- `PointsPerGame.Tests`: Parser and service tests.
-- `PointsPerGame.UnitTests`: older explicit Guardian smoke test and duplicated sorting coverage.
+- `PointsPerGame.UnitTests`: Parser and service tests.
+
+## Deployment
+
+https://github.com/stuartd/PointsPerGame/issues/30
+
+## Internals
+
+A Blazor server site
