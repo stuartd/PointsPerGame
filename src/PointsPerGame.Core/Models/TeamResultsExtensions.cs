@@ -5,20 +5,27 @@ namespace PointsPerGame.Core.Models;
 
 public static class TeamResultsExtensions
 {
-	public static IReadOnlyList<TeamResultDisplaySet> SortTeams(this IEnumerable<TeamResultDisplaySet> values)
+	public static IReadOnlyList<TeamResultDisplaySet> SortTeams(
+		this IEnumerable<TeamResultDisplaySet> values,
+		int pointsForWin)
 	{
-		// Teams are sorted by points per game descending (highest is best) 
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pointsForWin);
+
+		// Teams are sorted by points per game descending (highest is best).
 		var sortedValues = values.OrderByDescending(v => v.PointsPerGame)
 
-			// then by the number of games played, so if two teams have the same points per game
-			// the team which has played the fewer games is sorted higher.
-			.ThenBy(v => v.Played)
+			// Perfect-record teams are compared by goal difference below. For other PPG ties,
+			// the team which has played fewer games is sorted higher.
+			.ThenBy(v => HasMaximumPointsPerGame(v, pointsForWin) ? 0 : v.Played)
 
-			// If both of those values are equal, teams are sorted by goal difference (descending, so highest first)
-			// and then by team name. 
+			// Remaining ties are resolved by goal difference, points in the bag, then team name.
 			.ThenByDescending(v => v.GoalDifference)
+			.ThenByDescending(v => v.Points)
 			.ThenBy(v => v.TeamName);
 
-			return [.. sortedValues];
+		return [.. sortedValues];
 	}
+
+	private static bool HasMaximumPointsPerGame(TeamResultDisplaySet team, int pointsForWin) =>
+		team.Played > 0 && team.Points == (long)team.Played * pointsForWin;
 }

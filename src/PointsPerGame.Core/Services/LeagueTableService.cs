@@ -11,6 +11,8 @@ public interface ILeagueTableService
 
 public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueTableService
 {
+	private const int PointsForWin = 3;
+
 	public async ValueTask<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
 	{
 		var leagues = GetSourceLeagues(league);
@@ -21,7 +23,7 @@ public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueT
 			results.AddRange(await dataSource.GetResultsAsync(sourceLeague));
 		}
 
-		return [.. results.SortTeams()];
+		return [.. results.SortTeams(pointsForWin: PointsForWin)];
 	}
 
 /// <summary>

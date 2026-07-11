@@ -7,6 +7,7 @@ namespace PointsPerGame.UnitTests;
 [TestFixture]
 public class TeamResults_Sorting_Tests
 {
+	private const int PointsForWin = 3;
 	private List<TeamResultDisplaySet> teams = null!;
 
 	[SetUp]
@@ -35,7 +36,7 @@ public class TeamResults_Sorting_Tests
 	[Test]
 	public void TeamsResults_Sort_Correctly()
 	{
-		var sortedTeams = teams.SortTeams();
+		var sortedTeams = teams.SortTeams(PointsForWin);
 		sortedTeams[0].TeamName.ShouldBe("Charlie");
 		sortedTeams[1].TeamName.ShouldBe("Alpha");
 		sortedTeams[2].TeamName.ShouldBe("Zulu");
@@ -43,7 +44,87 @@ public class TeamResults_Sorting_Tests
 		sortedTeams[4].TeamName.ShouldBe("Whisky");
 	}
 
+	[Test]
+	public void Perfect_Record_Teams_Are_Sorted_By_Goal_Difference()
+	{
+		TeamResultDisplaySet[] perfectTeams =
+		[
+			CreateTeam("Aston Villa", points: 3, played: 1, goalDifference: 1),
+			CreateTeam("Arsenal", points: 6, played: 2, goalDifference: 4),
+			CreateTeam("Liverpool", points: 6, played: 2, goalDifference: 3),
+			CreateTeam("Leicester", points: 9, played: 3, goalDifference: 8),
+			CreateTeam("Everton", points: 9, played: 3, goalDifference: 5),
+		];
+
+		var sortedTeams = perfectTeams.SortTeams(PointsForWin);
+
+		sortedTeams.Select(t => t.TeamName).ShouldBe([
+			"Leicester",
+			"Everton",
+			"Arsenal",
+			"Liverpool",
+			"Aston Villa",
+		]);
+	}
+
+	[Test]
+	public void Perfect_Record_Teams_With_Equal_Goal_Difference_Favour_Points_In_The_Bag()
+	{
+		TeamResultDisplaySet[] perfectTeams =
+		[
+			CreateTeam("One game", points: 3, played: 1, goalDifference: 4),
+			CreateTeam("Three games", points: 9, played: 3, goalDifference: 4),
+			CreateTeam("Two games", points: 6, played: 2, goalDifference: 4),
+		];
+
+		var sortedTeams = perfectTeams.SortTeams(PointsForWin);
+
+		sortedTeams.Select(t => t.TeamName).ShouldBe(["Three games", "Two games", "One game"]);
+	}
+
+	[Test]
+	public void Non_Perfect_PPG_Ties_Still_Favour_Fewer_Games_Played()
+	{
+		TeamResultDisplaySet[] tiedTeams =
+		[
+			CreateTeam("Long schedule", points: 6, played: 4, goalDifference: 100),
+			CreateTeam("Short schedule", points: 3, played: 2, goalDifference: 0),
+		];
+
+		var sortedTeams = tiedTeams.SortTeams(PointsForWin);
+
+		sortedTeams.Select(t => t.TeamName).ShouldBe(["Short schedule", "Long schedule"]);
+	}
+
+	[Test]
+	public void Maximum_PPG_Uses_The_Configured_Points_For_A_Win()
+	{
+		TeamResultDisplaySet[] perfectTeams =
+		[
+			CreateTeam("Two games", points: 4, played: 2, goalDifference: 1),
+			CreateTeam("One game", points: 2, played: 1, goalDifference: 5),
+		];
+
+		var sortedTeams = perfectTeams.SortTeams(pointsForWin: 2);
+
+		sortedTeams.Select(t => t.TeamName).ShouldBe(["One game", "Two games"]);
+	}
+
+	[TestCase(0)]
+	[TestCase(-1)]
+	public void Points_For_A_Win_Must_Be_Positive(int pointsForWin)
+	{
+		var exception = Should.Throw<ArgumentOutOfRangeException>(() => teams.SortTeams(pointsForWin));
+
+		exception.ParamName.ShouldBe(nameof(pointsForWin));
+	}
+
 	private void SetupTeam(string name, int points, int played, int goalDifference)
+	{
+		teams.Add(CreateTeam(name, points, played, goalDifference));
+	}
+
+	private static TeamResultDisplaySet CreateTeam(string name, int points, int played, int goalDifference)
 	{
 		const int baseGoals = 200;
 
@@ -58,6 +139,6 @@ public class TeamResults_Sorting_Tests
 			Played = played,
 		};
 
-		teams.Add(new(teamResultSet));
+		return new(teamResultSet);
 	}
 }

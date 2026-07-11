@@ -1,10 +1,10 @@
 namespace PointsPerGame.Core.Names;
+using PointsPerGame.Core.Extensions;
 
 public static class LeagueLists
 {
     public static League[] AllLeagues => [.. Enum.GetValues<League>()
-        .Where(l => l is not League.AllTopDivisions 
-                        && l is not League.AllEnglishDivisions)
+        .Where(l => l.IsMultiLeague() == false)
         .ToArray()];
 
     public static League[] AllTopDivisions => [

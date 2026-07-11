@@ -27,7 +27,7 @@ public class GuardianScraper(IHttpClientFactory httpClientFactory, GuardianTable
 
         var teamData = tableParser.Parse(html)
             .Select(results => new TeamResultDisplaySet(results))
-            .SortTeams();
+            .ToArray();
 
         CacheResults(league, teamData);
 
