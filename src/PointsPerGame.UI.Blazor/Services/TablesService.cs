@@ -4,6 +4,7 @@ using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Services;
 using System.ComponentModel;
 using System.Reflection;
+using PointsPerGame.Core.Extensions;
 
 namespace PointsPerGame.UI.Blazor.Services;
 
@@ -30,7 +31,7 @@ public class TablesService(ILeagueTableService leagueTableService)
 
         var league = (League)leagueId;
 
-        return league is League.AllLeagues or League.AllTopDivisions
+        return league.IsMultiLeague()
             ? null
             : GuardianLeagueMappings.GetUriForLeague(league);
     }
