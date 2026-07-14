@@ -1,5 +1,5 @@
 @page "/tables/{leagueId:int}"
-@using PointsPerGame.Core.DTOs
+@using PointsPerGame.Core.Models
 @using PointsPerGame.UI.Blazor.Services
 @inject Services.TablesService TablesService
 
@@ -79,7 +79,7 @@ else
                     <td>@r.Lost</td>
                     <td>@r.GoalDifference</td>
                     <td>@r.Points</td>
-                    <td>@r.PointsPerGame</td>
+                    <td>@r.PointsPerGame.ToString("F2")</td>
                 </tr>
             }
             </tbody>
@@ -91,7 +91,7 @@ else
     [Parameter]
     public int LeagueId { get; set; }
 
-    private IReadOnlyList<TableRowDto>? rows;
+    private IReadOnlyList<TeamResults>? rows;
     private string? leagueName;
     private string? errorMessage;
     private string? sourceUrl;

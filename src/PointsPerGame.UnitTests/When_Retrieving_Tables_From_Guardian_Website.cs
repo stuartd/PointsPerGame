@@ -14,9 +14,9 @@ public class When_Retrieving_Tables_From_Guardian_Website
 
     [TestCaseSource(typeof(TableTestCaseSource), nameof(TableTestCaseSource.Tables))]
     [Test]
-    public async Task All_Tables_Should_Be_Retrievable(League league)
+    public async Task All_Tables_Should_Be_Retrievable(TableSelection tableSelection)
     {
-        var teams = await dataSource.GetResultsAsync(league);
+        var teams = await dataSource.GetResultsAsync(tableSelection);
 
         // If the link is wrong, the table list page is returned, which then only returns 4 values.
         Assert.That(teams.Count, Is.GreaterThan(4));
@@ -39,7 +39,7 @@ public class When_Retrieving_Tables_From_Guardian_Website
         {
             get
             {
-                foreach (var league in Enum.GetValues<League>())
+                foreach (var league in Enum.GetValues<TableSelection>())
                 {
                     if (league.IsMultiLeague())
                     {

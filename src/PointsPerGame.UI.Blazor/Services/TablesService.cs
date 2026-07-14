@@ -1,5 +1,5 @@
-using PointsPerGame.Core.DTOs;
 using PointsPerGame.Core.Mappings;
+using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Services;
 using System.ComponentModel;
@@ -14,13 +14,13 @@ public class TablesService(ILeagueTableService leagueTableService)
     // to avoid the compiler spinning up a state machine that won't be used
     public static ValueTask<IReadOnlyDictionary<int, string>> GetLeagueLinksAsync()
     {
-        IReadOnlyDictionary<int, string> links = Enum.GetValues<League>()
+        IReadOnlyDictionary<int, string> links = Enum.GetValues<TableSelection>()
             .ToDictionary(league => (int)league, GetLeagueDescription);
 
         return ValueTask.FromResult(links);
     }
 
-    public static string? GetLeagueName(int leagueId) => IsKnownLeague(leagueId) ? GetLeagueDescription((League)leagueId) : null;
+    public static string? GetLeagueName(int leagueId) => IsKnownLeague(leagueId) ? GetLeagueDescription((TableSelection)leagueId) : null;
 
     public static string? GetLeagueSourceUrl(int leagueId)
     {
@@ -29,32 +29,30 @@ public class TablesService(ILeagueTableService leagueTableService)
             return null;
         }
 
-        var league = (League)leagueId;
+        var league = (TableSelection)leagueId;
 
         return league.IsMultiLeague()
             ? null
             : GuardianLeagueMappings.GetUriForLeague(league);
     }
 
-    public async Task<IReadOnlyList<TableRowDto>> GetLeagueTableAsync(int leagueId)
+    public async Task<IReadOnlyList<TeamResults>> GetLeagueTableAsync(int leagueId)
     {
         if (!IsKnownLeague(leagueId))
         {
             return [];
         }
 
-        var league = (League)leagueId;
-        var resultData = await leagueTableService.GetResultsAsync(league);
-
-        return [.. resultData.Select(TableRowDto.FromResultSet)];
+        var league = (TableSelection)leagueId;
+        return await leagueTableService.GetResultsAsync(league);
     }
 
-    private static bool IsKnownLeague(int leagueId) => Enum.IsDefined(typeof(League), leagueId);
+    private static bool IsKnownLeague(int leagueId) => Enum.IsDefined(typeof(TableSelection), leagueId);
 
-    private static string GetLeagueDescription(League league)
+    private static string GetLeagueDescription(TableSelection tableSelection)
     {
-        var member = typeof(League).GetMember(league.ToString()).Single();
+        var member = typeof(TableSelection).GetMember(tableSelection.ToString()).Single();
         var attr = member.GetCustomAttribute<DescriptionAttribute>();
-        return attr?.Description ?? league.ToString();
+        return attr?.Description ?? tableSelection.ToString();
     }
 }

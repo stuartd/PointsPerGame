@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace PointsPerGame.Core.Models;
+﻿namespace PointsPerGame.Core.Models;
 
 public static class TeamResultsExtensions
 {
-	public static IReadOnlyList<TeamResultDisplaySet> SortTeams(
-		this IEnumerable<TeamResultDisplaySet> values,
+	public static IReadOnlyList<TeamResults> SortTeams(
+		this IEnumerable<TeamResults> values,
 		int pointsForWin)
 	{
 		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pointsForWin);
@@ -26,6 +23,6 @@ public static class TeamResultsExtensions
 		return [.. sortedValues];
 	}
 
-	private static bool HasMaximumPointsPerGame(TeamResultDisplaySet team, int pointsForWin) =>
+	private static bool HasMaximumPointsPerGame(TeamResults team, int pointsForWin) =>
 		team.Played > 0 && team.Points == (long)team.Played * pointsForWin;
 }

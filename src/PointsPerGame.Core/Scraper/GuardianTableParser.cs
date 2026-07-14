@@ -1,16 +1,13 @@
 using HtmlAgilityPack;
 using PointsPerGame.Core.Models;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Net;
 
 namespace PointsPerGame.Core.Web;
 
 public sealed class GuardianTableParser
 {
-	public List<TeamResults> Parse(string html)
+	public IReadOnlyList<TeamResults> Parse(string html)
 	{
 		var document = new HtmlDocument();
 		document.LoadHtml(html);
@@ -18,7 +15,7 @@ public sealed class GuardianTableParser
 		return Parse(document);
 	}
 
-	public List<TeamResults> Parse(HtmlDocument document)
+	public IReadOnlyList<TeamResults> Parse(HtmlDocument document)
 	{
 		var table = document.DocumentNode.SelectNodes("//table").FirstOrDefault();
 

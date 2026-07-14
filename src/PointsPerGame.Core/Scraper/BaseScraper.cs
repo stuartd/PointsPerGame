@@ -20,5 +20,5 @@ public abstract class BaseScraper(IHttpClientFactory httpClientFactory) : IResul
         return await response.Content.ReadAsStringAsync();
     }
 
-    public abstract ValueTask<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league);
+    public abstract ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(TableSelection tableSelection);
 }

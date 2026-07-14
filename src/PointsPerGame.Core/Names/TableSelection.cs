@@ -5,7 +5,10 @@ using System.ComponentModel;
 
 namespace PointsPerGame.Core.Names;
 
-public enum League
+/// <summary>
+/// Represent one or many tables for display
+/// </summary>
+public enum TableSelection
 {
     [Description("Premier League")]
     EnglishPremierLeague = 1,

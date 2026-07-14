@@ -8,7 +8,7 @@ namespace PointsPerGame.UnitTests;
 public class TeamResults_Sorting_Tests
 {
 	private const int PointsForWin = 3;
-	private List<TeamResultDisplaySet> teams = null!;
+	private List<TeamResults> teams = null!;
 
 	[SetUp]
 	public void Setup()
@@ -34,6 +34,14 @@ public class TeamResults_Sorting_Tests
 	}
 
 	[Test]
+	public void Team_With_No_Games_Has_Zero_Points_Per_Game()
+	{
+		var team = CreateTeam("Not started", points: 0, played: 0, goalDifference: 0);
+
+		team.PointsPerGame.ShouldBe(0);
+	}
+
+	[Test]
 	public void TeamsResults_Sort_Correctly()
 	{
 		var sortedTeams = teams.SortTeams(PointsForWin);
@@ -47,7 +55,7 @@ public class TeamResults_Sorting_Tests
 	[Test]
 	public void Perfect_Record_Teams_Are_Sorted_By_Goal_Difference()
 	{
-		TeamResultDisplaySet[] perfectTeams =
+		TeamResults[] perfectTeams =
 		[
 			CreateTeam("Aston Villa", points: 3, played: 1, goalDifference: 1),
 			CreateTeam("Arsenal", points: 6, played: 2, goalDifference: 4),
@@ -70,7 +78,7 @@ public class TeamResults_Sorting_Tests
 	[Test]
 	public void Perfect_Record_Teams_With_Equal_Goal_Difference_Favour_Points_In_The_Bag()
 	{
-		TeamResultDisplaySet[] perfectTeams =
+		TeamResults[] perfectTeams =
 		[
 			CreateTeam("One game", points: 3, played: 1, goalDifference: 4),
 			CreateTeam("Three games", points: 9, played: 3, goalDifference: 4),
@@ -85,7 +93,7 @@ public class TeamResults_Sorting_Tests
 	[Test]
 	public void Non_Perfect_PPG_Ties_Still_Favour_Fewer_Games_Played()
 	{
-		TeamResultDisplaySet[] tiedTeams =
+		TeamResults[] tiedTeams =
 		[
 			CreateTeam("Long schedule", points: 6, played: 4, goalDifference: 100),
 			CreateTeam("Short schedule", points: 3, played: 2, goalDifference: 0),
@@ -99,7 +107,7 @@ public class TeamResults_Sorting_Tests
 	[Test]
 	public void Maximum_PPG_Uses_The_Configured_Points_For_A_Win()
 	{
-		TeamResultDisplaySet[] perfectTeams =
+		TeamResults[] perfectTeams =
 		[
 			CreateTeam("Two games", points: 4, played: 2, goalDifference: 1),
 			CreateTeam("One game", points: 2, played: 1, goalDifference: 5),
@@ -124,11 +132,11 @@ public class TeamResults_Sorting_Tests
 		teams.Add(CreateTeam(name, points, played, goalDifference));
 	}
 
-	private static TeamResultDisplaySet CreateTeam(string name, int points, int played, int goalDifference)
+	private static TeamResults CreateTeam(string name, int points, int played, int goalDifference)
 	{
 		const int baseGoals = 200;
 
-		var teamResultSet = new TeamResults
+		return new TeamResults
 		{
 			TeamName = name,
 			TeamUrl = string.Empty,
@@ -138,7 +146,5 @@ public class TeamResults_Sorting_Tests
 			Points = points,
 			Played = played,
 		};
-
-		return new(teamResultSet);
 	}
 }

@@ -1,22 +1,21 @@
 using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
-using PointsPerGame.Core.Web;
 
 namespace PointsPerGame.Core.Services;
 
 public interface ILeagueTableService
 {
-	ValueTask<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league);
+	ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(TableSelection tableSelection);
 }
 
 public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueTableService
 {
 	private const int PointsForWin = 3;
 
-	public async ValueTask<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
+	public async ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(TableSelection tableSelection)
 	{
-		var leagues = GetSourceLeagues(league);
-		var results = new List<TeamResultDisplaySet>();
+		var leagues = GetSourceLeagues(tableSelection);
+		var results = new List<TeamResults>();
 
 		foreach (var sourceLeague in leagues)
 		{
@@ -30,11 +29,11 @@ public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueT
 /// A 'league' here can be a single league or a grouping of leagues (e.g. AllLeagues)
 /// so return the underlying league(s) for the league value.
 /// </summary>
-    private static League[] GetSourceLeagues(League league) => league switch
+    private static TableSelection[] GetSourceLeagues(TableSelection tableSelection) => tableSelection switch
     {
-        League.AllLeagues => LeagueLists.AllLeagues,
-        League.AllTopDivisions => LeagueLists.AllTopDivisions,
-        League.AllEnglishDivisions => LeagueLists.AllEnglishDivisions,
-        _ => [league],
+        TableSelection.AllLeagues => LeagueLists.AllLeagues,
+        TableSelection.AllTopDivisions => LeagueLists.AllTopDivisions,
+        TableSelection.AllEnglishDivisions => LeagueLists.AllEnglishDivisions,
+        _ => [tableSelection],
     };
 }

@@ -2,7 +2,6 @@ using NUnit.Framework;
 using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Services;
-using PointsPerGame.Core.Web;
 using Shouldly;
 
 namespace PointsPerGame.UnitTests;
@@ -13,12 +12,12 @@ public class LeagueTableServiceTests
 	public async Task GetResultsAsync_For_Single_League_Requests_That_League()
 	{
 		var dataSource = new StubDataSource();
-		dataSource.SetResults(League.EnglishChampionship, Team("Championship", points: 30, played: 10));
+		dataSource.SetResults(TableSelection.EnglishChampionship, Team("Championship", points: 30, played: 10));
 		var service = new LeagueTableService(dataSource);
 
-		var results = await service.GetResultsAsync(League.EnglishChampionship);
+		var results = await service.GetResultsAsync(TableSelection.EnglishChampionship);
 
-		dataSource.RequestedLeagues.ShouldBe([League.EnglishChampionship]);
+		dataSource.RequestedLeagues.ShouldBe([TableSelection.EnglishChampionship]);
 		results.Count(r => r.TeamName == "Championship").ShouldBe(1);
 	}
 
@@ -32,7 +31,7 @@ public class LeagueTableServiceTests
 		}
 		var service = new LeagueTableService(dataSource);
 
-		var results = await service.GetResultsAsync(League.AllLeagues);
+		var results = await service.GetResultsAsync(TableSelection.AllLeagues);
 
 		dataSource.RequestedLeagues.ShouldBe(LeagueLists.AllLeagues);
 		results.Count.ShouldBe(LeagueLists.AllLeagues.Length);
@@ -48,7 +47,7 @@ public class LeagueTableServiceTests
 		}
 		var service = new LeagueTableService(dataSource);
 
-		var results = await service.GetResultsAsync(League.AllTopDivisions);
+		var results = await service.GetResultsAsync(TableSelection.AllTopDivisions);
 
 		dataSource.RequestedLeagues.ShouldBe(LeagueLists.AllTopDivisions);
 		results.Count.ShouldBe(LeagueLists.AllTopDivisions.Length);
@@ -58,43 +57,43 @@ public class LeagueTableServiceTests
 	public async Task GetResultsAsync_Sorts_Combined_Results()
 	{
 		var dataSource = new StubDataSource();
-		dataSource.SetResults(League.EnglishPremierLeague,
+		dataSource.SetResults(TableSelection.EnglishPremierLeague,
 			Team("lower", points: 30, played: 10),
 			Team("higher", points: 31, played: 10));
 		var service = new LeagueTableService(dataSource);
 
-		var results = await service.GetResultsAsync(League.EnglishPremierLeague);
+		var results = await service.GetResultsAsync(TableSelection.EnglishPremierLeague);
 
 		results.Select(r => r.TeamName).ShouldBe(["higher", "lower"]);
 	}
 
-    private static TeamResultDisplaySet Team(string name, int points, int played) => new(new TeamResults
-    {
-        TeamName = name,
-        TeamUrl = string.Empty,
-        TeamCrest = string.Empty,
-        Played = played,
-        Points = points,
-    });
-
-    private sealed class StubDataSource : IResultsDataSource
+	private static TeamResults Team(string name, int points, int played) => new()
 	{
-		private readonly Dictionary<League, IReadOnlyList<TeamResultDisplaySet>> resultsByLeague = [];
+		TeamName = name,
+		TeamUrl = string.Empty,
+		TeamCrest = string.Empty,
+		Played = played,
+		Points = points,
+	};
 
-		public List<League> RequestedLeagues { get; } = [];
+	private sealed class StubDataSource : IResultsDataSource
+	{
+		private readonly Dictionary<TableSelection, IReadOnlyList<TeamResults>> resultsByLeague = [];
 
-        public void SetResults(League league, params TeamResultDisplaySet[] results) => resultsByLeague[league] = [.. results];
+		public List<TableSelection> RequestedLeagues { get; } = [];
 
-        public ValueTask<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
+		public void SetResults(TableSelection tableSelection, params TeamResults[] results) => resultsByLeague[tableSelection] = [.. results];
+
+		public ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(TableSelection tableSelection)
 		{
-			RequestedLeagues.Add(league);
+			RequestedLeagues.Add(tableSelection);
 
-			if (resultsByLeague.TryGetValue(league, out var leagueResults))
+			if (resultsByLeague.TryGetValue(tableSelection, out var leagueResults))
 			{
-				return ValueTask.FromResult<IReadOnlyList<TeamResultDisplaySet>>([.. leagueResults]);
+				return ValueTask.FromResult<IReadOnlyList<TeamResults>>([.. leagueResults]);
 			}
 
-			return ValueTask.FromResult<IReadOnlyList<TeamResultDisplaySet>>([]);
+			return ValueTask.FromResult<IReadOnlyList<TeamResults>>([]);
 		}
     }
 }

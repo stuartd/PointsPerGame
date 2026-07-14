@@ -15,28 +15,26 @@ public class GuardianScraper(IHttpClientFactory httpClientFactory, GuardianTable
     {
     }
 
-    public override async ValueTask<IReadOnlyList<TeamResultDisplaySet>> GetResultsAsync(League league)
+    public override async ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(TableSelection tableSelection)
     {
-        if (TryGetCachedResults(league, out var cachedResults))
+        if (TryGetCachedResults(tableSelection, out var cachedResults))
         {
             return cachedResults;
         }
 
-        var leagueUri = GuardianLeagueMappings.GetUriForLeague(league);
+        var leagueUri = GuardianLeagueMappings.GetUriForLeague(tableSelection);
         var html = await GetPageHtmlAsync(leagueUri);
 
-        var teamData = tableParser.Parse(html)
-            .Select(results => new TeamResultDisplaySet(results))
-            .ToArray();
+        var teamData = tableParser.Parse(html);
 
-        CacheResults(league, teamData);
+        CacheResults(tableSelection, teamData);
 
         return teamData;
     }
 
-    private static bool TryGetCachedResults(League league, out IReadOnlyList<TeamResultDisplaySet> results)
+    private static bool TryGetCachedResults(TableSelection tableSelection, out IReadOnlyList<TeamResults> results)
     {
-        if (cache.Get(GetCacheKey(league)) is IReadOnlyList<TeamResultDisplaySet> cachedResults)
+        if (cache.Get(GetCacheKey(tableSelection)) is IReadOnlyList<TeamResults> cachedResults)
         {
             results = cachedResults;
             return true;
@@ -46,8 +44,8 @@ public class GuardianScraper(IHttpClientFactory httpClientFactory, GuardianTable
         return false;
     }
 
-    private static void CacheResults(League league, IReadOnlyList<TeamResultDisplaySet> results) 
-        => cache.Set(GetCacheKey(league), results, DateTimeOffset.Now.AddMinutes(5));
+    private static void CacheResults(TableSelection tableSelection, IReadOnlyList<TeamResults> results)
+        => cache.Set(GetCacheKey(tableSelection), results, DateTimeOffset.Now.AddMinutes(5));
 
-    private static string GetCacheKey(League league) => league.ToString();
+    private static string GetCacheKey(TableSelection tableSelection) => tableSelection.ToString();
 }

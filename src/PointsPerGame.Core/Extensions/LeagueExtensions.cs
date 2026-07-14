@@ -7,8 +7,8 @@ public static class LeagueExtensions {
 	/// Is the 'league' a composite of actual leagues,
 	/// for example 'All top divisions'
 	/// </summary>
-	/// <param name="league"></param>
+	/// <param name="tableSelection"></param>
 	/// <returns></returns>
-	public static bool IsMultiLeague(this League league) => 
-		league is League.AllLeagues or League.AllTopDivisions or League.AllEnglishDivisions;
+	public static bool IsMultiLeague(this TableSelection tableSelection) => 
+		tableSelection is TableSelection.AllLeagues or TableSelection.AllTopDivisions or TableSelection.AllEnglishDivisions;
 }
