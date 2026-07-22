@@ -30,7 +30,7 @@ h1 a:hover {
     width: calc((100% - var(--team-column-width)) / 8);
 }
 
-.teamTable .team-column {
+.teamTable col.team-column {
     width: var(--team-column-width);
 }
 
