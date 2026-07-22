@@ -5,6 +5,7 @@ using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Web;
 using NUnit.Framework;
 using PointsPerGame.Core.Extensions;
+using Shouldly;
 
 namespace PointsPerGame.UnitTests;
 
@@ -22,18 +23,14 @@ public class When_Retrieving_Tables_From_Guardian_Website
         var teams = await dataSource.GetResultsAsync(tableSelection);
 
         // If the link is wrong, the table list page is returned, which then only returns 4 values.
-        Assert.That(teams.Count, Is.GreaterThan(4));
+        teams.Count.ShouldBeGreaterThan(4);
     }
 
+    [TestCaseSource(typeof(TableTestCaseSource), nameof(TableTestCaseSource.Tables))]
     [Test]
-    public async Task All_Team_Fixture_Links_Should_Be_Retrievable()
+    public async Task All_Team_Fixture_Links_Should_Be_Retrievable(TableSelection tableSelection)
     {
-        var teams = new List<TeamResults>();
-
-        foreach (var table in TableTestCaseSource.Tables.Cast<TableSelection>())
-        {
-            teams.AddRange(await dataSource.GetResultsAsync(table));
-        }
+        var teams = await dataSource.GetResultsAsync(tableSelection);
 
         var uniqueTeams = teams
             .GroupBy(team => team.TeamUrl, StringComparer.OrdinalIgnoreCase)
@@ -82,7 +79,7 @@ public class When_Retrieving_Tables_From_Guardian_Website
 
         TestContext.Progress.WriteLine(summary);
 
-        Assert.That(failures, Is.Empty,
+        failures.ShouldBeEmpty(
             $"Broken Guardian fixture links:{Environment.NewLine}{string.Join(Environment.NewLine, failures)}");
     }
 
