@@ -19,15 +19,12 @@ h1 a:hover {
 }
 
 .teamTable {
-    --team-column-width: max(24%, 200px);
+    --team-column-width: clamp(12rem, 24cqi, 20rem);
     border-collapse: collapse;
     font-size: 0.9rem;
+    min-width: 38rem;
     table-layout: fixed;
     width: 100%;
-}
-
-.teamTable .stat-column {
-    width: calc((100% - var(--team-column-width)) / 8);
 }
 
 .teamTable col.team-column {
