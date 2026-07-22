@@ -5,16 +5,15 @@
 
 <PageTitle>@PageTitle</PageTitle>
 
-<h1>
-    @if (sourceUrl == null)
+<nav class="table-navigation" aria-label="Table links">
+    <a href="/">Home</a>
+    @if (sourceUrl != null)
     {
-        @PageTitle
+        <a href="@sourceUrl" target="_blank" rel="noopener noreferrer">Source data</a>
     }
-    else
-    {
-        <a href="@sourceUrl" target="_blank" rel="noopener noreferrer">@PageTitle</a>
-    }
-</h1>
+</nav>
+
+<h1>@PageTitle</h1>
 
 @if (rows == null)
 {
