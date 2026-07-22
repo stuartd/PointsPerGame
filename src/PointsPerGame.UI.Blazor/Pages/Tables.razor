@@ -5,7 +5,8 @@
 <PageTitle>Points Per Game</PageTitle>
 
 <h1>Points Per Game</h1>
-<p class="lede">Teams are sorted by points per game. Teams with a perfect record are then sorted by goal difference; other PPG ties favour fewer games played. Remaining ties are resolved by goal difference, points, then team name.</p>
+34
+<h2>Available Tables</h2>
 
 @if (links == null)
 {
@@ -13,31 +14,27 @@
 }
 else
 {
-    <section aria-labelledby="tables-heading">
-        <h2 id="tables-heading">Available Tables</h2>
-        <table class="available-tables">
-            <thead>
-            <tr>
-                <th>Table</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var kv in links)
-            {
-                <tr>
-                    <td>@kv.Value</td>
-                    <td><a href="/tables/@kv.Key">View</a></td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </section>
+    @foreach (var kv in links)
+    {
+        <a href="/tables/@kv.Key">@kv.Value</a>
+        <br />
+    }
 
-    <section aria-labelledby="data-heading">
-        <h2 id="data-heading">Data</h2>
-        <p>TThe data is scraped from the Guardian website</p>
-    </section>
+    <h2>Sorting</h2>
+    <text>Teams are sorted by points per game.</text>
+    <br />
+    <text>Teams with a perfect record are then sorted by goal difference; other points-per-game ties favour fewer games played.</text>
+    <br />
+    <text>Remaining ties are resolved by goal difference, points, then team name.</text>
+    <br />
+
+    <br />
+
+    <a href="https://github.com/stuartd/PointsPerGame">Site code (GitHub)</a>
+
+    <br />
+
+    <a href="https://github.com/stuartd/PointsPerGame/issues">Having a problem? Got any ideas for enhancements? Let me know! (GitHub)</a>
 }
 
 @code {

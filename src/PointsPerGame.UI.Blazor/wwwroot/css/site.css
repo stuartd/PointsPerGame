@@ -1,36 +1,18 @@
-html,
 body {
-    color: #1f2933;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin: 0;
-}
-
-body {
-    line-height: 1.45;
-}
-
-h1,
-h2,
-h3 {
-    color: #102033;
-}
-
-h1 {
-    font-size: 1.75rem;
-    margin: 0 0 1rem;
-}
-
-h2 {
-    font-size: 1.15rem;
-    margin: 0 0 0.8rem;
+    background-color: #fefefe;
+    color: #000000;
+    font-family: Helvetica, Calibri, Verdana, Tahoma, sans-serif;
+    font-size: 87%;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    margin-left: 5%;
+    padding-bottom: 20px;
+    text-transform: none;
 }
 
 h1:focus {
     outline: none;
-}
-
-a {
-    color: #0071c1;
 }
 
 a:focus {
