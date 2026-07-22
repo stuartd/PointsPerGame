@@ -19,7 +19,7 @@ h1 a:hover {
 }
 
 .teamTable {
-    --team-column-width: min(24%, 200px);;
+    --team-column-width: max(24%, 200px);
     border-collapse: collapse;
     font-size: 0.9rem;
     table-layout: fixed;
