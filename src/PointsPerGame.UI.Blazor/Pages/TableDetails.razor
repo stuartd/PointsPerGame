@@ -72,7 +72,16 @@ else
             {
                 <tr>
                     <td><img src="@r.TeamCrest" alt="" /></td>
-                    <td class="team-column"><a href="@r.TeamUrl">@r.TeamName</a></td>
+                    <td class="team-column">
+                        @if (string.IsNullOrWhiteSpace(r.TeamUrl))
+                        {
+                            @r.TeamName
+                        }
+                        else
+                        {
+                            <a href="@r.TeamUrl">@r.TeamName</a>
+                        }
+                    </td>
                     <td>@r.Played</td>
                     <td>@r.Won</td>
                     <td>@r.Drawn</td>

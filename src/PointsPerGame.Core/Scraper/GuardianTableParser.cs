@@ -58,27 +58,22 @@ public sealed class GuardianTableParser
 		}
 
 		var anchor = teamHeader.SelectSingleNode(".//a[@href]");
-
-		if (anchor == null)
-		{
-			throw new InvalidOperationException("Guardian have changed their site again - can't find the team link.");
-		}
-
-		var teamName = WebUtility.HtmlDecode(anchor.InnerText).Trim();
+		var teamNameSource = anchor ?? teamHeader;
+		var teamName = WebUtility.HtmlDecode(teamNameSource.InnerText).Trim();
 
 		if (string.IsNullOrWhiteSpace(teamName))
 		{
-			throw new InvalidOperationException("Guardian have changed their site again - found a team link without a team name.");
+			throw new InvalidOperationException("Guardian have changed their site again - found a team row without a team name.");
 		}
 
 		var crestSource = teamHeader.SelectSingleNode(".//img[@src]");
 		var crest = crestSource?.GetAttributeValue("src", string.Empty) ?? string.Empty;
-		var teamUrl = anchor.GetAttributeValue("href", string.Empty);
+		var teamUrl = anchor?.GetAttributeValue("href", string.Empty);
 
 		return new()
 		{
 			TeamName = teamName,
-			TeamUrl = CreateTeamFixturesUri(teamUrl).ToString(),
+			TeamUrl = string.IsNullOrWhiteSpace(teamUrl) ? string.Empty : CreateTeamFixturesUri(teamUrl).ToString(),
 			TeamCrest = WebUtility.HtmlDecode(crest),
 			Played = GetCellInt(cells, 1, "played"),
 			Won = GetCellInt(cells, 2, "won"),

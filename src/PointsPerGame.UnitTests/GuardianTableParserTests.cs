@@ -34,4 +34,41 @@ public class GuardianTableParserTests
 
         result.TeamUrl.ShouldBe(expectedUrl);
     }
+
+    [Test]
+    public void Parse_Allows_A_Team_Without_A_Link()
+    {
+        const string crestUrl = "https://i.guim.co.uk/img/sport/football/crests/26304.png?width=20&dpr=1&s=none&crop=none";
+        var html = """
+            <table>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            <div>
+                                <picture>
+                                    <img src="https://i.guim.co.uk/img/sport/football/crests/26304.png?width=20&amp;dpr=1&amp;s=none&amp;crop=none" alt="">
+                                </picture>
+                                Racing Santander
+                            </div>
+                        </th>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>7</td>
+                        <td>8</td>
+                    </tr>
+                </tbody>
+            </table>
+            """;
+
+        var result = new GuardianTableParser().Parse(html).Single();
+
+        result.TeamName.ShouldBe("Racing Santander");
+        result.TeamUrl.ShouldBeEmpty();
+        result.TeamCrest.ShouldBe(crestUrl);
+    }
 }
