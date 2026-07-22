@@ -74,6 +74,11 @@ h1 a:hover {
 }
 
 @container (max-width: 30rem) {
+    .teamTable {
+        --team-column-width: 32%;
+        min-width: 0;
+    }
+
     .teamTable th,
     .teamTable td {
         padding-inline: 0.15rem;
@@ -81,11 +86,12 @@ h1 a:hover {
 
     .teamTable th:not(:nth-child(2)),
     .teamTable td:not(:nth-child(2)) {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         padding-inline: 0.05rem;
     }
 
     .teamTable td:nth-child(2) {
+        overflow-wrap: anywhere;
         white-space: normal;
     }
 }
