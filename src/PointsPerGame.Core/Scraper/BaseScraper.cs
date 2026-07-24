@@ -7,7 +7,7 @@ public abstract class BaseScraper(IHttpClientFactory httpClientFactory) : IResul
 {
     private readonly IHttpClientFactory httpClientFactory = httpClientFactory;
 
-    protected async Task<string> GetPageHtmlAsync(string url)
+    protected async Task<(string Html, Uri FinalUri)> GetPageHtmlAsync(string url)
     {
         var httpClient = httpClientFactory.CreateClient();
         httpClient.DefaultRequestHeaders.Accept.Clear();
@@ -17,7 +17,8 @@ public abstract class BaseScraper(IHttpClientFactory httpClientFactory) : IResul
         using var response = await httpClient.GetAsync(new Uri(url));
         response.EnsureSuccessStatusCode();
 
-        return await response.Content.ReadAsStringAsync();
+        var finalUri = response.RequestMessage?.RequestUri ?? new Uri(url);
+        return (await response.Content.ReadAsStringAsync(), finalUri);
     }
 
     public abstract ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(TableSelection tableSelection);

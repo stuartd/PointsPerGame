@@ -1,4 +1,5 @@
 @page "/tables/{leagueId:int}"
+@using System.Net
 @using PointsPerGame.Core.Models
 @using PointsPerGame.UI.Blazor.Services
 @inject Services.TablesService TablesService
@@ -128,6 +129,11 @@ else
             {
                 errorMessage = "League page not found or data unavailable.";
             }
+        }
+        catch (HttpRequestException exception) when (exception.StatusCode == HttpStatusCode.NotFound)
+        {
+            errorMessage = "League page not found or data unavailable.";
+            rows = [];
         }
         catch (HttpRequestException)
         {

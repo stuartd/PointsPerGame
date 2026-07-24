@@ -3,6 +3,7 @@ using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
 using PointsPerGame.Core.Services;
 using Shouldly;
+using System.Net;
 
 namespace PointsPerGame.UnitTests;
 
@@ -35,6 +36,17 @@ public class LeagueTableServiceTests
 
 		dataSource.RequestedLeagues.ShouldBe(LeagueLists.AllLeagues);
 		results.Count.ShouldBe(LeagueLists.AllLeagues.Length);
+	}
+
+	[Test]
+	public async Task GetResultsAsync_For_All_Fails_When_A_Source_League_Is_Not_Found()
+	{
+		var service = new LeagueTableService(new NotFoundDataSource());
+
+		var exception = await Should.ThrowAsync<HttpRequestException>(
+			async () => await service.GetResultsAsync(TableSelection.AllLeagues));
+
+		exception.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 	}
 
 	[Test]
@@ -96,4 +108,11 @@ public class LeagueTableServiceTests
 			return ValueTask.FromResult<IReadOnlyList<TeamResults>>([]);
 		}
     }
+
+	private sealed class NotFoundDataSource : IResultsDataSource
+	{
+		public ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(TableSelection tableSelection) =>
+			ValueTask.FromException<IReadOnlyList<TeamResults>>(
+				new HttpRequestException("Not found.", inner: null, HttpStatusCode.NotFound));
+	}
 }

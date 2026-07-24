@@ -1,6 +1,7 @@
 using PointsPerGame.Core.Mappings;
 using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
+using System.Net;
 using System.Runtime.Caching;
 
 namespace PointsPerGame.Core.Web;
@@ -23,7 +24,15 @@ public class GuardianScraper(IHttpClientFactory httpClientFactory, GuardianTable
         }
 
         var leagueUri = GuardianLeagueMappings.GetUriForLeague(tableSelection);
-        var html = await GetPageHtmlAsync(leagueUri);
+        var (html, finalUri) = await GetPageHtmlAsync(leagueUri);
+
+        if (IsGenericTablesPage(finalUri))
+        {
+            throw new HttpRequestException(
+                $"The Guardian league page redirected to the generic tables page: {finalUri}",
+                inner: null,
+                HttpStatusCode.NotFound);
+        }
 
         var teamData = tableParser.Parse(html);
 
@@ -48,4 +57,8 @@ public class GuardianScraper(IHttpClientFactory httpClientFactory, GuardianTable
         => cache.Set(GetCacheKey(tableSelection), results, DateTimeOffset.Now.AddMinutes(5));
 
     private static string GetCacheKey(TableSelection tableSelection) => tableSelection.ToString();
+
+    private static bool IsGenericTablesPage(Uri uri) =>
+        uri.Host.Equals("www.theguardian.com", StringComparison.OrdinalIgnoreCase) &&
+        uri.AbsolutePath.TrimEnd('/').Equals("/football/tables", StringComparison.OrdinalIgnoreCase);
 }
