@@ -53,15 +53,15 @@ public class TeamResults_Sorting_Tests
 	}
 
 	[Test]
-	public void Perfect_Record_Teams_Are_Sorted_By_Goal_Difference()
+	public void Perfect_Record_Teams_Are_Sorted_By_Games_Played_Then_Goal_Difference()
 	{
 		TeamResults[] perfectTeams =
 		[
-			CreateTeam("Aston Villa", points: 3, played: 1, goalDifference: 1),
+			CreateTeam("Aston Villa", points: 3, played: 1, goalDifference: 100),
 			CreateTeam("Arsenal", points: 6, played: 2, goalDifference: 4),
-			CreateTeam("Liverpool", points: 6, played: 2, goalDifference: 3),
-			CreateTeam("Leicester", points: 9, played: 3, goalDifference: 8),
-			CreateTeam("Everton", points: 9, played: 3, goalDifference: 5),
+			CreateTeam("Liverpool", points: 6, played: 2, goalDifference: 20),
+			CreateTeam("Leicester", points: 9, played: 3, goalDifference: 2),
+			CreateTeam("Everton", points: 9, played: 3, goalDifference: 1),
 		];
 
 		var sortedTeams = perfectTeams.SortTeams(PointsForWin);
@@ -69,8 +69,8 @@ public class TeamResults_Sorting_Tests
 		sortedTeams.Select(t => t.TeamName).ShouldBe([
 			"Leicester",
 			"Everton",
-			"Arsenal",
 			"Liverpool",
+			"Arsenal",
 			"Aston Villa",
 		]);
 	}
@@ -115,7 +115,7 @@ public class TeamResults_Sorting_Tests
 
 		var sortedTeams = perfectTeams.SortTeams(pointsForWin: 2);
 
-		sortedTeams.Select(t => t.TeamName).ShouldBe(["One game", "Two games"]);
+		sortedTeams.Select(t => t.TeamName).ShouldBe(["Two games", "One game"]);
 	}
 
 	[TestCase(0)]

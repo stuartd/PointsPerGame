@@ -11,11 +11,11 @@ public static class TeamResultsExtensions
 		// Teams are sorted by points per game descending (highest is best).
 		var sortedValues = values.OrderByDescending(v => v.PointsPerGame)
 
-			// Perfect-record teams are compared by goal difference below. For other PPG ties,
-			// the team which has played fewer games is sorted higher.
-			.ThenBy(v => HasMaximumPointsPerGame(v, pointsForWin) ? 0 : v.Played)
+			// Perfect-record teams favour points in the bag, so the team which has played
+			// more games is sorted higher. Other PPG ties still favour fewer games played.
+			.ThenBy(v => HasMaximumPointsPerGame(v, pointsForWin) ? -(long)v.Played : v.Played)
 
-			// Remaining ties are resolved by goal difference, points in the bag, then team name.
+			// Remaining ties are resolved by goal difference, points, then team name.
 			.ThenByDescending(v => v.GoalDifference)
 			.ThenByDescending(v => v.Points)
 			.ThenBy(v => v.TeamName);
