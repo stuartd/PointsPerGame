@@ -83,7 +83,6 @@ h1 {
 
     .teamTable th:not(:nth-child(2)),
     .teamTable td:not(:nth-child(2)) {
-        font-size: 0.7rem;
         padding-inline: 0.05rem;
     }
 
