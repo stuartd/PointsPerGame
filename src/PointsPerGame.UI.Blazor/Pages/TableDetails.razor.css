@@ -12,7 +12,9 @@ h1 {
 
 .table-scroll {
     container-type: inline-size;
+    max-width: 100%;
     overflow-x: auto;
+    width: 38rem;
 }
 
 .teamTable {
