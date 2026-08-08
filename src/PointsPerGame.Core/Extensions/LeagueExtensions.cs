@@ -11,4 +11,12 @@ public static class LeagueExtensions {
 	/// <returns></returns>
 	public static bool IsMultiLeague(this TableSelection tableSelection) => 
 		tableSelection is TableSelection.AllLeagues or TableSelection.AllTopDivisions or TableSelection.AllEnglishDivisions;
+
+	public static TableSelection[] GetConcreteTables(this TableSelection tableSelection) => tableSelection switch
+	{
+		TableSelection.AllLeagues => LeagueLists.AllLeagues,
+		TableSelection.AllTopDivisions => LeagueLists.AllTopDivisions,
+		TableSelection.AllEnglishDivisions => LeagueLists.AllEnglishDivisions,
+		_ => [tableSelection],
+	};
 }

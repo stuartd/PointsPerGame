@@ -1,5 +1,6 @@
 using PointsPerGame.Core.Models;
 using PointsPerGame.Core.Names;
+using PointsPerGame.Core.Extensions;
 
 namespace PointsPerGame.Core.Services;
 
@@ -14,7 +15,7 @@ public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueT
 
 	public async ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(TableSelection tableSelection)
 	{
-		var leagues = GetSourceLeagues(tableSelection);
+		var leagues = tableSelection.GetConcreteTables();
 		var results = new List<TeamResults>();
 
 		foreach (var sourceLeague in leagues)
@@ -24,16 +25,4 @@ public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueT
 
 		return [.. results.SortTeams(pointsForWin: PointsForWin)];
 	}
-
-/// <summary>
-/// A 'league' here can be a single league or a grouping of leagues (e.g. AllLeagues)
-/// so return the underlying league(s) for the league value.
-/// </summary>
-    private static TableSelection[] GetSourceLeagues(TableSelection tableSelection) => tableSelection switch
-    {
-        TableSelection.AllLeagues => LeagueLists.AllLeagues,
-        TableSelection.AllTopDivisions => LeagueLists.AllTopDivisions,
-        TableSelection.AllEnglishDivisions => LeagueLists.AllEnglishDivisions,
-        _ => [tableSelection],
-    };
 }
