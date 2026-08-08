@@ -105,7 +105,7 @@ else
     private string? errorMessage;
     private string? sourceUrl;
 
-    private string PageTitle => leagueName == null ? "League Table" : $"{leagueName} Table";
+    private string PageTitle => leagueName == null ? "League Table" : $"{leagueName}";
 
     protected override async Task OnParametersSetAsync()
     {
