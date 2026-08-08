@@ -10,7 +10,7 @@ namespace PointsPerGame.UnitTests;
 public class TableAvailabilityCheckerTests
 {
 	[Test]
-	public async Task CheckAllAsync_Checks_Every_Concrete_Table_And_Reports_Retrieval_Failures()
+	public async Task CheckAllAsync_Checks_Every_Concrete_Table_Reports_Retrieval_Failures_And_Caches_The_Result()
 	{
 		var dataSource = new StubDataSource();
 		dataSource.SetFailure(
@@ -29,6 +29,12 @@ public class TableAvailabilityCheckerTests
 				table,
 				IsAvailable: table is not TableSelection.SerieA and not TableSelection.Ligue1)),
 		]);
+
+		var secondDataSource = new StubDataSource();
+		var cachedResult = await new TableAvailabilityChecker(secondDataSource).CheckAllAsync();
+
+		secondDataSource.RequestedTables.ShouldBeEmpty();
+		cachedResult.ShouldBe(result);
 	}
 
 	private sealed class StubDataSource : IResultsDataSource
