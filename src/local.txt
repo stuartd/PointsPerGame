@@ -1,0 +1,9 @@
+mac
+
+dotnet watch --project ./src/PointsPerGame.UI.Blazor/PointsPerGame.UI.Blazor.csproj run --launch-profile https
+
+windows
+
+dotnet watch --project .\src\PointsPerGame.UI.Blazor\PointsPerGame.UI.Blazor.csproj run --launch-profile https
+
+Stop with Ctrl+C. If Hot Reload can’t apply an edit, press Ctrl+R in the terminal to restart the app. Use Ctrl+F5 for a hard browser refresh.
