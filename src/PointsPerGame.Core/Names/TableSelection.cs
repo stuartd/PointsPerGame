@@ -57,4 +57,7 @@ public enum TableSelection
     
     [Description("All English divisions")]
     AllEnglishDivisions,
+
+    [Description("All Scottish divisions")]
+    AllScottishDivisions,
 }

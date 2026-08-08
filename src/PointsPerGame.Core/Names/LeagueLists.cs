@@ -23,4 +23,11 @@ public static class LeagueLists
         TableSelection.EnglishLeagueOne,
         TableSelection.EnglishLeagueTwo,
     ];
+
+    public static TableSelection[] AllScottishDivisions => [
+        TableSelection.SPL,
+        TableSelection.ScottishChampionship,
+        TableSelection.ScottishLeagueOne,
+        TableSelection.ScottishLeagueTwo,
+    ];
 }

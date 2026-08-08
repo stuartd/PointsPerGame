@@ -26,5 +26,7 @@ public class TableAvailabilityExtensionsTests
 			.ShouldBe([TableSelection.SerieA]);
 		Availability.GetUnavailableTablesFor(TableSelection.Ligue1)
 			.ShouldBeEmpty();
+		Availability.GetUnavailableTablesFor(TableSelection.AllScottishDivisions)
+			.ShouldBeEmpty();
 	}
 }
