@@ -15,10 +15,13 @@ public sealed record TeamResults
 	public int GoalsConceded { get; init; }
 	public int Played { get; init; }
 	public int Points { get; init; }
+	public int PointsDeducted { get; init; }
 
 	public int GoalDifference => GoalsScored - GoalsConceded;
 
-	public double PointsPerGame => Played == 0 ? 0 : Points / (double)Played;
+	public int PointsBeforeDeduction => Points + PointsDeducted;
+
+	public double PointsPerGame => Played == 0 ? 0 : PointsBeforeDeduction / (double)Played;
 
 	public override string ToString() => TeamName;
 }

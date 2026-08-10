@@ -24,5 +24,5 @@ public static class TeamResultsExtensions
 	}
 
 	private static bool HasMaximumPointsPerGame(TeamResults team, int pointsForWin) =>
-		team.Played > 0 && team.Points == (long)team.Played * pointsForWin;
+		team.Played > 0 && team.PointsBeforeDeduction == (long)team.Played * pointsForWin;
 }

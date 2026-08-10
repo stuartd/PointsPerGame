@@ -118,6 +118,21 @@ public class TeamResults_Sorting_Tests
 		sortedTeams.Select(t => t.TeamName).ShouldBe(["Two games", "One game"]);
 	}
 
+	[Test]
+	public void Point_Deductions_Do_Not_Reduce_Points_Per_Game_Or_Break_The_Perfect_Record_Rule()
+	{
+		TeamResults[] perfectTeams =
+		[
+			CreateTeam("One game", points: 3, played: 1, goalDifference: 5),
+			CreateTeam("Two games with deduction", points: 4, played: 2, goalDifference: 1, pointsDeducted: 2),
+		];
+
+		var sortedTeams = perfectTeams.SortTeams(PointsForWin);
+
+		sortedTeams.Select(t => t.TeamName).ShouldBe(["Two games with deduction", "One game"]);
+		sortedTeams[0].PointsPerGame.ShouldBe(3);
+	}
+
 	[TestCase(0)]
 	[TestCase(-1)]
 	public void Points_For_A_Win_Must_Be_Positive(int pointsForWin)
@@ -132,7 +147,12 @@ public class TeamResults_Sorting_Tests
 		teams.Add(CreateTeam(name, points, played, goalDifference));
 	}
 
-	private static TeamResults CreateTeam(string name, int points, int played, int goalDifference)
+	private static TeamResults CreateTeam(
+		string name,
+		int points,
+		int played,
+		int goalDifference,
+		int pointsDeducted = 0)
 	{
 		const int baseGoals = 200;
 
@@ -144,6 +164,7 @@ public class TeamResults_Sorting_Tests
 			GoalsScored = baseGoals,
 			GoalsConceded = baseGoals - goalDifference,
 			Points = points,
+			PointsDeducted = pointsDeducted,
 			Played = played,
 		};
 	}

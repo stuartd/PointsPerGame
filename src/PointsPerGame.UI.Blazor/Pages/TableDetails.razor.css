@@ -72,6 +72,19 @@ h1 {
     display: none;
 }
 
+.point-deduction-marker {
+    font-size: 0.75em;
+    margin-left: 0.15rem;
+    vertical-align: super;
+}
+
+.point-deductions {
+    list-style-position: inside;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    text-align: right;
+}
+
 @container (min-width: 30.0625rem) {
     .teamTable {
         font-size: 1rem;

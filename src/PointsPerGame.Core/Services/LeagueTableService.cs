@@ -20,9 +20,24 @@ public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueT
 
 		foreach (var sourceLeague in leagues)
 		{
-			results.AddRange(await dataSource.GetResultsAsync(sourceLeague));
+			var leagueResults = await dataSource.GetResultsAsync(sourceLeague);
+			results.AddRange(leagueResults.Select(RecordPointsDeduction));
 		}
 
 		return [.. results.SortTeams(pointsForWin: PointsForWin)];
+	}
+
+	private static TeamResults RecordPointsDeduction(TeamResults team)
+	{
+		var pointsBeforeDeduction = checked((team.Won * PointsForWin) + team.Drawn);
+		var pointsDeducted = checked(pointsBeforeDeduction - team.Points);
+
+		if (pointsDeducted < 0)
+		{
+			throw new InvalidOperationException(
+				$"{team.TeamName} has {team.Points} points, but its wins and draws account for only {pointsBeforeDeduction}.");
+		}
+
+		return team with { PointsDeducted = pointsDeducted };
 	}
 }

@@ -70,8 +70,8 @@ public class LeagueTableServiceTests
 	{
 		var dataSource = new StubDataSource();
 		dataSource.SetResults(TableSelection.EnglishPremierLeague,
-			Team("lower", points: 30, played: 10),
-			Team("higher", points: 31, played: 10));
+			Team("lower", points: 25, played: 10),
+			Team("higher", points: 26, played: 10));
 		var service = new LeagueTableService(dataSource);
 
 		var results = await service.GetResultsAsync(TableSelection.EnglishPremierLeague);
@@ -79,12 +79,44 @@ public class LeagueTableServiceTests
 		results.Select(r => r.TeamName).ShouldBe(["higher", "lower"]);
 	}
 
-	private static TeamResults Team(string name, int points, int played) => new()
+	[Test]
+	public async Task GetResultsAsync_Records_All_Point_Deductions_And_Sorts_By_Points_Before_Deduction()
+	{
+		var dataSource = new StubDataSource();
+		dataSource.SetResults(TableSelection.EnglishChampionship,
+			Team("Southampton", points: -4, played: 0, won: 0, drawn: 0),
+			Team("Five point deduction", points: 2, played: 3, won: 2, drawn: 1),
+			Team("No deduction", points: 6, played: 3, won: 2, drawn: 0));
+		var service = new LeagueTableService(dataSource);
+
+		var results = await service.GetResultsAsync(TableSelection.EnglishChampionship);
+
+		results.Select(r => r.TeamName).ShouldBe(["Five point deduction", "No deduction", "Southampton"]);
+		results.Where(r => r.PointsDeducted > 0)
+			.Select(r => (r.TeamName, r.PointsDeducted))
+			.ShouldBe([
+				("Five point deduction", 5),
+				("Southampton", 4),
+			]);
+		results.Single(r => r.TeamName == "Five point deduction").PointsBeforeDeduction.ShouldBe(7);
+		results.Single(r => r.TeamName == "Five point deduction").PointsPerGame.ShouldBe(7d / 3);
+		results.Single(r => r.TeamName == "No deduction").PointsDeducted.ShouldBe(0);
+		results.Single(r => r.TeamName == "Southampton").PointsPerGame.ShouldBe(0);
+	}
+
+	private static TeamResults Team(
+		string name,
+		int points,
+		int played,
+		int? won = null,
+		int? drawn = null) => new()
 	{
 		TeamName = name,
 		TeamUrl = string.Empty,
 		TeamCrest = string.Empty,
 		Played = played,
+		Won = won ?? points / 3,
+		Drawn = drawn ?? points % 3,
 		Points = points,
 	};
 

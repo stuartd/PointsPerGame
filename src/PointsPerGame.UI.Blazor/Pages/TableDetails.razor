@@ -81,6 +81,13 @@ else
                         {
                             <a href="@r.TeamUrl">@r.TeamName</a>
                         }
+                        @if (r.PointsDeducted > 0)
+                        {
+                            var footnoteNumber = GetPointDeductionFootnoteNumber(r);
+                            <sup class="point-deduction-marker" id="point-deduction-reference-@footnoteNumber">
+                                <a href="/tables/@LeagueId#point-deduction-@footnoteNumber" title="Deducted @FormatPoints(r.PointsDeducted)">@footnoteNumber</a>
+                            </sup>
+                        }
                     </td>
                     <td>@r.Played</td>
                     <td>@r.Won</td>
@@ -93,6 +100,18 @@ else
             }
             </tbody>
         </table>
+
+        @if (pointDeductions.Count > 0)
+        {
+            <ol class="point-deductions" aria-label="Points deductions">
+                @for (var index = 0; index < pointDeductions.Count; index++)
+                {
+                    var footnoteNumber = index + 1;
+                    var team = pointDeductions[index];
+                    <li id="point-deduction-@footnoteNumber">Deducted @FormatPoints(team.PointsDeducted)</li>
+                }
+            </ol>
+        }
     </div>
 }
 
@@ -104,12 +123,14 @@ else
     private string? leagueName;
     private string? errorMessage;
     private string? sourceUrl;
+    private List<TeamResults> pointDeductions = [];
 
     private string PageTitle => leagueName == null ? "League Table" : $"{leagueName}";
 
     protected override async Task OnParametersSetAsync()
     {
         rows = null;
+        pointDeductions = [];
         errorMessage = null;
         leagueName = TablesService.GetLeagueName(LeagueId);
         sourceUrl = TablesService.GetLeagueSourceUrl(LeagueId);
@@ -124,6 +145,7 @@ else
         try
         {
             rows = await TablesService.GetLeagueTableAsync(LeagueId);
+            pointDeductions = [.. rows.Where(r => r.PointsDeducted > 0)];
 
             if (rows.Count < 10)
             {
@@ -146,5 +168,10 @@ else
             rows = [];
         }
     }
+
+    private int GetPointDeductionFootnoteNumber(TeamResults team) =>
+        pointDeductions.FindIndex(candidate => ReferenceEquals(candidate, team)) + 1;
+
+    private static string FormatPoints(int points) => $"{points} {(points == 1 ? "point" : "points")}";
 }
 
