@@ -14,7 +14,7 @@ h1 {
     container-type: inline-size;
     max-width: 100%;
     overflow-x: auto;
-    width: 38rem;
+    width: min(100%, 64rem);
 }
 
 .teamTable {
@@ -70,6 +70,22 @@ h1 {
 
 .stat-label-long {
     display: none;
+}
+
+@container (min-width: 30.0625rem) {
+    .teamTable {
+        font-size: 1rem;
+    }
+
+    .teamTable th,
+    .teamTable td {
+        padding: 0.35rem 0.6rem;
+    }
+
+    .teamTable img {
+        height: 1.1rem;
+        max-width: 1.2rem;
+    }
 }
 
 @container (max-width: 30rem) {
