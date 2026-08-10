@@ -33,7 +33,7 @@ h1 {
 .teamTable th,
 .teamTable td {
     border-bottom: 1px solid #d7dde5;
-    padding: 0.3rem 0.45rem;
+    padding: 0.2rem 0.45rem;
     text-align: center;
     white-space: nowrap;
 }
