@@ -30,6 +30,10 @@ h1 {
     width: var(--team-column-width);
 }
 
+.teamTable col.position-column {
+    width: 2.75rem;
+}
+
 .teamTable th,
 .teamTable td {
     border-bottom: 1px solid #d7dde5;
@@ -38,9 +42,16 @@ h1 {
     white-space: nowrap;
 }
 
-.teamTable th:nth-child(2),
-.teamTable td:nth-child(2) {
+.teamTable th.team-column,
+.teamTable td.team-column {
     text-align: left;
+}
+
+.teamTable th.position-column,
+.teamTable td.position-column {
+    padding-left: 0;
+    padding-right: 0.75rem;
+    text-align: right;
 }
 
 .teamTable th {
@@ -62,13 +73,6 @@ h1 {
     height: 0.9rem;
     max-width: 0.9375rem;
     vertical-align: middle;
-}
-
-.team-position {
-    display: inline-block;
-    margin-right: 0.25rem;
-    min-width: 1.75rem;
-    text-align: right;
 }
 
 .stat-label-short {
@@ -143,17 +147,17 @@ h1 {
         padding-inline: 0.15rem;
     }
 
-    .teamTable th:not(:nth-child(2)),
-    .teamTable td:not(:nth-child(2)) {
+    .teamTable th:not(.team-column),
+    .teamTable td:not(.team-column) {
         padding-inline: 0.05rem;
     }
 
-    .teamTable td:nth-child(2) {
+    .teamTable td.team-column {
         overflow-wrap: anywhere;
         white-space: normal;
     }
 
-    .team-position {
+    .teamTable .position-column {
         display: none;
     }
 }
