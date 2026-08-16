@@ -1,4 +1,4 @@
-# PointsPerGame
+# [pointspergame.net](https://pointspergame.net)
 
 View league tables order by points per game. Includes all UK leagues (including WSL) and European top divisions.
 
