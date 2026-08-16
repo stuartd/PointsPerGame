@@ -117,6 +117,11 @@ else
                 }
             </ul>
         }
+
+        @if (HasIncompleteTeamDetails)
+        {
+            <p class="team-data-note">Team crests and fixture links are shown where they’re available from the source data.</p>
+        }
     </div>
 
     @if (unavailableTableNames.Count > 0)
@@ -145,6 +150,10 @@ else
     private IReadOnlyList<string> unavailableTableNames = [];
 
     private string PageTitle => leagueName == null ? "League Table" : $"{leagueName}";
+
+    private bool HasIncompleteTeamDetails => rows?.Any(team =>
+        string.IsNullOrWhiteSpace(team.TeamCrest) ||
+        string.IsNullOrWhiteSpace(team.TeamUrl)) == true;
 
     protected override async Task OnParametersSetAsync()
     {
