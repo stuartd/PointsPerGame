@@ -15,18 +15,20 @@
 }
 else
 {
-    @foreach (var link in links)
-    {
-        @if (link.IsAvailable)
+    <div class="table-links">
+        @foreach (var link in links)
         {
-            <a href="/tables/@link.Id">@link.Name</a>
+            @if (link.IsAvailable)
+            {
+                <a href="/tables/@link.Id">@link.Name</a>
+            }
+            else
+            {
+                <span>@link.Name (source unavailable)</span>
+            }
+            <br />
         }
-        else
-        {
-            <span>@link.Name (source unavailable)</span>
-        }
-        <br />
-    }
+    </div>
 
     <h2>Sorting</h2>
     <text>Teams are sorted by points per game, then by the number of games played, then goal difference and finally by team name.</text>
