@@ -68,12 +68,14 @@ else
             </tr>
             </thead>
             <tbody>
-            @foreach (var r in rows)
+            @for (var rowIndex = 0; rowIndex < rows.Count; rowIndex++)
             {
+                var r = rows[rowIndex];
                 var footnoteNumber = GetPointDeductionFootnoteNumber(r);
                 <tr id="@(footnoteNumber > 0 ? $"point-deduction-team-{footnoteNumber}" : null)">
                     <td><img src="@r.TeamCrest" alt="" /></td>
                     <td class="team-column">
+                        <span class="team-position">@(rowIndex + 1).</span>
                         @if (string.IsNullOrWhiteSpace(r.TeamUrl))
                         {
                             @r.TeamName

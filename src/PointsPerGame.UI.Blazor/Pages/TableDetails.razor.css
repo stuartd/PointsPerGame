@@ -64,6 +64,13 @@ h1 {
     vertical-align: middle;
 }
 
+.team-position {
+    display: inline-block;
+    margin-right: 0.25rem;
+    min-width: 1.75rem;
+    text-align: right;
+}
+
 .stat-label-short {
     text-decoration: none;
 }
@@ -144,6 +151,10 @@ h1 {
     .teamTable td:nth-child(2) {
         overflow-wrap: anywhere;
         white-space: normal;
+    }
+
+    .team-position {
+        display: none;
     }
 }
 
