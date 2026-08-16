@@ -78,8 +78,14 @@ h1 {
     vertical-align: super;
 }
 
+.point-deduction-reference {
+    font-size: 0.75em;
+    margin-right: 0.15rem;
+    vertical-align: super;
+}
+
 .point-deductions {
-    list-style-position: inside;
+    list-style: none;
     margin: 0.5rem 0 0;
     padding: 0;
     text-align: right;

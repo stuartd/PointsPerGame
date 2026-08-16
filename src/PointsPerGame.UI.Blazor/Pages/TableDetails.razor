@@ -70,7 +70,8 @@ else
             <tbody>
             @foreach (var r in rows)
             {
-                <tr>
+                var footnoteNumber = GetPointDeductionFootnoteNumber(r);
+                <tr id="@(footnoteNumber > 0 ? $"point-deduction-team-{footnoteNumber}" : null)">
                     <td><img src="@r.TeamCrest" alt="" /></td>
                     <td class="team-column">
                         @if (string.IsNullOrWhiteSpace(r.TeamUrl))
@@ -83,9 +84,8 @@ else
                         }
                         @if (r.PointsDeducted > 0)
                         {
-                            var footnoteNumber = GetPointDeductionFootnoteNumber(r);
                             <sup class="point-deduction-marker" id="point-deduction-reference-@footnoteNumber">
-                                <a href="/tables/@LeagueId#point-deduction-@footnoteNumber" title="Deducted @FormatPoints(r.PointsDeducted)">@footnoteNumber</a>
+                                <a href="/tables/@LeagueId#point-deduction-@footnoteNumber" title="Deducted @FormatPoints(r.PointsDeducted)" aria-label="View points deduction note for @r.TeamName">@footnoteNumber</a>
                             </sup>
                         }
                     </td>
@@ -103,14 +103,19 @@ else
 
         @if (pointDeductions.Count > 0)
         {
-            <ol class="point-deductions" aria-label="Points deductions">
+            <ul class="point-deductions" aria-label="Points deductions">
                 @for (var index = 0; index < pointDeductions.Count; index++)
                 {
                     var footnoteNumber = index + 1;
                     var team = pointDeductions[index];
-                    <li id="point-deduction-@footnoteNumber">Deducted @FormatPoints(team.PointsDeducted)</li>
+                    <li id="point-deduction-@footnoteNumber">
+                        <sup class="point-deduction-reference">
+                            <a href="/tables/@LeagueId#point-deduction-team-@footnoteNumber" title="Go to @team.TeamName in the table" aria-label="Go to @team.TeamName in the table">@footnoteNumber</a>
+                        </sup>
+                        Deducted @FormatPoints(team.PointsDeducted)
+                    </li>
                 }
-            </ol>
+            </ul>
         }
     </div>
 
