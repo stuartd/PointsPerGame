@@ -3,10 +3,16 @@
 View league tables order by points per game. Includes all UK leagues (including WSL) and European top divisions.
 
 Teams are sorted by points per game, then by the number of games played.
-If teams have a 100% win record, the team which has played more games is sorted higher.
+
+If teams have a 100% win record, the team which has played more games is sorted higher [^1].
+
 For all other points-per-game ties, the team which has played fewer games is sorted higher.
+
 If both of those values are equal, teams are sorted by goal difference, and then by team name. 
+
 Points per game uses the points earned through wins and draws before any points deduction. Deductions are identified by comparing earned points with the official total and are shown as numbered footnotes on the table.
+
+[^1]: A team with four wins from four should sort higher than one with three wins from three games, regardless of goal difference. Only an issue at the start of the season.
 
 ## Run locally
 
