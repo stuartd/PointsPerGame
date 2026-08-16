@@ -41,7 +41,7 @@ dotnet test ./PointsPerGame.UnitTests/PointsPerGame.UnitTests.csproj
 
 ## Deployment
 
-https://github.com/stuartd/PointsPerGame/issues/30
+https://github.com/stuartd/pointspergame.net/issues/30
 
 ## Internals
 
