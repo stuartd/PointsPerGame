@@ -1,12 +1,13 @@
 @page "/"
 @page "/tables"
 @using PointsPerGame.UI.Blazor.Services
+@inject Services.TablesService TablesService
 
 <PageTitle>Points Per Game</PageTitle>
 
 <h1>Points Per Game</h1>
 
-<h2>Available Tables</h2>
+<h2>Tables</h2>
 
 @if (links == null)
 {
@@ -14,9 +15,16 @@
 }
 else
 {
-    @foreach (var kv in links)
+    @foreach (var link in links)
     {
-        <a href="/tables/@kv.Key">@kv.Value</a>
+        @if (link.IsAvailable)
+        {
+            <a href="/tables/@link.Id">@link.Name</a>
+        }
+        else
+        {
+            <span>@link.Name (source unavailable)</span>
+        }
         <br />
     }
 
@@ -40,7 +48,7 @@ else
 }
 
 @code {
-    private IReadOnlyDictionary<int, string>? links;
+    private IReadOnlyList<LeagueLink>? links;
 
     protected override async Task OnInitializedAsync()
     {

@@ -66,6 +66,28 @@ public class LeagueTableServiceTests
 	}
 
 	[Test]
+	public async Task GetResultsAsync_For_A_Composite_Table_Excludes_Unavailable_Source_Leagues()
+	{
+		var dataSource = new StubDataSource();
+		foreach (var league in LeagueLists.AllTopDivisions)
+		{
+			dataSource.SetResults(league, Team(league.ToString(), points: 30, played: 10));
+		}
+		var service = new LeagueTableService(dataSource);
+
+		var results = await service.GetResultsAsync(
+			TableSelection.AllTopDivisions,
+			[TableSelection.Ligue1, TableSelection.SerieA]);
+
+		dataSource.RequestedLeagues.ShouldBe([
+			.. LeagueLists.AllTopDivisions.Where(league =>
+				league is not TableSelection.Ligue1 and not TableSelection.SerieA),
+		]);
+		results.Select(result => result.TeamName).ShouldNotContain(TableSelection.Ligue1.ToString());
+		results.Select(result => result.TeamName).ShouldNotContain(TableSelection.SerieA.ToString());
+	}
+
+	[Test]
 	public async Task GetResultsAsync_Sorts_Combined_Results()
 	{
 		var dataSource = new StubDataSource();

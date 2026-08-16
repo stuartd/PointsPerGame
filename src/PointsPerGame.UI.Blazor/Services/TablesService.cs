@@ -8,16 +8,29 @@ using PointsPerGame.Core.Extensions;
 
 namespace PointsPerGame.UI.Blazor.Services;
 
-public class TablesService(ILeagueTableService leagueTableService)
-{
-    // As this actually isn't doing anything async, using a ValueTask
-    // to avoid the compiler spinning up a state machine that won't be used
-    public static ValueTask<IReadOnlyDictionary<int, string>> GetLeagueLinksAsync()
-    {
-        IReadOnlyDictionary<int, string> links = Enum.GetValues<TableSelection>()
-            .ToDictionary(league => (int)league, GetLeagueDescription);
+public readonly record struct LeagueLink(int Id, string Name, bool IsAvailable);
 
-        return ValueTask.FromResult(links);
+public sealed record LeagueTableData(
+    IReadOnlyList<TeamResults> Rows,
+    IReadOnlyList<string> UnavailableTableNames);
+
+public class TablesService(
+    ILeagueTableService leagueTableService,
+    TableAvailabilityChecker tableAvailabilityChecker)
+{
+    public async ValueTask<IReadOnlyList<LeagueLink>> GetLeagueLinksAsync()
+    {
+        var availability = await tableAvailabilityChecker.CheckAllAsync();
+        var unavailableTables = availability
+            .GetUnavailableTablesFor(TableSelection.AllLeagues)
+            .ToHashSet();
+
+        return [
+            .. Enum.GetValues<TableSelection>().Select(league => new LeagueLink(
+                (int)league,
+                GetLeagueDescription(league),
+                league.IsMultiLeague() || unavailableTables.Contains(league) == false)),
+        ];
     }
 
     public static string? GetLeagueName(int leagueId) => IsKnownLeague(leagueId) ? GetLeagueDescription((TableSelection)leagueId) : null;
@@ -36,15 +49,20 @@ public class TablesService(ILeagueTableService leagueTableService)
             : GuardianLeagueMappings.GetUriForLeague(league);
     }
 
-    public async Task<IReadOnlyList<TeamResults>> GetLeagueTableAsync(int leagueId)
+    public async Task<LeagueTableData> GetLeagueTableAsync(int leagueId)
     {
         if (!IsKnownLeague(leagueId))
         {
-            return [];
+            return new([], []);
         }
 
         var league = (TableSelection)leagueId;
-        return await leagueTableService.GetResultsAsync(league);
+        IReadOnlyList<TableSelection> unavailableTables = league.IsMultiLeague()
+            ? (await tableAvailabilityChecker.CheckAllAsync()).GetUnavailableTablesFor(league)
+            : [];
+        var rows = await leagueTableService.GetResultsAsync(league, unavailableTables);
+
+        return new(rows, [.. unavailableTables.Select(GetLeagueDescription)]);
     }
 
     private static bool IsKnownLeague(int leagueId) => Enum.IsDefined(typeof(TableSelection), leagueId);

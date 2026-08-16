@@ -6,16 +6,21 @@ namespace PointsPerGame.Core.Services;
 
 public interface ILeagueTableService
 {
-	ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(TableSelection tableSelection);
+	ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(
+		TableSelection tableSelection,
+		IReadOnlyCollection<TableSelection>? excludedTables = null);
 }
 
 public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueTableService
 {
 	private const int PointsForWin = 3;
 
-	public async ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(TableSelection tableSelection)
+	public async ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(
+		TableSelection tableSelection,
+		IReadOnlyCollection<TableSelection>? excludedTables = null)
 	{
-		var leagues = tableSelection.GetConcreteTables();
+		var leagues = tableSelection.GetConcreteTables()
+			.Where(table => excludedTables?.Contains(table) != true);
 		var results = new List<TeamResults>();
 
 		foreach (var sourceLeague in leagues)

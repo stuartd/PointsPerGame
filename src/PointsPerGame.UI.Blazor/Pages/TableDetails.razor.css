@@ -85,6 +85,18 @@ h1 {
     text-align: right;
 }
 
+.unavailable-tables {
+    margin-top: 1rem;
+}
+
+.unavailable-tables p {
+    margin-top: 0;
+}
+
+.unavailable-tables ul {
+    margin-bottom: 0;
+}
+
 @container (min-width: 30.0625rem) {
     .teamTable {
         font-size: 1rem;
