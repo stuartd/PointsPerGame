@@ -13,7 +13,7 @@ public interface ILeagueTableService
 
 public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueTableService
 {
-	private const int PointsForWin = 3;
+	private const int pointsForWin = 3;
 
 	public async ValueTask<IReadOnlyList<TeamResults>> GetResultsAsync(
 		TableSelection tableSelection,
@@ -29,12 +29,12 @@ public sealed class LeagueTableService(IResultsDataSource dataSource) : ILeagueT
 			results.AddRange(leagueResults.Select(RecordPointsDeduction));
 		}
 
-		return [.. results.SortTeams(pointsForWin: PointsForWin)];
+		return [.. results.SortTeams(pointsForWin)];
 	}
 
 	private static TeamResults RecordPointsDeduction(TeamResults team)
 	{
-		var pointsBeforeDeduction = checked((team.Won * PointsForWin) + team.Drawn);
+		var pointsBeforeDeduction = checked((team.Won * pointsForWin) + team.Drawn);
 		var pointsDeducted = checked(pointsBeforeDeduction - team.Points);
 
 		if (pointsDeducted < 0)

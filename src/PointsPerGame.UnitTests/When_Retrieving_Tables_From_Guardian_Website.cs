@@ -13,7 +13,7 @@ namespace PointsPerGame.UnitTests;
 [TestFixture]
 public class When_Retrieving_Tables_From_Guardian_Website
 {
-    private static readonly TimeSpan LinkCheckDelay = TimeSpan.FromSeconds(1);
+    private static readonly TimeSpan linkCheckDelay = TimeSpan.FromSeconds(1);
     private readonly IResultsDataSource dataSource = new GuardianScraper(TestHttpClientFactory.Instance);
 
     [TestCaseSource(typeof(TableTestCaseSource), nameof(TableTestCaseSource.Tables))]
@@ -50,7 +50,7 @@ public class When_Retrieving_Tables_From_Guardian_Website
         {
             if (index > 0)
             {
-                await Task.Delay(LinkCheckDelay);
+                await Task.Delay(linkCheckDelay);
             }
 
             var team = uniqueTeams[index];

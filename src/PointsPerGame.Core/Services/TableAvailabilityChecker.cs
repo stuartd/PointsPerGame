@@ -7,8 +7,8 @@ public readonly record struct TableAvailability(TableSelection Table, bool IsAva
 
 public sealed class TableAvailabilityCache
 {
-	private static readonly TimeSpan AvailableCacheDuration = TimeSpan.FromDays(1);
-	private static readonly TimeSpan UnavailableCacheDuration = TimeSpan.FromMinutes(5);
+	private static readonly TimeSpan availableCacheDuration = TimeSpan.FromDays(1);
+	private static readonly TimeSpan unavailableCacheDuration = TimeSpan.FromMinutes(5);
 	private readonly ConcurrentDictionary<TableSelection, CacheEntry> entries = [];
 	private readonly SemaphoreSlim cacheLock = new(1, 1);
 	private readonly TimeProvider timeProvider;
@@ -41,7 +41,7 @@ public sealed class TableAvailabilityCache
 			}
 
 			var availability = await createAvailability();
-			var cacheDuration = availability.IsAvailable ? AvailableCacheDuration : UnavailableCacheDuration;
+			var cacheDuration = availability.IsAvailable ? availableCacheDuration : unavailableCacheDuration;
 			entries[table] = new(availability, timeProvider.GetUtcNow().Add(cacheDuration));
 
 			return availability;

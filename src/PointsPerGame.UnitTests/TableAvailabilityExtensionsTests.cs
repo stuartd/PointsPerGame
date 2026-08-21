@@ -7,7 +7,7 @@ namespace PointsPerGame.UnitTests;
 
 public class TableAvailabilityExtensionsTests
 {
-	private static readonly IReadOnlyList<TableAvailability> Availability = [
+	private static readonly IReadOnlyList<TableAvailability> availability = [
 		.. LeagueLists.AllLeagues.Select(table => new TableAvailability(
 			table,
 			IsAvailable: table is not TableSelection.EnglishChampionship and not TableSelection.SerieA)),
@@ -16,17 +16,17 @@ public class TableAvailabilityExtensionsTests
 	[Test]
 	public void GetUnavailableTablesFor_Returns_Unavailable_Tables_Used_By_The_Requested_Selection()
 	{
-		Availability.GetUnavailableTablesFor(TableSelection.AllLeagues)
+		availability.GetUnavailableTablesFor(TableSelection.AllLeagues)
 			.ShouldBe([TableSelection.EnglishChampionship, TableSelection.SerieA]);
-		Availability.GetUnavailableTablesFor(TableSelection.AllTopDivisions)
+		availability.GetUnavailableTablesFor(TableSelection.AllTopDivisions)
 			.ShouldBe([TableSelection.SerieA]);
-		Availability.GetUnavailableTablesFor(TableSelection.AllEnglishDivisions)
+		availability.GetUnavailableTablesFor(TableSelection.AllEnglishDivisions)
 			.ShouldBe([TableSelection.EnglishChampionship]);
-		Availability.GetUnavailableTablesFor(TableSelection.SerieA)
+		availability.GetUnavailableTablesFor(TableSelection.SerieA)
 			.ShouldBe([TableSelection.SerieA]);
-		Availability.GetUnavailableTablesFor(TableSelection.Ligue1)
+		availability.GetUnavailableTablesFor(TableSelection.Ligue1)
 			.ShouldBeEmpty();
-		Availability.GetUnavailableTablesFor(TableSelection.AllScottishDivisions)
+		availability.GetUnavailableTablesFor(TableSelection.AllScottishDivisions)
 			.ShouldBeEmpty();
 	}
 }

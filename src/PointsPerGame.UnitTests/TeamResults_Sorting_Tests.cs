@@ -7,7 +7,7 @@ namespace PointsPerGame.UnitTests;
 [TestFixture]
 public class TeamResults_Sorting_Tests
 {
-	private const int PointsForWin = 3;
+	private const int pointsForWin = 3;
 	private List<TeamResults> teams = null!;
 
 	[SetUp]
@@ -44,7 +44,7 @@ public class TeamResults_Sorting_Tests
 	[Test]
 	public void TeamsResults_Sort_Correctly()
 	{
-		var sortedTeams = teams.SortTeams(PointsForWin);
+		var sortedTeams = teams.SortTeams(pointsForWin);
 		sortedTeams[0].TeamName.ShouldBe("Charlie");
 		sortedTeams[1].TeamName.ShouldBe("Alpha");
 		sortedTeams[2].TeamName.ShouldBe("Zulu");
@@ -64,7 +64,7 @@ public class TeamResults_Sorting_Tests
 			CreateTeam("Everton", points: 9, played: 3, goalDifference: 1),
 		];
 
-		var sortedTeams = perfectTeams.SortTeams(PointsForWin);
+		var sortedTeams = perfectTeams.SortTeams(pointsForWin);
 
 		sortedTeams.Select(t => t.TeamName).ShouldBe([
 			"Leicester",
@@ -85,7 +85,7 @@ public class TeamResults_Sorting_Tests
 			CreateTeam("Two games", points: 6, played: 2, goalDifference: 4),
 		];
 
-		var sortedTeams = perfectTeams.SortTeams(PointsForWin);
+		var sortedTeams = perfectTeams.SortTeams(pointsForWin);
 
 		sortedTeams.Select(t => t.TeamName).ShouldBe(["Three games", "Two games", "One game"]);
 	}
@@ -99,7 +99,7 @@ public class TeamResults_Sorting_Tests
 			CreateTeam("Short schedule", points: 3, played: 2, goalDifference: 0),
 		];
 
-		var sortedTeams = tiedTeams.SortTeams(PointsForWin);
+		var sortedTeams = tiedTeams.SortTeams(pointsForWin);
 
 		sortedTeams.Select(t => t.TeamName).ShouldBe(["Short schedule", "Long schedule"]);
 	}
@@ -127,7 +127,7 @@ public class TeamResults_Sorting_Tests
 			CreateTeam("Two games with deduction", points: 4, played: 2, goalDifference: 1, pointsDeducted: 2),
 		];
 
-		var sortedTeams = perfectTeams.SortTeams(PointsForWin);
+		var sortedTeams = perfectTeams.SortTeams(pointsForWin);
 
 		sortedTeams.Select(t => t.TeamName).ShouldBe(["Two games with deduction", "One game"]);
 		sortedTeams[0].PointsPerGame.ShouldBe(3);
