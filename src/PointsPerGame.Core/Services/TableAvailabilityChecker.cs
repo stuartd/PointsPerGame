@@ -1,21 +1,32 @@
 using PointsPerGame.Core.Names;
-using System.Runtime.Caching;
+using System.Collections.Concurrent;
 
 namespace PointsPerGame.Core.Services;
 
 public readonly record struct TableAvailability(TableSelection Table, bool IsAvailable);
 
-public sealed class TableAvailabilityChecker(IResultsDataSource dataSource)
+public sealed class TableAvailabilityCache
 {
-	private const string CacheKey = "AllTables";
-	private static readonly TimeSpan CacheDuration = TimeSpan.FromDays(1);
-	private static readonly MemoryCache cache = new(nameof(TableAvailabilityChecker));
-	private static readonly SemaphoreSlim cacheLock = new(1, 1);
-	private readonly IResultsDataSource dataSource = dataSource ?? throw new ArgumentNullException(nameof(dataSource));
+	private static readonly TimeSpan AvailableCacheDuration = TimeSpan.FromDays(1);
+	private static readonly TimeSpan UnavailableCacheDuration = TimeSpan.FromMinutes(5);
+	private readonly ConcurrentDictionary<TableSelection, CacheEntry> entries = [];
+	private readonly SemaphoreSlim cacheLock = new(1, 1);
+	private readonly TimeProvider timeProvider;
 
-	public async ValueTask<IReadOnlyList<TableAvailability>> CheckAllAsync()
+	public TableAvailabilityCache() : this(TimeProvider.System)
 	{
-		if (TryGetCachedAvailability(out var cachedAvailability))
+	}
+
+	public TableAvailabilityCache(TimeProvider timeProvider)
+	{
+		this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+	}
+
+	internal async ValueTask<TableAvailability> GetOrCreateAsync(
+		TableSelection table,
+		Func<ValueTask<TableAvailability>> createAvailability)
+	{
+		if (TryGet(table, out var cachedAvailability))
 		{
 			return cachedAvailability;
 		}
@@ -24,13 +35,14 @@ public sealed class TableAvailabilityChecker(IResultsDataSource dataSource)
 
 		try
 		{
-			if (TryGetCachedAvailability(out cachedAvailability))
+			if (TryGet(table, out cachedAvailability))
 			{
 				return cachedAvailability;
 			}
 
-			var availability = await CheckAllUncachedAsync();
-			cache.Set(CacheKey, availability, DateTimeOffset.Now.Add(CacheDuration));
+			var availability = await createAvailability();
+			var cacheDuration = availability.IsAvailable ? AvailableCacheDuration : UnavailableCacheDuration;
+			entries[table] = new(availability, timeProvider.GetUtcNow().Add(cacheDuration));
 
 			return availability;
 		}
@@ -40,13 +52,35 @@ public sealed class TableAvailabilityChecker(IResultsDataSource dataSource)
 		}
 	}
 
-	private async ValueTask<IReadOnlyList<TableAvailability>> CheckAllUncachedAsync()
+	private bool TryGet(TableSelection table, out TableAvailability availability)
+	{
+		if (entries.TryGetValue(table, out var entry) && entry.ExpiresAt > timeProvider.GetUtcNow())
+		{
+			availability = entry.Availability;
+			return true;
+		}
+
+		availability = default;
+		return false;
+	}
+
+	private readonly record struct CacheEntry(TableAvailability Availability, DateTimeOffset ExpiresAt);
+}
+
+public sealed class TableAvailabilityChecker(
+	IResultsDataSource dataSource,
+	TableAvailabilityCache cache)
+{
+	private readonly IResultsDataSource dataSource = dataSource ?? throw new ArgumentNullException(nameof(dataSource));
+	private readonly TableAvailabilityCache cache = cache ?? throw new ArgumentNullException(nameof(cache));
+
+	public async ValueTask<IReadOnlyList<TableAvailability>> CheckAllAsync()
 	{
 		var availability = new List<TableAvailability>();
 
 		foreach (var table in LeagueLists.AllLeagues)
 		{
-			availability.Add(await CheckAsync(table));
+			availability.Add(await cache.GetOrCreateAsync(table, () => CheckAsync(table)));
 		}
 
 		return availability.AsReadOnly();
@@ -63,17 +97,5 @@ public sealed class TableAvailabilityChecker(IResultsDataSource dataSource)
 		{
 			return new(table, IsAvailable: false);
 		}
-	}
-
-	private static bool TryGetCachedAvailability(out IReadOnlyList<TableAvailability> availability)
-	{
-		if (cache.Get(CacheKey) is IReadOnlyList<TableAvailability> cachedAvailability)
-		{
-			availability = cachedAvailability;
-			return true;
-		}
-
-		availability = [];
-		return false;
 	}
 }
